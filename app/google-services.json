@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "602258659962",
+    "project_id": "foodvillage-fe579",
+    "storage_bucket": "foodvillage-fe579.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602258659962:android:8f7800298b53922c2af9c3",
+        "android_client_info": {
+          "package_name": "com.example.foodvillage"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "602258659962-brul1l05bovodoo361n35j1kj8vrpsif.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.foodvillage",
+            "certificate_hash": "2226ab86392880290efe644843b48603a0b3a27b"
+          }
+        },
+        {
+          "client_id": "602258659962-b31p7o152qmqbmupo0d2744stslko9i7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4-m2sWfR09IVhnIcssYc3QLzjlmI2gHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "602258659962-b31p7o152qmqbmupo0d2744stslko9i7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
