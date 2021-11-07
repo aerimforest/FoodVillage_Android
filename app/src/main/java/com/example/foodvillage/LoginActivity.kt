@@ -32,6 +32,10 @@ class LoginActivity : AppCompatActivity() {
             googleLogin()
         }
 
+        binding.btnLoginEmail.setOnClickListener {
+            logInWithEmail()
+        }
+
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -101,5 +105,50 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+    }
+
+    private fun createAndLoginEmail() {
+        auth.createUserWithEmailAndPassword(
+            binding.etLoginId.text.toString(),
+            binding.etLoginPwd.text.toString()
+        )
+            .addOnCompleteListener { task ->
+                when {
+                    task.isSuccessful -> {
+                        Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show()
+                        // moveUserNamePage(auth.currentUser)
+                    }
+                    task.exception?.message.isNullOrEmpty() -> {
+                        Toast.makeText(this, task.exception!!.message, Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {
+                        signInEmail()
+                    }
+                }
+            }
+    }
+
+    private fun logInWithEmail() {
+        if (binding.etLoginId.text.toString()
+                .isEmpty() || binding.etLoginPwd.text.toString().isEmpty()
+        ) {
+            Toast.makeText(this, "이메일과 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+        } else {
+            createAndLoginEmail()
+        }
+    }
+
+    private fun signInEmail() {
+        auth.signInWithEmailAndPassword(
+            binding.etLoginId.text.toString(),
+            binding.etLoginPwd.text.toString()
+        )
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    moveMainPage(auth.currentUser)
+                } else {
+                    Toast.makeText(this, task.exception!!.message, Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 }
