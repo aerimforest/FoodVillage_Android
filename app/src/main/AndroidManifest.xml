@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.foodvillage">
 
-    <uses-permission android:name="android.permission.INTERNET " />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -10,16 +12,24 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FoodVillage">
+        android:theme="@style/Theme.FoodVillage"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".MarketMapActivity"></activity>
+        <activity android:name=".MyMapActivity" />
         <activity android:name=".LoginActivity">
+        </activity>
+        <activity android:name=".MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-        </activity>
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="fa4beeecb60297b77f7dd90a3b2d4c64" />
+
     </application>
 
 </manifest>
