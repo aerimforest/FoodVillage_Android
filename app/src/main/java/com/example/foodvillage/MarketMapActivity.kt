@@ -6,12 +6,13 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.foodvillage.databinding.ActivityMarketMapBinding
 import com.google.android.gms.location.*
@@ -21,6 +22,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.pow
 
+
 class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener{
     // 뷰 바인딩
     private var mBinding: ActivityMarketMapBinding? = null
@@ -29,6 +31,8 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
     private var mapView: MapView?=null
 
     private val eventListener = MarkerEventListener(this)   // 마커 클릭 이벤트 리스너
+    // private val reverseGeoCoder:MapReverseGeoCoder// 마커 클릭 이벤트 리스너
+
 
     // 위치 추적을 위한 변수들
     val TAG: String = "로그"
@@ -37,8 +41,8 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
     internal lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
     private val REQUEST_PERMISSION_LOCATION = 10
 
-    val curr_lat=37.5406564
-    val curr_lon=126.8809048
+    var curr_lat=37.5406564
+    var curr_lon=126.8809048
 
     val market_lat1=37.544
     val market_lon1=126.884
@@ -51,7 +55,7 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_market_map)
-// 바인딩
+        // 바인딩
         mBinding = ActivityMarketMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -62,6 +66,8 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
         mapView!!.setCurrentLocationEventListener(this)
         mapView!!.setPOIItemEventListener(eventListener)
 
+
+        //mapView!!.geo
 
         // 현재 위치
         // LocationRequest() deprecated 되서 아래 방식으로 LocationRequest 객체 생성
@@ -75,20 +81,40 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
 
         // 위치 추척 시작
         if (checkPermissionForLocation(this)) {
+            // 현위치 트래킹 - 이건 주소 설정할 때 해서 최초로 받는거
+            mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving)
             startLocationUpdates()
 
-            // 현위치 트래킹 - 이건 주소 설정할 때 해서 최초로 받는거
-            mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving);
 
         }
-
-
     }
+
+    private fun getApiKeyFromManifest(context: Context): String? {
+        var apiKey: String? = null
+        try {
+            val e = context.packageName
+            val ai = context
+                .packageManager
+                .getApplicationInfo(e, PackageManager.GET_META_DATA)
+            val bundle = ai.metaData
+            if (bundle != null) {
+                apiKey = bundle.getString("com.kakao.sdk.AppKey")
+            }
+        } catch (var6: Exception) {
+            Log.d(
+                "meta-data",
+                "Caught non-fatal exception while retrieving apiKey: $var6"
+            )
+        }
+        return apiKey
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff)
         mapView!!.setShowCurrentLocationMarker(false)
     }
+
 
     protected fun startLocationUpdates() {
         Log.d(TAG, "startLocationUpdates()")
@@ -109,34 +135,69 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
             Looper.myLooper()
         )
 
-        // 내 위치로 중심 이동
-        val mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
-        mapView?.setMapCenterPoint(mapPoint, true)
-        mapView?.setZoomLevel(1, true)
+        // 여기서 curr_lat, lon 바뀌
+        mFusedLocationProviderClient!!.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                Log.d("위치", "updateCurrent")
+                curr_lat=location!!.latitude
+                curr_lon=location!!.longitude
+                Log.d("위치", "updated: " + curr_lat + ", " + curr_lon)
 
-        //마커 생성1
-        val marker = MapPOIItem()
-        val mapPoint_market1 = MapPoint.mapPointWithGeoCoord(market_lat1, market_lon1)
-        marker.itemName = "나연마트1"
-        marker.mapPoint = mapPoint_market1
-        marker.markerType = MapPOIItem.MarkerType.BluePin
-        marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+                // 내 위치로 중심 이동
+                val mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
+                mapView?.setMapCenterPoint(mapPoint, true)
+                mapView?.setZoomLevel(2, true)
 
-        // markers 가능
-        mapView?.addPOIItem(marker)
 
-        //마커 생성2
-        val marker2=MapPOIItem()
-        val mapPoint_market2 = MapPoint.mapPointWithGeoCoord(market_lat2, market_lon2)
-        marker2.itemName = "나연마트2"
-        marker2.mapPoint = mapPoint_market2
-        marker2.markerType = MapPOIItem.MarkerType.BluePin
-        marker2.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+                // 현재위치 주소값
 
-        mapView?.addPOIItem(marker2)
+                var AddressData:String=""
+                var reverseGeoCoder = MapReverseGeoCoder(
+                    getApiKeyFromManifest(this),
+                    MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon),
+                    object : MapReverseGeoCoder.ReverseGeoCodingResultListener {
+                        override fun onReverseGeoCoderFoundAddress(
+                            mapReverseGeoCoder: MapReverseGeoCoder,
+                            s: String
+                        ) { AddressData= s
+                            binding.tvAddress.setText(AddressData)
+                        }
+                        override fun onReverseGeoCoderFailedToFindAddress(mapReverseGeoCoder: MapReverseGeoCoder) {
+                            binding.tvAddress.setText("address not found")
+                        }
+                    },
+                    this
+                )
 
-        // 다 보이게 레벨 조정
-        mapView!!.fitMapViewAreaToShowAllPOIItems()
+                reverseGeoCoder.startFindingAddress()
+
+
+
+
+                //마커 생성1
+                val marker = MapPOIItem()
+                val mapPoint_market1 = MapPoint.mapPointWithGeoCoord(market_lat1, market_lon1)
+                marker.itemName = "나연마트1"
+                marker.mapPoint = mapPoint_market1
+                marker.markerType = MapPOIItem.MarkerType.BluePin
+                marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+
+                // markers 가능
+                mapView?.addPOIItem(marker)
+
+                //마커 생성2
+                val marker2=MapPOIItem()
+                val mapPoint_market2 = MapPoint.mapPointWithGeoCoord(market_lat2, market_lon2)
+                marker2.itemName = "나연마트2"
+                marker2.mapPoint = mapPoint_market2
+                marker2.markerType = MapPOIItem.MarkerType.BluePin
+                marker2.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+
+                mapView?.addPOIItem(marker2)
+
+                // 다 보이게 레벨 조정
+                //mapView!!.fitMapViewAreaToShowAllPOIItems()
+            }
 
 
     }
@@ -169,6 +230,8 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
             버튼 클릭 - 현 위치로 설정? -> 예 선택 시 저장
             -> 아니오시 계속 트래킹!
          */
+        curr_lat=mLastLocation.latitude
+        curr_lon=mLastLocation.longitude
 
     }
 
@@ -212,13 +275,13 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving);
 
 
-//                // View Button 활성화 상태 변경
-//                btnStartupdate.isEnabled = false
-//                btnStopUpdates.isEnabled = true
-
             } else {
                 Log.d(TAG, "onRequestPermissionsResult() _ 권한 허용 거부")
-                Toast.makeText(this@MarketMapActivity, "권한이 없어 해당 기능을 실행할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@MarketMapActivity,
+                    "권한이 없어 해당 기능을 실행할 수 없습니다.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -247,16 +310,27 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
     override fun onCurrentLocationUpdateCancelled(p0: MapView?) {
 
     }
+    fun getCurrLat(): Double {
+        return curr_lat
+    }
+    fun getCurrLon(): Double {
+        return curr_lon
+    }
 
-    class MarkerEventListener(val context: Context): MapView.POIItemEventListener {
+    inner class MarkerEventListener(val context: Context): MapView.POIItemEventListener {
+        private var currlat:Double=0.0
+        private var currlon:Double=0.0
+
         var marker_distance:Int = 0
 
         override fun onPOIItemSelected(mapView: MapView?, marker: MapPOIItem?) {
-            Log.d("마커","onPOIItemSelected()")
-            mapView!!.removeAllPolylines()
+            Log.d("마커", "onPOIItemSelected()")
 
-            val curr_lat=37.5406564
-            val curr_lon=126.8809048
+            currlat=getCurrLat()
+            currlon=getCurrLon()
+
+            Log.d("마커", "폴리라인용 기준점: " + currlat + ", " + currlon)
+            mapView!!.removeAllPolylines()
 
             // 라인 생성
             // 폴리 라인
@@ -289,10 +363,18 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
             // 이 함수도 작동하지만 그냥 아래 있는 함수에 작성하자
         }
 
-        override fun onCalloutBalloonOfPOIItemTouched(mapView: MapView?, poiItem: MapPOIItem?, buttonType: MapPOIItem.CalloutBalloonButtonType?) {
+        override fun onCalloutBalloonOfPOIItemTouched(
+            mapView: MapView?,
+            poiItem: MapPOIItem?,
+            buttonType: MapPOIItem.CalloutBalloonButtonType?
+        ) {
             // 말풍선 클릭 시
             val builder = AlertDialog.Builder(context)
-            val itemList = arrayOf("토스트", "거리", (marker_distance.toDouble()/1000).toString()+"km")
+            val itemList = arrayOf(
+                "토스트",
+                "거리",
+                (marker_distance.toDouble() / 1000).toString() + "km"
+            )
             builder.setTitle("${poiItem?.itemName}")
             builder.setItems(itemList) { dialog, which ->
                 when(which) {
@@ -304,27 +386,27 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
             builder.show()
         }
 
-        override fun onDraggablePOIItemMoved(mapView: MapView?, poiItem: MapPOIItem?, mapPoint: MapPoint?) {
+        override fun onDraggablePOIItemMoved(
+            mapView: MapView?,
+            poiItem: MapPOIItem?,
+            mapPoint: MapPoint?
+        ) {
             // 마커의 속성 중 isDraggable = true 일 때 마커를 이동시켰을 경우
         }
 
         fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Int {
             val R = 6372.8 * 1000
 
-            val dLat = Math.toRadians(lat2 - lat1)
-            val dLon = Math.toRadians(lon2 - lon1)
-            val a = sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2))
+            val dLat = toRadians(lat2 - lat1)
+            val dLon = toRadians(lon2 - lon1)
+            val a = sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(toRadians(lat1)) * cos(
+                toRadians(lat2)
+            )
             val c = 2 * asin(sqrt(a))
             return (R * c).toInt()
         }
 
-
     }
-
-
-
-
-
 
 
 }
