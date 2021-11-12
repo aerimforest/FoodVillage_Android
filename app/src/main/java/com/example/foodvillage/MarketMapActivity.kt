@@ -9,6 +9,8 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -51,7 +53,7 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
     val market_lon2=126.882
 
     var AddressData:String=""
-
+    var marker_distance:Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +67,9 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
         // 임포트 잘 해줘야함... mf들어간걸로!
         mapView = MapView(this)
         binding.clKakaoMapView2.addView(mapView)
+
+        mapView!!.setCalloutBalloonAdapter(CustomBalloonAdapter(layoutInflater))  // 커스텀 말풍선 등록
+
         mapView!!.setCurrentLocationEventListener(this)
         mapView!!.setPOIItemEventListener(eventListener)
 
@@ -146,7 +151,7 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 Log.d("위치", "updated: " + curr_lat + ", " + curr_lon)
 
                 // 내 위치로 중심 이동
-                val mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
+                var mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
                 mapView?.setMapCenterPoint(mapPoint, true)
                 mapView?.setZoomLevel(2, true)
 
@@ -172,32 +177,27 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 reverseGeoCoder.startFindingAddress()
 
 
-
-
                 //마커 생성1
                 val marker = MapPOIItem()
-                val mapPoint_market1 = MapPoint.mapPointWithGeoCoord(market_lat1, market_lon1)
-                marker.itemName = "나연마트1"
-                marker.mapPoint = mapPoint_market1
-
-                //marker.markerType = MapPOIItem.MarkerType.BluePin
-                //marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
-
-                marker.setMarkerType(MapPOIItem.MarkerType.CustomImage)
+                marker.itemName = "나연마트1"   // 마커 이름
+                marker.mapPoint = MapPoint.mapPointWithGeoCoord(market_lat1, market_lon1)
+                marker.markerType = MapPOIItem.MarkerType.CustomImage
                 marker.customImageResourceId = R.drawable.fish_marker
+                marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                //customSelectedImageResourceId = R.drawable.fish_marker
+                //isCustomImageAutoscale = false
                 marker.setCustomImageAnchor(0.5f, 1.0f)
-
-                // markers 가능
                 mapView?.addPOIItem(marker)
+
 
                 //마커 생성2
                 val marker2=MapPOIItem()
-                val mapPoint_market2 = MapPoint.mapPointWithGeoCoord(market_lat2, market_lon2)
-                marker2.itemName = "나연마트2"
-                marker2.mapPoint = mapPoint_market2
+                marker2.itemName = "나연마트2"   // 마커 이름
+                marker2.mapPoint = MapPoint.mapPointWithGeoCoord(market_lat2, market_lon2)
                 marker2.markerType = MapPOIItem.MarkerType.BluePin
                 marker2.selectedMarkerType = MapPOIItem.MarkerType.RedPin
-
+                //isCustomImageAutoscale = false
+                marker2.setCustomImageAnchor(0.5f, 1.0f)
                 mapView?.addPOIItem(marker2)
 
                 // 다 보이게 레벨 조정
@@ -206,6 +206,7 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
 
 
     }
+
 
     // 시스템으로 부터 위치 정보를 콜백으로 받음
     private val mLocationCallback = object : LocationCallback() {
@@ -324,13 +325,14 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
     fun getAddress():String{
         return AddressData
     }
+    fun getDist():Int{
+        return marker_distance
+    }
 
     inner class MarkerEventListener(val context: Context): MapView.POIItemEventListener {
         private var currlat:Double=0.0
         private var currlon:Double=0.0
         private var AddressData:String=""
-
-        var marker_distance:Int = 0
 
         override fun onPOIItemSelected(mapView: MapView?, marker: MapPOIItem?) {
             Log.d("마커", "onPOIItemSelected()")
@@ -364,6 +366,7 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 mapView!!.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding))
 
                 marker_distance=getDistance(curr_lat, curr_lon, market_lat, market_lon)
+
             }
         }
 
@@ -405,19 +408,42 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
             // 마커의 속성 중 isDraggable = true 일 때 마커를 이동시켰을 경우
         }
 
-        fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Int {
-            val R = 6372.8 * 1000
+    }
+    // 커스텀 말풍선 클래스
+    inner class CustomBalloonAdapter(inflater: LayoutInflater): CalloutBalloonAdapter {
+        val mCalloutBalloon: View = inflater.inflate(R.layout.balloon_layout, null)
+        val name: TextView = mCalloutBalloon.findViewById(R.id.ball_tv_name)
+        val address: TextView = mCalloutBalloon.findViewById(R.id.ball_tv_address)
+        var dist:Int=0
 
-            val dLat = toRadians(lat2 - lat1)
-            val dLon = toRadians(lon2 - lon1)
-            val a = sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(toRadians(lat1)) * cos(
-                toRadians(lat2)
-            )
-            val c = 2 * asin(sqrt(a))
-            return (R * c).toInt()
+        override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
+            // 마커 클릭 시 나오는 말풍선
+            name.text = poiItem?.itemName   // 해당 마커의 정보 이용 가능
+            dist=getDist()
+
+            // 지금 순서때문에 거리 잘못 나온는데, 나중에 디비 연동했을 때 고치면 됨!!
+            address.text =(dist.toDouble() / 1000).toString() + "km, "+(round(((dist.toDouble() / 1000)/3.5)*60*10)/10).toString()+"분"
+            return mCalloutBalloon
         }
 
+        override fun getPressedCalloutBalloon(poiItem: MapPOIItem?): View {
+            // 말풍선 클릭 시
+            return mCalloutBalloon
+        }
     }
+    fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Int {
+        val R = 6372.8 * 1000
+
+        val dLat = toRadians(lat2 - lat1)
+        val dLon = toRadians(lon2 - lon1)
+        val a = sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(toRadians(lat1)) * cos(
+            toRadians(lat2)
+        )
+        val c = 2 * asin(sqrt(a))
+        return (R * c).toInt()
+    }
+
+
 
 
 }
