@@ -179,8 +179,13 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 val mapPoint_market1 = MapPoint.mapPointWithGeoCoord(market_lat1, market_lon1)
                 marker.itemName = "나연마트1"
                 marker.mapPoint = mapPoint_market1
-                marker.markerType = MapPOIItem.MarkerType.BluePin
-                marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+
+                //marker.markerType = MapPOIItem.MarkerType.BluePin
+                //marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+
+                marker.setMarkerType(MapPOIItem.MarkerType.CustomImage)
+                marker.customImageResourceId = R.drawable.fish_marker
+                marker.setCustomImageAnchor(0.5f, 1.0f)
 
                 // markers 가능
                 mapView?.addPOIItem(marker)
