@@ -2,13 +2,16 @@ package com.example.foodvillage
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -52,6 +55,9 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
     val market_lat2=37.539
     val market_lon2=126.882
 
+    var selected_marker_lat:Double=curr_lat
+    var selected_marker_lon:Double=curr_lon
+
     var AddressData:String=""
     var marker_distance:Int = 0
 
@@ -93,6 +99,11 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
             startLocationUpdates()
 
 
+        }
+
+        binding.btnMarketMapActivityFindway.setOnClickListener{
+            var intent= Intent(Intent.ACTION_VIEW, Uri.parse("kakaomap://route?sp="+curr_lat+","+curr_lon+"&ep="+selected_marker_lat+","+selected_marker_lon+"&by=FOOT"))
+            startActivity(intent)
         }
     }
 
@@ -184,7 +195,7 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 marker.markerType = MapPOIItem.MarkerType.CustomImage
                 marker.customImageResourceId = R.drawable.fish_marker
                 marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                //customSelectedImageResourceId = R.drawable.fish_marker
+                marker.customSelectedImageResourceId = R.drawable.fish_marker
                 //isCustomImageAutoscale = false
                 marker.setCustomImageAnchor(0.5f, 1.0f)
                 mapView?.addPOIItem(marker)
@@ -354,6 +365,10 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
 
                 val market_lat=marker.mapPoint.mapPointGeoCoord.latitude
                 val market_lon=marker.mapPoint.mapPointGeoCoord.longitude
+
+                selected_marker_lat=market_lat
+                selected_marker_lon=market_lon
+
                 polyline.addPoint(MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon))
                 polyline.addPoint(MapPoint.mapPointWithGeoCoord(market_lat, market_lon))
 
