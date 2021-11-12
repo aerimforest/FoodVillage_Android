@@ -50,6 +50,8 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
     val market_lat2=37.539
     val market_lon2=126.882
 
+    var AddressData:String=""
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -150,8 +152,6 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
 
 
                 // 현재위치 주소값
-
-                var AddressData:String=""
                 var reverseGeoCoder = MapReverseGeoCoder(
                     getApiKeyFromManifest(this),
                     MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon),
@@ -321,10 +321,14 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
     fun getCurrLon(): Double {
         return curr_lon
     }
+    fun getAddress():String{
+        return AddressData
+    }
 
     inner class MarkerEventListener(val context: Context): MapView.POIItemEventListener {
         private var currlat:Double=0.0
         private var currlon:Double=0.0
+        private var AddressData:String=""
 
         var marker_distance:Int = 0
 
@@ -375,10 +379,12 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
         ) {
             // 말풍선 클릭 시
             val builder = AlertDialog.Builder(context)
+
+            // 사람 평균 이동시간: 3.5km/h
             val itemList = arrayOf(
-                "토스트",
-                "거리",
-                (marker_distance.toDouble() / 1000).toString() + "km"
+                "주소: "+getAddress(),
+                "거리: "+(marker_distance.toDouble() / 1000).toString() + "km",
+                "이동시간: "+(round(((marker_distance.toDouble() / 1000)/3.5)*60*10)/10).toString()+"분"
             )
             builder.setTitle("${poiItem?.itemName}")
             builder.setItems(itemList) { dialog, which ->
