@@ -60,6 +60,8 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
     var AddressData:String=""
     var marker_distance:Int = 0
 
+    var marker_dist:Int=0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,8 +74,6 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
         // 임포트 잘 해줘야함... mf들어간걸로!
         mapView = MapView(this)
         binding.clKakaoMapView2.addView(mapView)
-
-        mapView!!.setCalloutBalloonAdapter(CustomBalloonAdapter(layoutInflater))  // 커스텀 말풍선 등록
 
         mapView!!.setCurrentLocationEventListener(this)
         mapView!!.setPOIItemEventListener(eventListener)
@@ -96,6 +96,7 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
             // 현위치 트래킹 - 이건 주소 설정할 때 해서 최초로 받는거
             mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving)
             startLocationUpdates()
+            mapView!!.setCalloutBalloonAdapter(CustomBalloonAdapter(layoutInflater))  // 커스텀 말풍선 등록
 
         }
 
@@ -179,10 +180,10 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                             mapReverseGeoCoder: MapReverseGeoCoder,
                             s: String
                         ) { AddressData= s
-                            binding.tvAddress.setText(AddressData)
+                            binding.tvMarketmapactivityMylocation.setText(AddressData)
                         }
                         override fun onReverseGeoCoderFailedToFindAddress(mapReverseGeoCoder: MapReverseGeoCoder) {
-                            binding.tvAddress.setText("address not found")
+                            binding.tvMarketmapactivityMylocation.setText("address not found")
                         }
                     },
                     this
@@ -261,7 +262,6 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
 
 
     }
-
 
     // 시스템으로 부터 위치 정보를 콜백으로 받음
     private val mLocationCallback = object : LocationCallback() {
@@ -389,12 +389,15 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
         private var currlon:Double=0.0
         private var AddressData:String=""
 
+        private var marker_name:String=""
+
+
+
         override fun onPOIItemSelected(mapView: MapView?, marker: MapPOIItem?) {
             Log.d("마커", "onPOIItemSelected()")
 
             currlat=getCurrLat()
             currlon=getCurrLon()
-
 
             Log.d("마커", "폴리라인용 기준점: " + currlat + ", " + currlon)
             mapView!!.removeAllPolylines()
@@ -426,6 +429,10 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 mapView!!.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding))
 
                 marker_distance=getDistance(curr_lat, curr_lon, market_lat, market_lon)
+                marker_dist=marker_distance
+                marker_name=marker!!.itemName
+
+                Log.d("마커", ""+marker_name+", "+marker_dist)  // 각각 잘 들어옴
 
                 // 주소값
                 var reverseGeoCoder = MapReverseGeoCoder(
@@ -436,17 +443,15 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                             mapReverseGeoCoder: MapReverseGeoCoder,
                             s: String
                         ) { AddressData= s
-                            binding.tvAddress.setText(AddressData)
+                            binding.tvMarketmapactivityMarketlocation.setText(AddressData)
                         }
                         override fun onReverseGeoCoderFailedToFindAddress(mapReverseGeoCoder: MapReverseGeoCoder) {
-                            binding.tvAddress.setText("address not found")
+                            binding.tvMarketmapactivityMarketlocation.setText("address not found")
                         }
                     },
                     this@MarketMapActivity
                 )
-
                 reverseGeoCoder.startFindingAddress()
-
             }
         }
 
@@ -460,24 +465,6 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
             poiItem: MapPOIItem?,
             buttonType: MapPOIItem.CalloutBalloonButtonType?
         ) {
-//            // 말풍선 클릭 시
-//            val builder = AlertDialog.Builder(context)
-//
-//            // 사람 평균 이동시간: 3.5km/h
-//            val itemList = arrayOf(
-//                "주소: "+AddressData,
-//                "거리: "+(marker_distance.toDouble() / 1000).toString() + "km",
-//                "이동시간: "+(round(((marker_distance.toDouble() / 1000)/3.5)*60*10)/10).toString()+"분"
-//            )
-//            builder.setTitle("${poiItem?.itemName}")
-//            builder.setItems(itemList) { dialog, which ->
-//                when(which) {
-//                    0 -> Toast.makeText(context, "토스트", Toast.LENGTH_SHORT).show()  // 토스트
-//                    1 -> mapView?.removePOIItem(poiItem)    // 마커 삭제
-//                    2 -> dialog.dismiss()   // 대화상자 닫기
-//                }
-//            }
-//            builder.show()
 
             val dialog: BottomSheetDialog = BottomSheetDialog(this@MarketMapActivity)
             dialog.setContentView(R.layout.dialog_fmi_market)
@@ -512,7 +499,9 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
         override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
             // 마커 클릭 시 나오는 말풍선
             name.text = poiItem?.itemName   // 해당 마커의 정보 이용 가능
-            dist=getDist()
+            dist= marker_dist // 이 친구가 문제야 문제... -> 데이터 가져올 때 동시에 가져오면 만사 해결임
+            Log.d("마커 풍성", ""+poiItem?.itemName+", "+marker_dist)
+
 
             // 지금 순서때문에 거리 잘못 나온는데, 나중에 디비 연동했을 때 고치면 됨!!
             address.text =(dist.toDouble() / 1000).toString() + "km, "+(round(((dist.toDouble() / 1000)/3.5)*60*10)/10).toString()+"분"
