@@ -11,16 +11,15 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.foodvillage.databinding.ActivityMarketMapBinding
 import com.google.android.gms.location.*
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import net.daum.mf.map.api.*
 import java.lang.Math.*
 import java.text.SimpleDateFormat
@@ -98,12 +97,16 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
             mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving)
             startLocationUpdates()
 
-
         }
 
         binding.btnMarketMapActivityFindway.setOnClickListener{
             var intent= Intent(Intent.ACTION_VIEW, Uri.parse("kakaomap://route?sp="+curr_lat+","+curr_lon+"&ep="+selected_marker_lat+","+selected_marker_lon+"&by=FOOT"))
             startActivity(intent)
+        }
+
+        binding.btnMarketMapActivityFloating.setOnClickListener{
+            var mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
+            mapView?.setMapCenterPoint(mapPoint, true)
         }
     }
 
@@ -189,7 +192,8 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
 
 
                 //마커 생성1
-                val marker = MapPOIItem()
+                //val markers=arrayListOf<MapPOIItem>() 클래스는 디비와 함께 넣기
+                var marker = MapPOIItem()
                 marker.itemName = "나연마트1"   // 마커 이름
                 marker.mapPoint = MapPoint.mapPointWithGeoCoord(market_lat1, market_lon1)
                 marker.markerType = MapPOIItem.MarkerType.CustomImage
@@ -200,16 +204,56 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 marker.setCustomImageAnchor(0.5f, 1.0f)
                 mapView?.addPOIItem(marker)
 
+                //마커 생성1
+                //val markers=arrayListOf<MapPOIItem>() 클래스는 디비와 함께 넣기
+                marker = MapPOIItem()
+                marker.itemName = "나연마트3"   // 마커 이름
+                marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.543, 126.883)
+                marker.markerType = MapPOIItem.MarkerType.CustomImage
+                marker.customImageResourceId = R.drawable.fish_marker
+                marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                marker.customSelectedImageResourceId = R.drawable.fish_marker
+                //isCustomImageAutoscale = false
+                marker.setCustomImageAnchor(0.5f, 1.0f)
+                mapView?.addPOIItem(marker)
+
+                //마커 생성1
+                //val markers=arrayListOf<MapPOIItem>() 클래스는 디비와 함께 넣기
+                marker = MapPOIItem()
+                marker.itemName = "나연마트4"   // 마커 이름
+                marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.542, 126.885)
+                marker.markerType = MapPOIItem.MarkerType.CustomImage
+                marker.customImageResourceId = R.drawable.fish_marker
+                marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                marker.customSelectedImageResourceId = R.drawable.fish_marker
+                //isCustomImageAutoscale = false
+                marker.setCustomImageAnchor(0.5f, 1.0f)
+                mapView?.addPOIItem(marker)
+
+                //마커 생성1
+                //val markers=arrayListOf<MapPOIItem>() 클래스는 디비와 함께 넣기
+                marker = MapPOIItem()
+                marker.itemName = "나연마트5"   // 마커 이름
+                marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.542, 126.882)
+                marker.markerType = MapPOIItem.MarkerType.CustomImage
+                marker.customImageResourceId = R.drawable.fish_marker
+                marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                marker.customSelectedImageResourceId = R.drawable.fish_marker
+                //isCustomImageAutoscale = false
+                marker.setCustomImageAnchor(0.5f, 1.0f)
+                mapView?.addPOIItem(marker)
+
 
                 //마커 생성2
-                val marker2=MapPOIItem()
-                marker2.itemName = "나연마트2"   // 마커 이름
-                marker2.mapPoint = MapPoint.mapPointWithGeoCoord(market_lat2, market_lon2)
-                marker2.markerType = MapPOIItem.MarkerType.BluePin
-                marker2.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+                marker=MapPOIItem()
+                marker.itemName = "나연마트2"   // 마커 이름
+                marker.mapPoint = MapPoint.mapPointWithGeoCoord(market_lat2, market_lon2)
+                marker.markerType = MapPOIItem.MarkerType.BluePin
+                marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
                 //isCustomImageAutoscale = false
-                marker2.setCustomImageAnchor(0.5f, 1.0f)
-                mapView?.addPOIItem(marker2)
+                marker.setCustomImageAnchor(0.5f, 1.0f)
+                mapView?.addPOIItem(marker)
+
 
                 // 다 보이게 레벨 조정
                 //mapView!!.fitMapViewAreaToShowAllPOIItems()
@@ -351,6 +395,7 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
             currlat=getCurrLat()
             currlon=getCurrLon()
 
+
             Log.d("마커", "폴리라인용 기준점: " + currlat + ", " + currlon)
             mapView!!.removeAllPolylines()
 
@@ -382,6 +427,26 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
 
                 marker_distance=getDistance(curr_lat, curr_lon, market_lat, market_lon)
 
+                // 주소값
+                var reverseGeoCoder = MapReverseGeoCoder(
+                    getApiKeyFromManifest(this@MarketMapActivity),
+                    MapPoint.mapPointWithGeoCoord(market_lat, market_lon),
+                    object : MapReverseGeoCoder.ReverseGeoCodingResultListener {
+                        override fun onReverseGeoCoderFoundAddress(
+                            mapReverseGeoCoder: MapReverseGeoCoder,
+                            s: String
+                        ) { AddressData= s
+                            binding.tvAddress.setText(AddressData)
+                        }
+                        override fun onReverseGeoCoderFailedToFindAddress(mapReverseGeoCoder: MapReverseGeoCoder) {
+                            binding.tvAddress.setText("address not found")
+                        }
+                    },
+                    this@MarketMapActivity
+                )
+
+                reverseGeoCoder.startFindingAddress()
+
             }
         }
 
@@ -395,24 +460,37 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
             poiItem: MapPOIItem?,
             buttonType: MapPOIItem.CalloutBalloonButtonType?
         ) {
-            // 말풍선 클릭 시
-            val builder = AlertDialog.Builder(context)
+//            // 말풍선 클릭 시
+//            val builder = AlertDialog.Builder(context)
+//
+//            // 사람 평균 이동시간: 3.5km/h
+//            val itemList = arrayOf(
+//                "주소: "+AddressData,
+//                "거리: "+(marker_distance.toDouble() / 1000).toString() + "km",
+//                "이동시간: "+(round(((marker_distance.toDouble() / 1000)/3.5)*60*10)/10).toString()+"분"
+//            )
+//            builder.setTitle("${poiItem?.itemName}")
+//            builder.setItems(itemList) { dialog, which ->
+//                when(which) {
+//                    0 -> Toast.makeText(context, "토스트", Toast.LENGTH_SHORT).show()  // 토스트
+//                    1 -> mapView?.removePOIItem(poiItem)    // 마커 삭제
+//                    2 -> dialog.dismiss()   // 대화상자 닫기
+//                }
+//            }
+//            builder.show()
 
-            // 사람 평균 이동시간: 3.5km/h
-            val itemList = arrayOf(
-                "주소: "+getAddress(),
-                "거리: "+(marker_distance.toDouble() / 1000).toString() + "km",
-                "이동시간: "+(round(((marker_distance.toDouble() / 1000)/3.5)*60*10)/10).toString()+"분"
-            )
-            builder.setTitle("${poiItem?.itemName}")
-            builder.setItems(itemList) { dialog, which ->
-                when(which) {
-                    0 -> Toast.makeText(context, "토스트", Toast.LENGTH_SHORT).show()  // 토스트
-                    1 -> mapView?.removePOIItem(poiItem)    // 마커 삭제
-                    2 -> dialog.dismiss()   // 대화상자 닫기
-                }
+            val dialog: BottomSheetDialog = BottomSheetDialog(this@MarketMapActivity)
+            dialog.setContentView(R.layout.dialog_fmi_market)
+            val tv_marketmapactivity_dialog_content = dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_content)
+            tv_marketmapactivity_dialog_content!!.setText("주소: "+AddressData+"\n거리: "+(marker_distance.toDouble() / 1000).toString() + "km"+ "\n이동시간: "+(round(((marker_distance.toDouble() / 1000)/3.5)*60*10)/10).toString()+"분")
+            tv_marketmapactivity_dialog_content?.setOnClickListener {
+                Toast.makeText(this@MarketMapActivity, "내용을 클릭하였습니다", Toast.LENGTH_LONG).show()
+                dialog.dismiss()
             }
-            builder.show()
+            val tv_marketmapactivity_dialog_title = dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_title)
+            tv_marketmapactivity_dialog_title!!.setText("${poiItem?.itemName}")
+
+            dialog.show()
         }
 
         override fun onDraggablePOIItemMoved(
