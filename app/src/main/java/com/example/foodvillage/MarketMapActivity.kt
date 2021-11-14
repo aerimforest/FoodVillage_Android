@@ -192,7 +192,8 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
 
 
                 //마커 생성1
-                val marker = MapPOIItem()
+                //val markers=arrayListOf<MapPOIItem>() 클래스는 디비와 함께 넣기
+                var marker = MapPOIItem()
                 marker.itemName = "나연마트1"   // 마커 이름
                 marker.mapPoint = MapPoint.mapPointWithGeoCoord(market_lat1, market_lon1)
                 marker.markerType = MapPOIItem.MarkerType.CustomImage
@@ -203,16 +204,56 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 marker.setCustomImageAnchor(0.5f, 1.0f)
                 mapView?.addPOIItem(marker)
 
+                //마커 생성1
+                //val markers=arrayListOf<MapPOIItem>() 클래스는 디비와 함께 넣기
+                marker = MapPOIItem()
+                marker.itemName = "나연마트3"   // 마커 이름
+                marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.543, 126.883)
+                marker.markerType = MapPOIItem.MarkerType.CustomImage
+                marker.customImageResourceId = R.drawable.fish_marker
+                marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                marker.customSelectedImageResourceId = R.drawable.fish_marker
+                //isCustomImageAutoscale = false
+                marker.setCustomImageAnchor(0.5f, 1.0f)
+                mapView?.addPOIItem(marker)
+
+                //마커 생성1
+                //val markers=arrayListOf<MapPOIItem>() 클래스는 디비와 함께 넣기
+                marker = MapPOIItem()
+                marker.itemName = "나연마트4"   // 마커 이름
+                marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.542, 126.885)
+                marker.markerType = MapPOIItem.MarkerType.CustomImage
+                marker.customImageResourceId = R.drawable.fish_marker
+                marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                marker.customSelectedImageResourceId = R.drawable.fish_marker
+                //isCustomImageAutoscale = false
+                marker.setCustomImageAnchor(0.5f, 1.0f)
+                mapView?.addPOIItem(marker)
+
+                //마커 생성1
+                //val markers=arrayListOf<MapPOIItem>() 클래스는 디비와 함께 넣기
+                marker = MapPOIItem()
+                marker.itemName = "나연마트5"   // 마커 이름
+                marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.542, 126.882)
+                marker.markerType = MapPOIItem.MarkerType.CustomImage
+                marker.customImageResourceId = R.drawable.fish_marker
+                marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                marker.customSelectedImageResourceId = R.drawable.fish_marker
+                //isCustomImageAutoscale = false
+                marker.setCustomImageAnchor(0.5f, 1.0f)
+                mapView?.addPOIItem(marker)
+
 
                 //마커 생성2
-                val marker2=MapPOIItem()
-                marker2.itemName = "나연마트2"   // 마커 이름
-                marker2.mapPoint = MapPoint.mapPointWithGeoCoord(market_lat2, market_lon2)
-                marker2.markerType = MapPOIItem.MarkerType.BluePin
-                marker2.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+                marker=MapPOIItem()
+                marker.itemName = "나연마트2"   // 마커 이름
+                marker.mapPoint = MapPoint.mapPointWithGeoCoord(market_lat2, market_lon2)
+                marker.markerType = MapPOIItem.MarkerType.BluePin
+                marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
                 //isCustomImageAutoscale = false
-                marker2.setCustomImageAnchor(0.5f, 1.0f)
-                mapView?.addPOIItem(marker2)
+                marker.setCustomImageAnchor(0.5f, 1.0f)
+                mapView?.addPOIItem(marker)
+
 
                 // 다 보이게 레벨 조정
                 //mapView!!.fitMapViewAreaToShowAllPOIItems()
