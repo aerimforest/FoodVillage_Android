@@ -32,7 +32,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-        
+
         // 맵 사용 등록을 위한 해시 키 생성 함수
 //        getHashKey()
 
@@ -54,25 +54,24 @@ class LoginActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
     }
 
-    fun getHashKey(){
-        var packageInfo : PackageInfo = PackageInfo()
+    fun getHashKey() {
+        var packageInfo: PackageInfo = PackageInfo()
         try {
             packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-        } catch (e: PackageManager.NameNotFoundException){
+        } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
 
-        for (signature: Signature in packageInfo.signatures){
-            try{
+        for (signature: Signature in packageInfo.signatures) {
+            try {
                 var md: MessageDigest = MessageDigest.getInstance("SHA")
                 md.update(signature.toByteArray())
                 Log.e("KEY_HASH", Base64.encodeToString(md.digest(), Base64.DEFAULT))
-            } catch(e: NoSuchAlgorithmException){
+            } catch (e: NoSuchAlgorithmException) {
                 Log.e("KEY_HASH", "Unable to get MessageDigest. signature = " + signature, e)
             }
         }
     }
-
 
 
     // 로그인 한 적이 있는지 확인
@@ -112,7 +111,7 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    //moveMainPage(task.result?.user)
+                    moveMainPage(task.result?.user)
                     moveUserNamePage(auth.currentUser)
                 } else {
                     Toast.makeText(this, task.exception?.message, Toast.LENGTH_SHORT).show()
