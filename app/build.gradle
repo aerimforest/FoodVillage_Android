@@ -78,4 +78,7 @@ dependencies {
 
     // BottomNavigation Animation
     implementation 'nl.joery.animatedbottombar:library:1.0.9'
+
+    // Floating Button
+    implementation 'com.google.android.material:material:1.2.0-alpha01'
 }
