@@ -3,10 +3,14 @@ package com.example.foodvillage
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.foodvillage.databinding.ActivityMainBinding
+import com.example.foodvillage.login.data.UserInfoData
 import com.example.foodvillage.menu.AroundFragment
 import com.example.foodvillage.menu.DibFragment
 import com.example.foodvillage.menu.HomeFragment
 import com.example.foodvillage.menu.MyPageFragment
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import nl.joery.animatedbottombar.AnimatedBottomBar
 
 class MainActivity : AppCompatActivity() {
@@ -21,6 +25,8 @@ class MainActivity : AppCompatActivity() {
         // 바인딩
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setUserInfoToDB()
 
         // Bottom Navigation
         binding.bottomNavigation.setOnTabSelectListener(object :
@@ -60,5 +66,21 @@ class MainActivity : AppCompatActivity() {
         val homeFragment = HomeFragment()
         supportFragmentManager.beginTransaction().replace(R.id.main_screen_panel, homeFragment)
             .commit()
+    }
+
+    private fun setUserInfoToDB() {
+        val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
+        val databaseReference: DatabaseReference = firebaseDatabase.getReference("users")
+        val fbAuth: FirebaseAuth?
+
+        val userInfoData = UserInfoData(
+            "test",
+            0,
+            0,
+            0
+        )
+
+        fbAuth = FirebaseAuth.getInstance()
+        databaseReference.child(fbAuth.uid.toString()).setValue(userInfoData)
     }
 }
