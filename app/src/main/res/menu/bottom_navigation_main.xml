@@ -3,21 +3,21 @@
     <item
         android:id="@+id/action_home"
         android:enabled="true"
-        android:icon="@drawable/home_icon"
+        android:icon="@drawable/home"
         android:title="홈" />
     <item
         android:id="@+id/action_license_info"
         android:enabled="true"
-        android:icon="@drawable/licence_info_icon"
+        android:icon="@drawable/heart"
         android:title="찜" />
     <item
         android:id="@+id/action_community"
         android:enabled="true"
-        android:icon="@drawable/community_icon"
+        android:icon="@drawable/map"
         android:title="내 근처" />
     <item
-        android:id="@+id/action_mypage"
+        android:id="@+id/action_my_page"
         android:enabled="true"
-        android:icon="@drawable/my_page_icon"
+        android:icon="@drawable/my_page"
         android:title="마이페이지" />
 </menu>

@@ -1,4 +1,4 @@
-package com.example.foodvillage
+package com.example.foodvillage.login.ui
 
 import android.content.Intent
 import android.content.pm.PackageInfo
@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.widget.Toast
+import com.example.foodvillage.MainActivity
+import com.example.foodvillage.R
 import com.example.foodvillage.databinding.ActivityLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
