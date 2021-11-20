@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="587dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_storeImage"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/subway"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <!--        <de.hdodenhof.circleimageview.CircleImageView-->
+        <!--            xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--            android:id="@+id/iv_storeImage"-->
+        <!--            android:layout_width="96dp"-->
+        <!--            android:layout_height="96dp"-->
+        <!--            app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--            app:layout_constraintStart_toStartOf="parent"-->
+        <!--            app:layout_constraintTop_toTopOf="parent"-->
+        <!--            android:scaleType="centerCrop"-->
+        <!--            app:src="@drawable/subway"-->
+        <!--            />-->
+
+        <TextView
+            android:id="@+id/tv_storeName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="가게명"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/iv_storeImage"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="거리"
+            android:textColor="#000000"
+            app:layout_constraintStart_toEndOf="@+id/iv_storeImage"
+            app:layout_constraintTop_toBottomOf="@+id/tv_storeName" />
+
+        <TextView
+            android:id="@+id/tv_divider1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="|"
+            android:textColor="#000000"
+            app:layout_constraintStart_toEndOf="@+id/tv_distance"
+            app:layout_constraintTop_toBottomOf="@+id/tv_storeName" />
+
+        <TextView
+            android:id="@+id/tv_review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="리뷰"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toTopOf="@+id/tv_category"
+            app:layout_constraintStart_toEndOf="@+id/tv_divider1"
+            app:layout_constraintTop_toBottomOf="@+id/tv_storeName" />
+
+        <TextView
+            android:id="@+id/tv_prodNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="4dp"
+            android:text="상품 갯수"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toTopOf="@+id/tv_sale"
+            app:layout_constraintStart_toEndOf="@+id/iv_storeImage"
+            app:layout_constraintTop_toBottomOf="@+id/tv_distance" />
+
+        <TextView
+            android:id="@+id/tv_sale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp"
+            android:text="최대 할인율"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_storeImage"
+            app:layout_constraintTop_toBottomOf="@+id/tv_prodNum" />
+
+        <TextView
+            android:id="@+id/tv_divider2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="|"
+            android:textColor="#000000"
+            app:layout_constraintStart_toEndOf="@+id/tv_prodNum"
+            app:layout_constraintTop_toBottomOf="@+id/tv_distance" />
+
+        <TextView
+            android:id="@+id/tv_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="카테고리"
+            android:textColor="#000000"
+            app:layout_constraintStart_toEndOf="@+id/tv_divider2"
+            app:layout_constraintTop_toBottomOf="@+id/tv_distance" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

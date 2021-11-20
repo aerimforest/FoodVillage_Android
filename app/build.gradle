@@ -44,7 +44,7 @@ android {
         abi {
             enable true
             reset()
-            include 'x86', 'x86_64', 'armeabi-v7a', 'armeabi'
+            include 'x86', 'x86_64', 'armeabi-v7a', 'armeabi', 'arm64-v8a'
             universalApk false
         }
     }
@@ -91,6 +91,12 @@ dependencies {
 
     // crawling
     //implementation 'org.jsoup:jsoup:1.14.3'
+
+
+    // circularimageview
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
 
 
 }
