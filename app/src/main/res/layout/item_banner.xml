@@ -6,12 +6,13 @@
 
     <ImageView
         android:id="@+id/imv_item_banner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="144dp"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/delete_sky" />
+        app:srcCompat="@drawable/banner" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
