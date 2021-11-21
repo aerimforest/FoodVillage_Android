@@ -3,56 +3,79 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
+    <!--주소 검색-->
     <LinearLayout
         android:id="@+id/lly_home_bar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:gravity="center_vertical"
+        android:layout_height="140dp"
+        android:background="@drawable/background_home_location"
+        android:gravity="center"
+        android:orientation="vertical"
         android:paddingHorizontal="15dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_home_location"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="명성빌라"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="20dp">
 
-        <Button
-            android:id="@+id/btn_home_set_location"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/search_icon" />
+            <TextView
+                android:id="@+id/tv_home_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:includeFontPadding="false"
+                android:text="신림로 71길 18"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            <ImageView
+                android:layout_width="17dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/tv_home_location"
+                android:src="@drawable/down_arrow" />
 
-        <Button
-            android:id="@+id/btn_home_search"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/search_icon" />
+            <ImageView
+                android:layout_width="20.06dp"
+                android:layout_height="20.12dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_alarm" />
 
-        <Button
-            android:id="@+id/btn_home_alarm"
-            android:layout_width="19dp"
-            android:layout_height="22dp"
-            android:layout_marginStart="17dp"
-            android:background="@drawable/alarm_icon" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_btn_search_location">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:src="@drawable/icon_search" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="15dp"
+        android:layout_marginTop="30dp"
+        android:scrollbars="none"
         app:layout_constraintTop_toBottomOf="@+id/lly_home_bar">
 
         <LinearLayout
@@ -68,7 +91,7 @@
                 <androidx.viewpager2.widget.ViewPager2
                     android:id="@+id/view_pager_home"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp" />
+                    android:layout_height="wrap_content" />
 
                 <com.tbuonomo.viewpagerdotsindicator.DotsIndicator
                     android:id="@+id/dots_indicator_home"
@@ -91,8 +114,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginHorizontal="9dp"
+                android:layout_marginTop="45dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -110,8 +133,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/all" />
 
                         <TextView
@@ -119,6 +142,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:text="전체"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -134,8 +158,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/fruit" />
 
                         <TextView
@@ -143,6 +167,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:text="과일/채소"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -158,15 +183,16 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/meat" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
-                            android:text="과일/채소"
+                            android:text="고기/계란"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -182,15 +208,16 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/fish" />
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/icon_fish" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:text="수산/건어물"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -214,8 +241,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/fried_egg" />
 
                         <TextView
@@ -223,6 +250,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:text="반찬/간편식"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -238,8 +266,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/coffee" />
 
                         <TextView
@@ -247,6 +275,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:text="간식/음료"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -262,8 +291,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/rice" />
 
                         <TextView
@@ -271,6 +300,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:text="밥/면/소스/캔"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -286,8 +316,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/health" />
 
                         <TextView
@@ -295,6 +325,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:text="건강/다이어트"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -318,8 +349,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/frypan" />
 
                         <TextView
@@ -327,6 +358,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:text="생활용품"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -350,6 +382,91 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+            <!--오늘의 특가-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="36dp"
+                android:layout_marginTop="50dp"
+                android:includeFontPadding="false"
+                android:text="오늘의 특가"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="15dp"
+                android:scrollbars="none">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcv_home_today_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                </RelativeLayout>
+
+            </HorizontalScrollView>
+
+            <!--우리동네 인기가게-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="36dp"
+                android:layout_marginTop="50dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:text="우리동네 인기가게"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/lly_home_set_range"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="3km 이내"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+                    <ImageView
+                        android:layout_width="6dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="5dp"
+                        android:src="@drawable/down_arrow_black" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_home_popular_store"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="36dp"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
 

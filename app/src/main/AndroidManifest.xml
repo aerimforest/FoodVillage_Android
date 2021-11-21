@@ -15,6 +15,10 @@
         android:theme="@style/Theme.FoodVillage"
         android:usesCleartextTraffic="true">
         <activity android:name=".StoreListActivity">
+        <activity android:name=".MarketMapActivity" />
+        <activity android:name=".MyMapActivity" />
+        <activity android:name=".DBMarketMapActivity"/>
+        <activity android:name=".login.ui.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

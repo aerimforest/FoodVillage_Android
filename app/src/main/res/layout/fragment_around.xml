@@ -2,14 +2,15 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <Button
         android:id="@+id/btn_mainactivity_tomymap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="tomymap"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_mainactivity_tomarketmap"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -19,9 +20,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="tomarketmap"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_mainactivity_todbmarketmap"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_mainactivity_tomymap" />
+
+    <Button
+        android:id="@+id/btn_mainactivity_todbmarketmap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="todbmarketmap"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_mainactivity_tomarketmap" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
