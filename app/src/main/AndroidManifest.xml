@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".MarketMapActivity" />
         <activity android:name=".MyMapActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".login.ui.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
