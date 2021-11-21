@@ -12,11 +12,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.example.foodvillage.PopularStoreData
 import com.example.foodvillage.R
 import com.example.foodvillage.StoreInfoData
 import com.example.foodvillage.ViewPagerAdapter
 import com.example.foodvillage.databinding.FragmentHomeBinding
+import kotlinx.android.synthetic.main.item_today_popular_store.view.*
 import kotlinx.android.synthetic.main.item_today_sale.view.*
+import kotlinx.android.synthetic.main.item_today_sale.view.tv_store_name
 
 class HomeFragment : Fragment() {
 
@@ -26,6 +29,14 @@ class HomeFragment : Fragment() {
         StoreInfoData("고등어", "이태리로 간 고등어", 100, 30, 5000, 3500),
         StoreInfoData("고등어", "이태리로 간 고등어", 100, 30, 5000, 3500),
         StoreInfoData("고등어", "이태리로 간 고등어", 100, 30, 5000, 3500)
+    )
+
+    private var popularStoreList = arrayListOf(
+        PopularStoreData("이태리로 간 고등어", 10, 5, "고등어"),
+        PopularStoreData("이태리로 간 고등어", 10, 5, "고등어"),
+        PopularStoreData("이태리로 간 고등어", 10, 5, "고등어"),
+        PopularStoreData("이태리로 간 고등어", 10, 5, "고등어"),
+        PopularStoreData("이태리로 간 고등어", 10, 5, "고등어")
     )
 
     private var _binding: FragmentHomeBinding? = null
@@ -46,11 +57,15 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.rcvHomeTodayPrice.adapter = TodayPriceAdapter()
-        binding.rcvHomeTodayPrice.layoutManager = LinearLayoutManager(context)
+//        binding.rcvHomeTodayPrice.layoutManager = LinearLayoutManager(context)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rcvHomeTodayPrice.layoutManager = layoutManager
         binding.rcvHomeTodayPrice.setHasFixedSize(true)
+
+        binding.rcvHomePopularStore.adapter = PopularStoreAdapter()
+        binding.rcvHomePopularStore.layoutManager = LinearLayoutManager(context)
+        binding.rcvHomePopularStore.setHasFixedSize(true)
 
         binding.viewPagerHome.adapter = ViewPagerAdapter(getBannerItemList())
         binding.viewPagerHome.orientation = ViewPager2.ORIENTATION_HORIZONTAL
@@ -107,6 +122,35 @@ class HomeFragment : Fragment() {
 
         override fun getItemCount(): Int {
             return talktalkList.size
+        }
+    }
+
+    inner class PopularStoreAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+        init {
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_today_popular_store, parent, false)
+            return ViewHolder(view)
+        }
+
+        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        }
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            val viewHolder = (holder as ViewHolder).itemView
+            viewHolder.tv_popular_store_name.text = popularStoreList[position].storeName
+            viewHolder.tv_travel_time.text = popularStoreList[position].travelTime.toString()
+            viewHolder.tv_max_discount_rate.text = popularStoreList[position].maxDiscountRate.toString()
+            viewHolder.tv_discount_product.text = popularStoreList[position].discountProduct
+
+            // recyclerview item click listener
+        }
+
+        override fun getItemCount(): Int {
+            return popularStoreList.size
         }
     }
 
