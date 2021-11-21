@@ -172,6 +172,9 @@ class MainActivity : AppCompatActivity() {
                 Log.d("유저", "못 가져옴")
             }
             .addOnSuccessListener {
+                /*
+                ////////////////////////////////////////////////////////
+                애뮬레이터 안 되면 여기부터 주석처리
                 try{
                     var t_hashMap: HashMap<String, Any> = it.value as HashMap<String, Any>
                     Log.d("유저", "hash.name: " + t_hashMap.get("name"))
@@ -255,6 +258,9 @@ class MainActivity : AppCompatActivity() {
                     val intent = Intent(this@MainActivity, MyMapActivity::class.java)
                     startActivity(intent)
                 }
+                ///////////////////////////////////////////////////////
+                애뮬레이터 안 되면 여기까지 주석처리
+                 */
             }
 
 
