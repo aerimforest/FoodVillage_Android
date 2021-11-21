@@ -173,7 +173,7 @@ class MainActivity : AppCompatActivity() {
             }
             .addOnSuccessListener {
                 /*
-                ///////////////////////////////////////////////////////
+                ////////////////////////////////////////////////////////
                 애뮬레이터 안 되면 여기부터 주석처리
                 try{
                     var t_hashMap: HashMap<String, Any> = it.value as HashMap<String, Any>
