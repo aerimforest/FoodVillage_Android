@@ -1,6 +1,7 @@
 package com.example.foodvillage.menu
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.Handler
@@ -11,10 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.example.foodvillage.PopularStoreData
-import com.example.foodvillage.R
-import com.example.foodvillage.StoreInfoData
-import com.example.foodvillage.ViewPagerAdapter
+import com.example.foodvillage.*
 import com.example.foodvillage.databinding.FragmentHomeBinding
 import kotlinx.android.synthetic.main.item_today_popular_store.view.*
 import kotlinx.android.synthetic.main.item_today_sale.view.*
@@ -61,10 +59,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rcvHomeTodayPrice.adapter = TodayPriceAdapter()
-//        binding.rcvHomeTodayPrice.layoutManager = LinearLayoutManager(context)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rcvHomeTodayPrice.adapter = TodayPriceAdapter()
         binding.rcvHomeTodayPrice.layoutManager = layoutManager
         binding.rcvHomeTodayPrice.setHasFixedSize(true)
 
@@ -90,6 +87,11 @@ class HomeFragment : Fragment() {
                     }
                 }
             })
+        }
+
+        binding.llyHomeAll.setOnClickListener {
+            val intent = Intent(context, StoreListActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -148,7 +150,8 @@ class HomeFragment : Fragment() {
             val viewHolder = (holder as ViewHolder).itemView
             viewHolder.tv_popular_store_name.text = popularStoreList[position].storeName
             viewHolder.tv_travel_time.text = popularStoreList[position].travelTime.toString()
-            viewHolder.tv_max_discount_rate.text = popularStoreList[position].maxDiscountRate.toString()
+            viewHolder.tv_max_discount_rate.text =
+                popularStoreList[position].maxDiscountRate.toString()
             viewHolder.tv_discount_product.text = popularStoreList[position].discountProduct
 
             // recyclerview item click listener
