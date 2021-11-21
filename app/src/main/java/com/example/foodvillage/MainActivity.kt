@@ -73,6 +73,7 @@ class MainActivity : AppCompatActivity() {
         val homeFragment = HomeFragment()
         supportFragmentManager.beginTransaction().replace(R.id.main_screen_panel, homeFragment)
             .commit()
+            //
 
 //        // 유저 정보 넣기
 //        val mDatabase = FirebaseDatabase.getInstance()
