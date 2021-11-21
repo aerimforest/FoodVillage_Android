@@ -52,7 +52,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="15dp"
+        android:scrollbars="none"
         app:layout_constraintTop_toBottomOf="@+id/lly_home_bar">
 
         <LinearLayout
@@ -91,8 +91,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="30dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginHorizontal="9dp"
+                android:layout_marginTop="45dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -110,8 +110,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/all" />
 
                         <TextView
@@ -119,6 +119,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:text="전체"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -134,8 +135,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/fruit" />
 
                         <TextView
@@ -143,6 +144,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:text="과일/채소"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -158,15 +160,16 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/meat" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
-                            android:text="과일/채소"
+                            android:text="고기/계란"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -182,15 +185,16 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
-                            android:src="@drawable/fish" />
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/icon_fish" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:text="수산/건어물"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -214,8 +218,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/fried_egg" />
 
                         <TextView
@@ -223,6 +227,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:text="반찬/간편식"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -238,8 +243,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/coffee" />
 
                         <TextView
@@ -247,6 +252,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:text="간식/음료"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -262,8 +268,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/rice" />
 
                         <TextView
@@ -271,6 +277,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:text="밥/면/소스/캔"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -286,8 +293,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/health" />
 
                         <TextView
@@ -295,6 +302,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:text="건강/다이어트"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -318,8 +326,8 @@
                         android:orientation="vertical">
 
                         <ImageView
-                            android:layout_width="25dp"
-                            android:layout_height="25dp"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
                             android:src="@drawable/frypan" />
 
                         <TextView
@@ -327,6 +335,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="7dp"
                             android:text="생활용품"
+                            android:textColor="@color/black"
                             android:textSize="12sp"
                             tools:ignore="HardcodedText" />
 
@@ -350,6 +359,38 @@
                 </LinearLayout>
 
             </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="36dp"
+                android:layout_marginTop="40dp"
+                android:text="오늘의 특가"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="15dp"
+                android:scrollbars="none">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcv_home_today_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                </RelativeLayout>
+
+            </HorizontalScrollView>
 
         </LinearLayout>
 
