@@ -2,7 +2,6 @@ package com.example.foodvillage
 
 import android.Manifest
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.*
 import android.os.Build
@@ -14,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.foodvillage.databinding.ActivityMyMapBinding
 import com.google.android.gms.location.*
+import com.google.firebase.database.FirebaseDatabase
 import net.daum.mf.map.api.*
 import net.daum.mf.map.api.MapPoint.GeoCoordinate
 import java.text.SimpleDateFormat
@@ -26,9 +26,14 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
     private var mBinding: ActivityMyMapBinding? = null
     private val binding get() = mBinding!!
 
-
     private var mapView: MapView?=null
 
+    var curr_lat=37.5406564
+    var curr_lon=126.8809048
+    var AddressData:String=""
+    var marker_distance:Int = 0
+
+    var marker_dist:Int=0
 
     // 위치 추적을 위한 변수들
     val TAG: String = "로그"
@@ -46,6 +51,17 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
         // 바인딩
         mBinding = ActivityMyMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        binding.btnMymapactivitySavemylocation.setOnClickListener{
+            binding.tvMymapactivityMysavedlocation.setText("현재 위치: " + curr_lat + ", " + curr_lon)
+
+        }
+
+        binding.btnMymapactivityFloating.setOnClickListener{
+            var mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
+            mapView?.setMapCenterPoint(mapPoint, true)
+        }
 
 
         // 맵
@@ -125,6 +141,49 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
             mLocationCallback,
             Looper.myLooper()
         )
+
+        // 여기서 curr_lat, lon 바뀌
+        mFusedLocationProviderClient!!.lastLocation
+            .addOnSuccessListener { location: Location? ->
+                Log.d("위치", "updateCurrent")
+                curr_lat=location!!.latitude
+                curr_lon=location!!.longitude
+                Log.d("위치", "updated: " + curr_lat + ", " + curr_lon)
+
+                // 내 위치로 중심 이동
+                var mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
+                mapView?.setMapCenterPoint(mapPoint, true)
+                mapView?.setZoomLevel(2, true)
+
+
+                // 현재위치 주소값
+                var reverseGeoCoder = MapReverseGeoCoder(
+                    getApiKeyFromManifest(this),
+                    MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon),
+                    object : MapReverseGeoCoder.ReverseGeoCodingResultListener {
+                        override fun onReverseGeoCoderFoundAddress(
+                            mapReverseGeoCoder: MapReverseGeoCoder,
+                            s: String
+                        ) {
+                            AddressData = s
+                            binding.tvMymapactivityMylocation.setText(AddressData)
+                        }
+
+                        override fun onReverseGeoCoderFailedToFindAddress(mapReverseGeoCoder: MapReverseGeoCoder) {
+                            binding.tvMymapactivityMylocation.setText("address not found")
+                        }
+                    },
+                    this
+                )
+
+                reverseGeoCoder.startFindingAddress()
+
+
+                // 다 보이게 레벨 조정
+                //mapView!!.fitMapViewAreaToShowAllPOIItems()
+            }
+
+
     }
 
     // 시스템으로 부터 위치 정보를 콜백으로 받음
@@ -256,4 +315,23 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
     }
 
 
+    private fun getApiKeyFromManifest(context: Context): String? {
+        var apiKey: String? = null
+        try {
+            val e = context.packageName
+            val ai = context
+                .packageManager
+                .getApplicationInfo(e, PackageManager.GET_META_DATA)
+            val bundle = ai.metaData
+            if (bundle != null) {
+                apiKey = bundle.getString("com.kakao.sdk.AppKey")
+            }
+        } catch (var6: Exception) {
+            Log.d(
+                "meta-data",
+                "Caught non-fatal exception while retrieving apiKey: $var6"
+            )
+        }
+        return apiKey
+    }
 }
