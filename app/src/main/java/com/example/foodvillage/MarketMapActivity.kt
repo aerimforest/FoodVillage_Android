@@ -198,9 +198,9 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 marker.itemName = "나연마트1"   // 마커 이름
                 marker.mapPoint = MapPoint.mapPointWithGeoCoord(market_lat1, market_lon1)
                 marker.markerType = MapPOIItem.MarkerType.CustomImage
-                marker.customImageResourceId = R.drawable.fish_marker
+                marker.customImageResourceId = R.drawable.marker_fish
                 marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                marker.customSelectedImageResourceId = R.drawable.fish_marker
+                marker.customSelectedImageResourceId = R.drawable.marker_fish
                 //isCustomImageAutoscale = false
                 marker.setCustomImageAnchor(0.5f, 1.0f)
                 mapView?.addPOIItem(marker)
@@ -211,9 +211,9 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 marker.itemName = "나연마트3"   // 마커 이름
                 marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.543, 126.883)
                 marker.markerType = MapPOIItem.MarkerType.CustomImage
-                marker.customImageResourceId = R.drawable.fish_marker
+                marker.customImageResourceId = R.drawable.marker_fish
                 marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                marker.customSelectedImageResourceId = R.drawable.fish_marker
+                marker.customSelectedImageResourceId = R.drawable.marker_fish
                 //isCustomImageAutoscale = false
                 marker.setCustomImageAnchor(0.5f, 1.0f)
                 mapView?.addPOIItem(marker)
@@ -224,9 +224,9 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 marker.itemName = "나연마트4"   // 마커 이름
                 marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.542, 126.885)
                 marker.markerType = MapPOIItem.MarkerType.CustomImage
-                marker.customImageResourceId = R.drawable.fish_marker
+                marker.customImageResourceId = R.drawable.marker_fish
                 marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                marker.customSelectedImageResourceId = R.drawable.fish_marker
+                marker.customSelectedImageResourceId = R.drawable.marker_fish
                 //isCustomImageAutoscale = false
                 marker.setCustomImageAnchor(0.5f, 1.0f)
                 mapView?.addPOIItem(marker)
@@ -237,9 +237,9 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 marker.itemName = "나연마트5"   // 마커 이름
                 marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.542, 126.882)
                 marker.markerType = MapPOIItem.MarkerType.CustomImage
-                marker.customImageResourceId = R.drawable.fish_marker
+                marker.customImageResourceId = R.drawable.marker_fish
                 marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                marker.customSelectedImageResourceId = R.drawable.fish_marker
+                marker.customSelectedImageResourceId = R.drawable.marker_fish
                 //isCustomImageAutoscale = false
                 marker.setCustomImageAnchor(0.5f, 1.0f)
                 mapView?.addPOIItem(marker)
@@ -262,9 +262,9 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 marker.itemName = "나연마트6"   // 마커 이름
                 marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.557, 126.943)
                 marker.markerType = MapPOIItem.MarkerType.CustomImage
-                marker.customImageResourceId = R.drawable.banchan_marker
+                marker.customImageResourceId = R.drawable.marker_fish
                 marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                marker.customSelectedImageResourceId = R.drawable.banchan_marker
+                marker.customSelectedImageResourceId = R.drawable.marker_fish
                 //isCustomImageAutoscale = false
                 marker.setCustomImageAnchor(0.5f, 1.0f)
                 mapView?.addPOIItem(marker)
@@ -275,9 +275,9 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 marker.itemName = "나연마트7"   // 마커 이름
                 marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.555, 126.945)
                 marker.markerType = MapPOIItem.MarkerType.CustomImage
-                marker.customImageResourceId = R.drawable.meat_marker
+                marker.customImageResourceId = R.drawable.marker_fish
                 marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                marker.customSelectedImageResourceId = R.drawable.meat_marker
+                marker.customSelectedImageResourceId = R.drawable.marker_fish
                 //isCustomImageAutoscale = false
                 marker.setCustomImageAnchor(0.5f, 1.0f)
                 mapView?.addPOIItem(marker)
@@ -288,9 +288,9 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 marker.itemName = "나연마트8"   // 마커 이름
                 marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.556, 126.944)
                 marker.markerType = MapPOIItem.MarkerType.CustomImage
-                marker.customImageResourceId = R.drawable.choco_marker
+                marker.customImageResourceId = R.drawable.marker_fish
                 marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                marker.customSelectedImageResourceId = R.drawable.choco_marker
+                marker.customSelectedImageResourceId = R.drawable.marker_fish
                 //isCustomImageAutoscale = false
                 marker.setCustomImageAnchor(0.5f, 1.0f)
                 mapView?.addPOIItem(marker)
@@ -301,9 +301,9 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 marker.itemName = "나연마트9"   // 마커 이름
                 marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.5565, 126.9425)
                 marker.markerType = MapPOIItem.MarkerType.CustomImage
-                marker.customImageResourceId = R.drawable.banchan_marker
+                marker.customImageResourceId = R.drawable.marker_fish
                 marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                marker.customSelectedImageResourceId = R.drawable.banchan_marker
+                marker.customSelectedImageResourceId = R.drawable.marker_fish
                 //isCustomImageAutoscale = false
                 marker.setCustomImageAnchor(0.5f, 1.0f)
                 mapView?.addPOIItem(marker)
@@ -314,9 +314,9 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 marker.itemName = "나연마트10"   // 마커 이름
                 marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.5533, 126.9477)
                 marker.markerType = MapPOIItem.MarkerType.CustomImage
-                marker.customImageResourceId = R.drawable.meat_marker
+                marker.customImageResourceId = R.drawable.marker_fish
                 marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                marker.customSelectedImageResourceId = R.drawable.meat_marker
+                marker.customSelectedImageResourceId = R.drawable.marker_fish
                 //isCustomImageAutoscale = false
                 marker.setCustomImageAnchor(0.5f, 1.0f)
                 mapView?.addPOIItem(marker)
@@ -327,9 +327,9 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
                 marker.itemName = "나연마트11"   // 마커 이름
                 marker.mapPoint = MapPoint.mapPointWithGeoCoord(37.553, 126.948)
                 marker.markerType = MapPOIItem.MarkerType.CustomImage
-                marker.customImageResourceId = R.drawable.choco_marker
+                marker.customImageResourceId = R.drawable.marker_fish
                 marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                marker.customSelectedImageResourceId = R.drawable.choco_marker
+                marker.customSelectedImageResourceId = R.drawable.marker_fish
                 //isCustomImageAutoscale = false
                 marker.setCustomImageAnchor(0.5f, 1.0f)
                 mapView?.addPOIItem(marker)
