@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.foodvillage.DBMarketMapActivity
 import com.example.foodvillage.MarketMapActivity
 import com.example.foodvillage.MyMapActivity
 import com.example.foodvillage.databinding.FragmentAroundBinding
@@ -37,6 +38,10 @@ class AroundFragment : Fragment() {
 
         binding.btnMainactivityTomarketmap.setOnClickListener {
             val intent = Intent(context, MarketMapActivity::class.java)
+            startActivity(intent)
+        }
+        binding.btnMainactivityTodbmarketmap.setOnClickListener{
+            val intent=Intent(context, DBMarketMapActivity::class.java)
             startActivity(intent)
         }
     }

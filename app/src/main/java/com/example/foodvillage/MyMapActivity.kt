@@ -217,23 +217,7 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
             -> 아니오시 계속 트래킹!
 
          */
-//        // 내 마커 찍는데 안 없어져서 트래킹 모드로 바꾸려고!
-//        //지도의 중심점을 수원 화성으로 설정, 확대 레벨 설정 (값이 작을수록 더 확대됨)
-//        mapView?.setMapCenterPoint(mapPoint, true)
-//        mapView?.setZoomLevel(1, true)
-//
-//        //마커 생성
-//        val marker = MapPOIItem()
-//        marker.itemName = "현재 위치"
-//        marker.mapPoint = mapPoint
-////        marker.markerType = MapPOIItem.MarkerType.BluePin
-////        marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
-//
-//        marker.setMarkerType(MapPOIItem.MarkerType.CustomImage)
-//        marker.customImageResourceId = R.drawable.custom_marker
-//
-//        marker.setCustomImageAnchor(0.5f, 1.0f)
-//        mapView?.addPOIItem(marker)
+
 
     }
 
@@ -275,7 +259,6 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
 
                 // 현위치 트래킹
                 mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving);
-
 
 //                // View Button 활성화 상태 변경
 //                btnStartupdate.isEnabled = false

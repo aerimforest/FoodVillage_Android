@@ -5,5 +5,6 @@ data class Users(
     var name: String? = null,
     var currentLatitude: Double? = null,
     var currentLongitude: Double? = null,
+    var address: String?=null,
     var score: Int? = null
 )

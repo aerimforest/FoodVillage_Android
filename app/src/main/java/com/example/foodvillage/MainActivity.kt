@@ -1,5 +1,6 @@
 package com.example.foodvillage
 
+import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.os.Build
 import android.os.Bundle
@@ -19,6 +20,7 @@ import net.daum.mf.map.api.MapPoint
 import nl.joery.animatedbottombar.AnimatedBottomBar
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.util.HashMap
 
 
 class MainActivity : AppCompatActivity() {
@@ -76,71 +78,66 @@ class MainActivity : AppCompatActivity() {
             //
 
 //        // 유저 정보 넣기
-//        val mDatabase = FirebaseDatabase.getInstance()
+        val mDatabase = FirebaseDatabase.getInstance()
 
 //        val uid=FirebaseAuth.getInstance().uid
 //        val DbRefUser = mDatabase.getReference("users/"+uid)
-//        val user= Users(uid, "NaNa Keum",37.55649948120117, 126.94249725341797, 100)
+//        val user= Users(uid, "NaNa Keum",37.55649948120117, 126.94249725341797, 100, "서울시 김구 예림동 111")
 //        DbRefUser.setValue(user)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 
-        // 마트 생성
-//        var storeName="예림마트"
-//        val DbRefStore = mDatabase.getReference("stores/"+storeName)
-//        val store= Store(storeName, 37.556, 126.950, "서울시 김구 예림동 123" )
-//        DbRefStore.setValue(store)
-//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+//        // 마트 생성
 //        var storeName="예림마트1"
 //        var DbRefStore = mDatabase.getReference("stores/"+storeName)
-//        var store= Store(storeName, 37.556, 126.950, "서울시 김구 예림동 123" )
+//        var store= Store(storeName, 37.556, 126.950, "서울시 김구 예림동 123" , listOf("고기/계란", "수산/건어물" ))
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 //
 //        storeName="예림마트2"
 //        DbRefStore = mDatabase.getReference("stores/"+storeName)
-//        store= Store(storeName, 37.543, 126.883, "서울시 김구 예림동 123" )
+//        store= Store(storeName, 37.543, 126.883, "서울시 김구 예림동 123" , listOf("간식/음료", "밥/면/소스/캔"))
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 //
 //        storeName="나연마트1"
 //        DbRefStore = mDatabase.getReference("stores/"+storeName)
-//        store= Store(storeName, 37.542, 126.885, "서울시 김구 예림동 123" )
+//        store= Store(storeName, 37.542, 126.885, "서울시 김구 예림동 123" , listOf("과일/채소", "고기/계란", "수산/건어물"))
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 //
 //        storeName="나연마트2"
 //        DbRefStore = mDatabase.getReference("stores/"+storeName)
-//        store= Store(storeName, 37.542, 126.882, "서울시 김구 예림동 123" )
+//        store= Store(storeName, 37.542, 126.882, "서울시 김구 예림동 123" , listOf("건강/다이어트", "생활용품"))
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 //
 //        storeName="유진마트1"
 //        DbRefStore = mDatabase.getReference("stores/"+storeName)
-//        store= Store(storeName, 37.557, 126.943, "서울시 김구 예림동 123" )
+//        store= Store(storeName, 37.557, 126.943, "서울시 김구 예림동 123" , listOf("반찬/간편식", "간식/음료", "밥/면/소스/캔"))
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 //
 //        storeName="유진마트2"
 //        DbRefStore = mDatabase.getReference("stores/"+storeName)
-//        store= Store(storeName, 37.555, 126.945, "서울시 김구 예림동 123" )
+//        store= Store(storeName, 37.555, 126.945, "서울시 김구 예림동 123" , listOf("간식/음료", "밥/면/소스/캔"))
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 //
 //        storeName="유진마트3"
 //        DbRefStore = mDatabase.getReference("stores/"+storeName)
-//        store= Store(storeName, 37.556, 126.944, "서울시 김구 예림동 123" )
+//        store= Store(storeName, 37.556, 126.944, "서울시 김구 예림동 123" , listOf("고기/계란", "수산/건어물" ))
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 //
 //        storeName="예림마트3"
 //        DbRefStore = mDatabase.getReference("stores/"+storeName)
-//        store= Store(storeName, 37.5565, 126.9425, "서울시 김구 예림동 123" )
+//        store= Store(storeName, 37.5565, 126.9425, "서울시 김구 예림동 123" , listOf("과일/채소", "고기/계란"))
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 //
 //        storeName="나연마트3"
 //        DbRefStore = mDatabase.getReference("stores/"+storeName)
-//        store= Store(storeName, 37.5533, 126.9477, "서울시 김구 예림동 123" )
+//        store= Store(storeName, 37.5533, 126.9477, "서울시 김구 예림동 123" , listOf("반찬/간편식"))
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 
@@ -214,5 +211,19 @@ class MainActivity : AppCompatActivity() {
 //        product.categoryNum=5
 //        DbRefProduct.setValue(product)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+
+//        // 유저 정보 빼기
+//
+//        val mDatabase = FirebaseDatabase.getInstance()
+//
+//        val uid= FirebaseAuth.getInstance().uid
+//        val DbRefUser = mDatabase.getReference("users/"+uid)
+//
+//        DbRefUser.get()
+//            .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
+//            .addOnSuccessListener {
+//                var t_hashMap: HashMap<String, Any> = it.value as HashMap<String, Any>
+//                Log.d("유저", "hash.name: "+t_hashMap.get("name"))
+//            }
     }
 }
