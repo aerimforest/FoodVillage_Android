@@ -8,7 +8,6 @@ import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.HorizontalScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,8 +16,6 @@ import com.example.foodvillage.R
 import com.example.foodvillage.StoreInfoData
 import com.example.foodvillage.ViewPagerAdapter
 import com.example.foodvillage.databinding.FragmentHomeBinding
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.item_today_sale.view.*
 
 class HomeFragment : Fragment() {
@@ -146,7 +143,7 @@ class HomeFragment : Fragment() {
 
     private fun getBannerItemList(): ArrayList<Int> {
         return arrayListOf(
-            R.drawable.delete_sky,
+            R.drawable.banner,
             R.drawable.delete_light,
             R.drawable.delete_jeju,
             R.drawable.delete_flower
