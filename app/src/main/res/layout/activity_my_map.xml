@@ -7,7 +7,7 @@
     tools:context=".MyMapActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_mymapactivity_mylocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
@@ -18,15 +18,50 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tv_mymapactivity_mysavedlocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="저장된 주소"
+        android:textColor="#822FD5"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/clKakaoMapView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mymapactivity_mylocation" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clKakaoMapView"
         android:layout_width="match_parent"
         android:layout_height="500dp"
         android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_mymapactivity_mylocation" />
 
+    <Button
+        android:id="@+id/btn_mymapactivity_savemylocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="위치 저장"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clKakaoMapView" />
 
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_mymapactivity_Floating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/purple_500"
+        android:elevation="6dp"
+        android:src="@drawable/ic_baseline_my_location_24"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
