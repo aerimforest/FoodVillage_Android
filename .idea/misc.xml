@@ -12,8 +12,9 @@
         <entry key="app/src/main/res/layout/activity_my_map.xml" value="0.14895833333333333" />
         <entry key="app/src/main/res/layout/activity_store_list.xml" value="0.280188679245283" />
         <entry key="app/src/main/res/layout/activity_store_list_item.xml" value="0.26326530612244897" />
+        <entry key="app/src/main/res/layout/fragment_bottomsheet_distance.xml" value="0.22558872261590168" />
         <entry key="app/src/main/res/layout/fragment_bottomsheet_priority_filter.xml" value="0.20458379070629387" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.30627001430574957" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="app/src/main/res/layout/sample_store_list.xml" value="0.125" />
         <entry key="app/src/main/res/menu/bottom_navigation_main.xml" value="0.25" />
       </map>

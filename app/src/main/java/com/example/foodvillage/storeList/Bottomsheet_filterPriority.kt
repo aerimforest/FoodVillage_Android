@@ -1,9 +1,10 @@
-package com.example.foodvillage
+package com.example.foodvillage.storeList
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.foodvillage.R
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class Bottomsheet_filterPriority : BottomSheetDialogFragment(){
