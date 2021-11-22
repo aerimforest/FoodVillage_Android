@@ -1,4 +1,4 @@
-package com.example.foodvillage
+package com.example.foodvillage.storeList
 
 import android.view.ViewGroup
 import android.view.View
@@ -6,12 +6,13 @@ import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.*
+import com.example.foodvillage.R
+
 //xml이 없으면 viewbinding에 activity가 안뜨나?
 
 class StoreAdapter(val storeList : ArrayList<StoreInfo> ) : RecyclerView.Adapter<StoreAdapter.CustomViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoreAdapter.CustomViewHolder{
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_store_list_item, parent, false)
         return CustomViewHolder(view).apply {
             itemView.setOnClickListener{
@@ -24,7 +25,7 @@ class StoreAdapter(val storeList : ArrayList<StoreInfo> ) : RecyclerView.Adapter
     }
 
     // view를 실제 어댑터에 연결
-    override fun onBindViewHolder(holder: StoreAdapter.CustomViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         holder.storeImage.setImageResource(storeList.get(position).storeImage)
         holder.name.text = storeList.get(position).name
         holder.dist.text = storeList.get(position).distance

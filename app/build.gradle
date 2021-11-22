@@ -93,4 +93,8 @@ dependencies {
     // circularimageview
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    // Range Slider
+    implementation 'com.github.channguyen:rsv:1.0.1'
+
 }

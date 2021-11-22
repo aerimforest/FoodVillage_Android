@@ -1,4 +1,4 @@
-package com.example.foodvillage
+package com.example.foodvillage.storeList
 
 data class StoreInfoData(
     val productName: String,
