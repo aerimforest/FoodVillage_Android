@@ -1,10 +1,13 @@
-package com.example.foodvillage
+package com.example.foodvillage.storeList
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
+import android.util.Log
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.foodvillage.R
 import com.example.foodvillage.databinding.ActivityStoreListBinding
+import com.google.android.material.slider.RangeSlider
 
 class StoreListActivity : AppCompatActivity() {
 
@@ -40,5 +43,14 @@ class StoreListActivity : AppCompatActivity() {
             val bottomsheet = Bottomsheet_filterPriority()
             bottomsheet.show(supportFragmentManager, bottomsheet.tag)
         }
+
+        // 거리 범위 설정 bottomsheet 띄우기
+        val btnDistance = binding.btnFilterDistance
+        btnDistance.setOnClickListener{
+            val bottomsheet = Bottomsheet_filterDistance()
+            bottomsheet.show(supportFragmentManager, bottomsheet.tag)
+        }
+
+
     }
 }
