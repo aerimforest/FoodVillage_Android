@@ -12,15 +12,17 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.example.foodvillage.*
 import com.example.foodvillage.R
 import com.example.foodvillage.databinding.FragmentHomeBinding
 import com.example.foodvillage.schema.Product
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import kotlinx.android.synthetic.main.item_today_popular_store.view.*
 import kotlinx.android.synthetic.main.item_today_sale.view.*
-import kotlinx.android.synthetic.main.item_today_sale.view.tv_store_name
 
 class HomeFragment : Fragment() {
 
@@ -143,6 +145,14 @@ class HomeFragment : Fragment() {
                 todayPriceList[position].discountRate!!
             ))?.toInt().toString()
 
+            val imageView = viewHolder.imv_product
+
+            Firebase.storage.reference.child(todayPriceList[position].imgUrl.toString()).downloadUrl.addOnCompleteListener {
+                if (it.isSuccessful) {
+                    Glide.with(this@HomeFragment).load(it.result).into(imageView)
+                }
+            }
+
             val auth: FirebaseAuth = FirebaseAuth.getInstance()
             val databaseDistanceReference: DatabaseReference =
                 firebaseDatabase.getReference("stores/${todayPriceList[position].storeName}/distance/${auth.uid}")
@@ -194,7 +204,7 @@ class HomeFragment : Fragment() {
                 popularStoreList[position].maxDiscountRate.toString()
             viewHolder.tv_discount_product.text = popularStoreList[position].discountProduct
 
-            // recyclerview item click listener
+            // Todo: recyclerview item click listener
         }
 
         override fun getItemCount(): Int {
