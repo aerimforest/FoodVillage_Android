@@ -37,7 +37,6 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
     private var mapView: MapView?=null
 
     private val eventListener = MarkerEventListener(this)   // 마커 클릭 이벤트 리스너
-    // private val reverseGeoCoder:MapReverseGeoCoder// 마커 클릭 이벤트 리스너
 
     // 위치 추적을 위한 변수들
     val TAG: String = "로그"
@@ -180,7 +179,6 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             .addOnSuccessListener {
                 storeHashMap= it.value as HashMap<String, HashMap<String, Any>>
                 storeNameList= ArrayList<String>(storeHashMap!!.keys)
-                Log.d("널?", storeNameList.toString())
 
             for (i in 0 until (storeNameList as ArrayList<String>).size) {
                 val storeName = storeHashMap!!.get((storeNameList!! as ArrayList<String>)[i])
@@ -281,14 +279,6 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         val date: Date = Calendar.getInstance().time
         val simpleDateFormat = SimpleDateFormat("hh:mm:ss a")
 //        txtTime.text = "Updated at : " + simpleDateFormat.format(date) // 갱신된 날짜
-        //수원 화성의 위도, 경도
-        val mapPoint = MapPoint.mapPointWithGeoCoord(
-            mLastLocation.latitude,
-            mLastLocation.longitude
-        )
-        Log.d(TAG, "위도: " + mLastLocation.latitude + ", 경도: " + mLastLocation.longitude)
-//        curr_lat=mLastLocation.latitude
-//        curr_lon=mLastLocation.longitude
     }
 
     // 위치 권한이 있는지 확인하는 메서드
@@ -372,9 +362,6 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
 
         override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
 
-//            (mCalloutBalloon.findViewById(R.id.ball_tv_name) as TextView).text ="초기값"
-//            (mCalloutBalloon.findViewById(R.id.ball_tv_address) as TextView).text ="km, "+"분"
-//
             if (poiItem != null) {
                 val market_dist_hash= storeHashMap!!.get(poiItem?.itemName)?.get("distance") as HashMap<String, HashMap<String, Any>>
                 val market_dist=market_dist_hash.get(uid) as Double
