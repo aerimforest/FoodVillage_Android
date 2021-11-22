@@ -361,7 +361,7 @@ class MainActivity : AppCompatActivity() {
             Math.toRadians(lat2)
         )
         val c = 2 * Math.asin(Math.sqrt(a))
-        return round((R * c))/100
+        return round(R * c).toDouble() /1000
     }
     private fun getApiKeyFromManifest(context: Context): String? {
         var apiKey: String? = null
