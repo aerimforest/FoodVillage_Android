@@ -548,14 +548,14 @@ class MarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListe
 
             val dialog: BottomSheetDialog = BottomSheetDialog(this@MarketMapActivity)
             dialog.setContentView(R.layout.dialog_fmi_market)
-            val tv_marketmapactivity_dialog_content = dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_content)
-            tv_marketmapactivity_dialog_content!!.setText("주소: "+AddressData+"\n거리: "+(marker_distance.toDouble() / 1000).toString() + "km"+ "\n이동시간: "+(round(((marker_distance.toDouble() / 1000)/3.5)*60*10)/10).toString()+"분")
-            tv_marketmapactivity_dialog_content?.setOnClickListener {
-                Toast.makeText(this@MarketMapActivity, "내용을 클릭하였습니다", Toast.LENGTH_LONG).show()
-                dialog.dismiss()
-            }
-            val tv_marketmapactivity_dialog_title = dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_title)
-            tv_marketmapactivity_dialog_title!!.setText("${poiItem?.itemName}")
+            //val tv_marketmapactivity_dialog_content = dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_content)
+            //tv_marketmapactivity_dialog_content!!.setText("주소: "+AddressData+"\n거리: "+(marker_distance.toDouble() / 1000).toString() + "km"+ "\n이동시간: "+(round(((marker_distance.toDouble() / 1000)/3.5)*60*10)/10).toString()+"분")
+            //tv_marketmapactivity_dialog_content?.setOnClickListener {
+            //    Toast.makeText(this@MarketMapActivity, "내용을 클릭하였습니다", Toast.LENGTH_LONG).show()
+            //    dialog.dismiss()
+            //}
+            //val tv_marketmapactivity_dialog_title = dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_title)
+            //tv_marketmapactivity_dialog_title!!.setText("${poiItem?.itemName}")
 
             dialog.show()
         }

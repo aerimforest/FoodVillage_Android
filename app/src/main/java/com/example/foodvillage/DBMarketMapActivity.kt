@@ -13,14 +13,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.foodvillage.databinding.ActivityDbMarketMapBinding
-import com.example.foodvillage.marketmap.MarketProductAdapter
 import com.google.android.gms.location.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
@@ -146,12 +147,11 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             mapView?.setMapCenterPoint(mapPoint, true)
         }
 
-        // 어댑터 연결
-        rv_dialog_fmi_product_list.setHasFixedSize(true)
-        val layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        rv_dialog_fmi_product_list.layoutManager = layoutManager
-        rv_dialog_fmi_product_list.adapter = MarketProductAdapter() // DB 연결 필요
+//        // 어댑터 연결
+//        rv_dialog_fmi_product_list.setHasFixedSize(true)
+//        val layoutManager = LinearLayoutManager(this@DBMarketMapActivity, LinearLayoutManager.VERTICAL, false)
+//        rv_dialog_fmi_product_list.layoutManager = layoutManager
+//        rv_dialog_fmi_product_list.adapter = MarketProductAdapter() // DB 연결 필요
 
     }
 
@@ -453,25 +453,13 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                         dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_title)
                     tv_marketmapactivity_dialog_title!!.setText("${poiItem?.itemName}")
 
+                    val tv_marketmapactivity_dialog_minute =
+                        dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_minute)
+                    tv_marketmapactivity_dialog_minute!!.setText("도보 "+ round((market_dist / 3.5) * 60).toString() + "분")
 
-
-
-                    val tv_marketmapactivity_dialog_content =
-                        dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_content)
-                    tv_marketmapactivity_dialog_content!!.setText(
-                        "다이얼로그\n주소: " + market_address + "\n거리: " + market_dist + "km" + "\n이동시간: " + round(
-                            (market_dist / 3.5) * 60
-                        ).toString() + "분"
-                    )
-                    Log.d(
-                        "시간",
-                        "다이얼로그용: " + market_dist.toString() + ", " + round((market_dist / 3.5) * 60).toString()
-                    )
-                    tv_marketmapactivity_dialog_content?.setOnClickListener {
-                        Toast.makeText(this@DBMarketMapActivity, "내용을 클릭하였습니다", Toast.LENGTH_LONG)
-                            .show()
-                        dialog.dismiss()
-                    }
+                    val tv_marketmapactivity_dialog_distance =
+                        dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_distance)
+                    tv_marketmapactivity_dialog_distance!!.setText(""+ market_dist + "km")
 
                     dialog.show()
 
