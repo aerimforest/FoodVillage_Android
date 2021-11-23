@@ -136,419 +136,59 @@ class StoreListActivity : AppCompatActivity() {
 
 
                                             binding.btnAll.setOnClickListener{
-                                                binding.btnAll.setBackgroundColor(R.color.main_green)
+                                                binding.btnAll.isSelected
                                                 val filteredcategoryIdx=0
-                                                categoryStoreList = categoryHashMap!![filteredcategoryIdx]?.get("storeNames") as List<String>
-                                                Log.d("상점명 리스트_filtered", categoryStoreList.toString())
-                                                storeList=ArrayList<StoreInfo>()
-
-                                                for (i in 0 until (categoryStoreList?.size!!)){
-                                                    // 상점명
-                                                    val storeName = categoryStoreList!![i]
-
-                                                    // 상점의 카테고리
-                                                    val categories = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("categoryNames") as ArrayList<String>
-
-                                                    // 상점 위치별 사용자와의 거리
-                                                    val distanceHashMap = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("distance") as HashMap<String, Any>
-                                                    val distance=distanceHashMap.get(uid) as Double
-
-                                                    // 상점의 리뷰 개수
-                                                    val storereviewHashMap=reviewHashMap!!.get(storeName)
-                                                    var reviewTotal= storereviewHashMap?.size
-                                                    if (reviewTotal==null) reviewTotal=0
-
-                                                    // 상점의 프로덕트 개수
-                                                    // 상점의 최대 할인율
-                                                    var prodNumTotal=0
-                                                    var salePercentMax:Double=0.0
-                                                    val productList = ArrayList<String>(productHashMap!!.keys)
-                                                    for (i in 0 until productList!!.size){
-                                                        val storeproductHashMap=productHashMap!!.get(productList[i])
-
-                                                        if (storeproductHashMap?.get("storeName") == storeName) {
-                                                            prodNumTotal+=1
-                                                            salePercentMax=max(salePercentMax, storeproductHashMap?.get("discountRate") as Double)
-                                                        }
-
-                                                    }
-
-                                                    // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
-                                                    // 추가
-                                                    storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
-                                                }
+                                                storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
                                             }
-                                            // 얘만 작업중!
+
                                             binding.btnFruitVegi.setOnClickListener{
-                                                binding.btnFruitVegi.setBackgroundColor(R.color.main_green)
+                                                binding.btnFruitVegi.isSelected
                                                 val filteredcategoryIdx=1
-                                                categoryStoreList = categoryHashMap!![filteredcategoryIdx]?.get("storeNames") as List<String>
-                                                Log.d("상점명 리스트_filtered", categoryStoreList.toString())
-                                                storeList=ArrayList<StoreInfo>()
-
-                                                for (i in 0 until (categoryStoreList?.size!!)){
-                                                    // 상점명
-                                                    val storeName = categoryStoreList!![i]
-
-                                                    // 상점의 카테고리
-                                                    val categories = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("categoryNames") as ArrayList<String>
-
-                                                    // 상점 위치별 사용자와의 거리
-                                                    val distanceHashMap = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("distance") as HashMap<String, Any>
-                                                    val distance=distanceHashMap.get(uid) as Double
-
-                                                    // 상점의 리뷰 개수
-                                                    val storereviewHashMap=reviewHashMap!!.get(storeName)
-                                                    var reviewTotal= storereviewHashMap?.size
-                                                    if (reviewTotal==null) reviewTotal=0
-
-                                                    // 상점의 프로덕트 개수
-                                                    // 상점의 최대 할인율
-                                                    var prodNumTotal=0
-                                                    var salePercentMax:Double=0.0
-                                                    val productList = ArrayList<String>(productHashMap!!.keys)
-                                                    for (i in 0 until productList!!.size){
-                                                        val storeproductHashMap=productHashMap!!.get(productList[i])
-
-                                                        if (storeproductHashMap?.get("storeName") == storeName) {
-                                                            prodNumTotal+=1
-                                                            salePercentMax=max(salePercentMax, storeproductHashMap?.get("discountRate") as Double)
-                                                        }
-
-                                                    }
-
-                                                    // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
-                                                    // 추가
-                                                    storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
-                                                }
+                                                storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
 
                                             }
                                             binding.btnMeat.setOnClickListener{
-                                                binding.btnMeat.setBackgroundColor(R.color.main_green)
+                                                binding.btnMeat.isSelected
                                                 val filteredcategoryIdx=2
-                                                categoryStoreList = categoryHashMap!![filteredcategoryIdx]?.get("storeNames") as List<String>
-                                                Log.d("상점명 리스트_filtered", categoryStoreList.toString())
-                                                storeList=ArrayList<StoreInfo>()
-
-                                                for (i in 0 until (categoryStoreList?.size!!)){
-                                                    // 상점명
-                                                    val storeName = categoryStoreList!![i]
-
-                                                    // 상점의 카테고리
-                                                    val categories = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("categoryNames") as ArrayList<String>
-
-                                                    // 상점 위치별 사용자와의 거리
-                                                    val distanceHashMap = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("distance") as HashMap<String, Any>
-                                                    val distance=distanceHashMap.get(uid) as Double
-
-                                                    // 상점의 리뷰 개수
-                                                    val storereviewHashMap=reviewHashMap!!.get(storeName)
-                                                    var reviewTotal= storereviewHashMap?.size
-                                                    if (reviewTotal==null) reviewTotal=0
-
-                                                    // 상점의 프로덕트 개수
-                                                    // 상점의 최대 할인율
-                                                    var prodNumTotal=0
-                                                    var salePercentMax:Double=0.0
-                                                    val productList = ArrayList<String>(productHashMap!!.keys)
-                                                    for (i in 0 until productList!!.size){
-                                                        val storeproductHashMap=productHashMap!!.get(productList[i])
-
-                                                        if (storeproductHashMap?.get("storeName") == storeName) {
-                                                            prodNumTotal+=1
-                                                            salePercentMax=max(salePercentMax, storeproductHashMap?.get("discountRate") as Double)
-                                                        }
-
-                                                    }
-
-                                                    // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
-                                                    // 추가
-                                                    storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
-                                                }
+                                                storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
                                             }
                                             binding.btnSeafood.setOnClickListener{
-                                                binding.btnSeafood.setBackgroundColor(R.color.main_green)
+                                                binding.btnSeafood.isSelected
                                                 val filteredcategoryIdx=3
-                                                categoryStoreList = categoryHashMap!![filteredcategoryIdx]?.get("storeNames") as List<String>
-                                                Log.d("상점명 리스트_filtered", categoryStoreList.toString())
-                                                storeList=ArrayList<StoreInfo>()
-
-                                                for (i in 0 until (categoryStoreList?.size!!)){
-                                                    // 상점명
-                                                    val storeName = categoryStoreList!![i]
-
-                                                    // 상점의 카테고리
-                                                    val categories = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("categoryNames") as ArrayList<String>
-
-                                                    // 상점 위치별 사용자와의 거리
-                                                    val distanceHashMap = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("distance") as HashMap<String, Any>
-                                                    val distance=distanceHashMap.get(uid) as Double
-
-                                                    // 상점의 리뷰 개수
-                                                    val storereviewHashMap=reviewHashMap!!.get(storeName)
-                                                    var reviewTotal= storereviewHashMap?.size
-                                                    if (reviewTotal==null) reviewTotal=0
-
-                                                    // 상점의 프로덕트 개수
-                                                    // 상점의 최대 할인율
-                                                    var prodNumTotal=0
-                                                    var salePercentMax:Double=0.0
-                                                    val productList = ArrayList<String>(productHashMap!!.keys)
-                                                    for (i in 0 until productList!!.size){
-                                                        val storeproductHashMap=productHashMap!!.get(productList[i])
-
-                                                        if (storeproductHashMap?.get("storeName") == storeName) {
-                                                            prodNumTotal+=1
-                                                            salePercentMax=max(salePercentMax, storeproductHashMap?.get("discountRate") as Double)
-                                                        }
-
-                                                    }
-
-                                                    // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
-                                                    // 추가
-                                                    storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
-                                                }
+                                                storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
                                             }
                                             binding.btnSideDish.setOnClickListener{
-                                                binding.btnSideDish.setBackgroundColor(R.color.main_green)
+                                                binding.btnSideDish.isSelected
                                                 val filteredcategoryIdx=4
-                                                categoryStoreList = categoryHashMap!![filteredcategoryIdx]?.get("storeNames") as List<String>
-                                                Log.d("상점명 리스트_filtered", categoryStoreList.toString())
-                                                storeList=ArrayList<StoreInfo>()
-
-                                                for (i in 0 until (categoryStoreList?.size!!)){
-                                                    // 상점명
-                                                    val storeName = categoryStoreList!![i]
-
-                                                    // 상점의 카테고리
-                                                    val categories = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("categoryNames") as ArrayList<String>
-
-                                                    // 상점 위치별 사용자와의 거리
-                                                    val distanceHashMap = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("distance") as HashMap<String, Any>
-                                                    val distance=distanceHashMap.get(uid) as Double
-
-                                                    // 상점의 리뷰 개수
-                                                    val storereviewHashMap=reviewHashMap!!.get(storeName)
-                                                    var reviewTotal= storereviewHashMap?.size
-                                                    if (reviewTotal==null) reviewTotal=0
-
-                                                    // 상점의 프로덕트 개수
-                                                    // 상점의 최대 할인율
-                                                    var prodNumTotal=0
-                                                    var salePercentMax:Double=0.0
-                                                    val productList = ArrayList<String>(productHashMap!!.keys)
-                                                    for (i in 0 until productList!!.size){
-                                                        val storeproductHashMap=productHashMap!!.get(productList[i])
-
-                                                        if (storeproductHashMap?.get("storeName") == storeName) {
-                                                            prodNumTotal+=1
-                                                            salePercentMax=max(salePercentMax, storeproductHashMap?.get("discountRate") as Double)
-                                                        }
-
-                                                    }
-
-                                                    // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
-                                                    // 추가
-                                                    storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
-                                                }
+                                                storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
                                             }
                                             binding.btnSnack.setOnClickListener{
-                                                binding.btnSnack.setBackgroundColor(R.color.main_green)
-                                                val filteredcategoryIdx=6
-                                                categoryStoreList = categoryHashMap!![filteredcategoryIdx]?.get("storeNames") as List<String>
-                                                Log.d("상점명 리스트_filtered", categoryStoreList.toString())
-                                                storeList=ArrayList<StoreInfo>()
-
-                                                for (i in 0 until (categoryStoreList?.size!!)){
-                                                    // 상점명
-                                                    val storeName = categoryStoreList!![i]
-
-                                                    // 상점의 카테고리
-                                                    val categories = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("categoryNames") as ArrayList<String>
-
-                                                    // 상점 위치별 사용자와의 거리
-                                                    val distanceHashMap = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("distance") as HashMap<String, Any>
-                                                    val distance=distanceHashMap.get(uid) as Double
-
-                                                    // 상점의 리뷰 개수
-                                                    val storereviewHashMap=reviewHashMap!!.get(storeName)
-                                                    var reviewTotal= storereviewHashMap?.size
-                                                    if (reviewTotal==null) reviewTotal=0
-
-                                                    // 상점의 프로덕트 개수
-                                                    // 상점의 최대 할인율
-                                                    var prodNumTotal=0
-                                                    var salePercentMax:Double=0.0
-                                                    val productList = ArrayList<String>(productHashMap!!.keys)
-                                                    for (i in 0 until productList!!.size){
-                                                        val storeproductHashMap=productHashMap!!.get(productList[i])
-
-                                                        if (storeproductHashMap?.get("storeName") == storeName) {
-                                                            prodNumTotal+=1
-                                                            salePercentMax=max(salePercentMax, storeproductHashMap?.get("discountRate") as Double)
-                                                        }
-
-                                                    }
-
-                                                    // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
-                                                    // 추가
-                                                    storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
-                                                }
+                                                binding.btnSnack.isSelected
+                                                val filteredcategoryIdx=5
+                                                storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
                                             }
                                             binding.btnRiceAndNoodle.setOnClickListener{
-                                                binding.btnRiceAndNoodle.setBackgroundColor(R.color.main_green)
+                                                binding.btnRiceAndNoodle.isSelected
                                                 val filteredcategoryIdx=6
-                                               categoryStoreList = categoryHashMap!![filteredcategoryIdx]?.get("storeNames") as List<String>
-                                                Log.d("상점명 리스트_filtered", categoryStoreList.toString())
-                                                storeList=ArrayList<StoreInfo>()
-
-                                                for (i in 0 until (categoryStoreList?.size!!)){
-                                                    // 상점명
-                                                    val storeName = categoryStoreList!![i]
-
-                                                    // 상점의 카테고리
-                                                    val categories = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("categoryNames") as ArrayList<String>
-
-                                                    // 상점 위치별 사용자와의 거리
-                                                    val distanceHashMap = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("distance") as HashMap<String, Any>
-                                                    val distance=distanceHashMap.get(uid) as Double
-
-                                                    // 상점의 리뷰 개수
-                                                    val storereviewHashMap=reviewHashMap!!.get(storeName)
-                                                    var reviewTotal= storereviewHashMap?.size
-                                                    if (reviewTotal==null) reviewTotal=0
-
-                                                    // 상점의 프로덕트 개수
-                                                    // 상점의 최대 할인율
-                                                    var prodNumTotal=0
-                                                    var salePercentMax:Double=0.0
-                                                    val productList = ArrayList<String>(productHashMap!!.keys)
-                                                    for (i in 0 until productList!!.size){
-                                                        val storeproductHashMap=productHashMap!!.get(productList[i])
-
-                                                        if (storeproductHashMap?.get("storeName") == storeName) {
-                                                            prodNumTotal+=1
-                                                            salePercentMax=max(salePercentMax, storeproductHashMap?.get("discountRate") as Double)
-                                                        }
-
-                                                    }
-
-                                                    // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
-                                                    // 추가
-                                                    storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
-                                                }
+                                                storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
                                             }
                                             binding.btnHealthy.setOnClickListener{
-                                                binding.btnHealthy.setBackgroundColor(R.color.main_green)
+                                                binding.btnHealthy.isSelected
                                                 val filteredcategoryIdx=7
-                                                categoryStoreList = categoryHashMap!![filteredcategoryIdx]?.get("storeNames") as List<String>
-                                                Log.d("상점명 리스트_filtered", categoryStoreList.toString())
-                                                storeList=ArrayList<StoreInfo>()
-
-                                                for (i in 0 until (categoryStoreList?.size!!)){
-                                                    // 상점명
-                                                    val storeName = categoryStoreList!![i]
-
-                                                    // 상점의 카테고리
-                                                    val categories = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("categoryNames") as ArrayList<String>
-
-                                                    // 상점 위치별 사용자와의 거리
-                                                    val distanceHashMap = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("distance") as HashMap<String, Any>
-                                                    val distance=distanceHashMap.get(uid) as Double
-
-                                                    // 상점의 리뷰 개수
-                                                    val storereviewHashMap=reviewHashMap!!.get(storeName)
-                                                    var reviewTotal= storereviewHashMap?.size
-                                                    if (reviewTotal==null) reviewTotal=0
-
-                                                    // 상점의 프로덕트 개수
-                                                    // 상점의 최대 할인율
-                                                    var prodNumTotal=0
-                                                    var salePercentMax:Double=0.0
-                                                    val productList = ArrayList<String>(productHashMap!!.keys)
-                                                    for (i in 0 until productList!!.size){
-                                                        val storeproductHashMap=productHashMap!!.get(productList[i])
-
-                                                        if (storeproductHashMap?.get("storeName") == storeName) {
-                                                            prodNumTotal+=1
-                                                            salePercentMax=max(salePercentMax, storeproductHashMap?.get("discountRate") as Double)
-                                                        }
-
-                                                    }
-
-                                                    // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
-                                                    // 추가
-                                                    storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
-                                                }
+                                                storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
                                             }
                                             binding.btnLife.setOnClickListener{
-                                                binding.btnLife.setBackgroundColor(R.color.main_green)
+                                                binding.btnLife.isSelected
                                                 val filteredcategoryIdx=8
-                                                categoryStoreList = categoryHashMap!![filteredcategoryIdx]?.get("storeNames") as List<String>
-                                                Log.d("상점명 리스트_filtered", categoryStoreList.toString())
-                                                storeList=ArrayList<StoreInfo>()
-
-                                                for (i in 0 until (categoryStoreList?.size!!)){
-                                                    // 상점명
-                                                    val storeName = categoryStoreList!![i]
-
-                                                    // 상점의 카테고리
-                                                    val categories = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("categoryNames") as ArrayList<String>
-
-                                                    // 상점 위치별 사용자와의 거리
-                                                    val distanceHashMap = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                        ?.get("distance") as HashMap<String, Any>
-                                                    val distance=distanceHashMap.get(uid) as Double
-
-                                                    // 상점의 리뷰 개수
-                                                    val storereviewHashMap=reviewHashMap!!.get(storeName)
-                                                    var reviewTotal= storereviewHashMap?.size
-                                                    if (reviewTotal==null) reviewTotal=0
-
-                                                    // 상점의 프로덕트 개수
-                                                    // 상점의 최대 할인율
-                                                    var prodNumTotal=0
-                                                    var salePercentMax:Double=0.0
-                                                    val productList = ArrayList<String>(productHashMap!!.keys)
-                                                    for (i in 0 until productList!!.size){
-                                                        val storeproductHashMap=productHashMap!!.get(productList[i])
-
-                                                        if (storeproductHashMap?.get("storeName") == storeName) {
-                                                            prodNumTotal+=1
-                                                            salePercentMax=max(salePercentMax, storeproductHashMap?.get("discountRate") as Double)
-                                                        }
-
-                                                    }
-
-                                                    // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
-                                                    // 추가
-                                                    storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
-                                                }
+                                                storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
                                             }
 
@@ -579,234 +219,53 @@ class StoreListActivity : AppCompatActivity() {
 
 
     }
-    @SuppressLint("ResourceAsColor")
-    fun categoryFilteringInit(categoryIdx:Int){
 
-        DbRefCategory.get()
-            .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
-            .addOnSuccessListener {
-                Log.d("상점", it.value.toString())
-                categoryHashMap = it.value as ArrayList<HashMap<String, Any>>
-                categoryStoreList = categoryHashMap!![categoryIdx]?.get("storeNames") as List<String>
+    fun categoryFiltering(filteredcategoryIdx:Int): ArrayList<StoreInfo> {
+        categoryStoreList = categoryHashMap!![filteredcategoryIdx]?.get("storeNames") as List<String>
+        Log.d("상점명 리스트_filtered", categoryStoreList.toString())
+        storeList=ArrayList<StoreInfo>()
 
-                DbRefStore.get()
-                    .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
-                    .addOnSuccessListener {
-                        storeHashMap = it.value as HashMap<String, HashMap<String, Any>>
+        for (i in 0 until (categoryStoreList?.size!!)){
+            // 상점명
+            val storeName = categoryStoreList!![i]
 
-                        DbRefReview.get()
-                            .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
-                            .addOnSuccessListener {
-                                reviewHashMap = it.value as HashMap<String, HashMap<String, Any>>
+            // 상점의 카테고리
+            val categories = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
+                ?.get("categoryNames") as ArrayList<String>
 
-                                DbRefProduct.get()
-                                    .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
-                                    .addOnSuccessListener {
-                                        productHashMap = it.value as HashMap<String, HashMap<String, Any>>
+            // 상점 위치별 사용자와의 거리
+            val distanceHashMap = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
+                ?.get("distance") as HashMap<String, Any>
+            val distance=distanceHashMap.get(uid) as Double
 
-                                        if (categoryHashMap != null && storeHashMap != null && reviewHashMap != null && productHashMap != null && categoryStoreList != null)
-                                            Log.d("상점명 리스트", categoryStoreList.toString())
-                                        for (i in 0 until (categoryStoreList?.size!!)){
-                                            // 상점명
-                                            val storeName = categoryStoreList!![i]
+            // 상점의 리뷰 개수
+            val storereviewHashMap=reviewHashMap!!.get(storeName)
+            var reviewTotal= storereviewHashMap?.size
+            if (reviewTotal==null) reviewTotal=0
 
-                                            // 상점의 카테고리
-                                            val categories = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                ?.get("categoryNames") as ArrayList<String>
+            // 상점의 프로덕트 개수
+            // 상점의 최대 할인율
+            var prodNumTotal=0
+            var salePercentMax:Double=0.0
+            val productList = ArrayList<String>(productHashMap!!.keys)
+            for (i in 0 until productList!!.size){
+                val storeproductHashMap=productHashMap!!.get(productList[i])
 
-                                            // 상점 위치별 사용자와의 거리
-                                            val distanceHashMap = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                ?.get("distance") as HashMap<String, Any>
-                                            val distance=distanceHashMap.get(uid) as Double
-
-                                            // 상점의 리뷰 개수
-                                            val storereviewHashMap=reviewHashMap!!.get(storeName)
-                                            var reviewTotal= storereviewHashMap?.size
-                                            if (reviewTotal==null) reviewTotal=0
-
-                                            // 상점의 프로덕트 개수
-                                            // 상점의 최대 할인율
-                                            var prodNumTotal=0
-                                            var salePercentMax:Double=0.0
-                                            val productList = ArrayList<String>(productHashMap!!.keys)
-                                            for (i in 0 until productList!!.size){
-                                                val storeproductHashMap=productHashMap!!.get(productList[i])
-
-                                                if (storeproductHashMap?.get("storeName") == storeName) {
-                                                    prodNumTotal+=1
-                                                    salePercentMax=max(salePercentMax, storeproductHashMap?.get("discountRate") as Double)
-                                                }
-
-                                            }
-
-                                            // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
-                                            // 추가
-                                            storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
-
-                                        }
-
-                                        if(storeList!=null) {
-                                            binding.rvStore.layoutManager =
-                                                LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-                                            binding.rvStore!!.setHasFixedSize(true)
-                                            var mStoreAdapter=StoreAdapter(storeList!!)
-                                            binding.rvStore!!.adapter = mStoreAdapter
-
-
-                                            binding.btnAll.setOnClickListener{
-                                                val filteredcategoryIdx=0
-                                                val filteredStoreList=categoryFiltering(filteredcategoryIdx)
-                                                mStoreAdapter.datasetChanged(filteredStoreList)
-                                            }
-                                            // 얘만 작업중!
-                                            binding.btnFruitVegi.setOnClickListener{
-                                                binding.btnFruitVegi.setBackgroundColor(R.color.main_green)
-                                                val filteredcategoryIdx=1
-                                                val filteredStoreList=categoryFiltering(filteredcategoryIdx)
-                                                Log.d("상점명 리스트 변경", filteredStoreList[0].storeName)
-                                                mStoreAdapter.datasetChanged(filteredStoreList)
-
-                                            }
-                                            binding.btnMeat.setOnClickListener{
-                                                val filteredcategoryIdx=2
-                                                val filteredStoreList=categoryFiltering(filteredcategoryIdx)
-                                                mStoreAdapter.datasetChanged(filteredStoreList)
-                                            }
-                                            binding.btnSeafood.setOnClickListener{
-                                                val filteredcategoryIdx=3
-                                                val filteredStoreList=categoryFiltering(filteredcategoryIdx)
-                                                mStoreAdapter.datasetChanged(filteredStoreList)
-                                            }
-                                            binding.btnSideDish.setOnClickListener{
-                                                val filteredcategoryIdx=4
-                                                val filteredStoreList=categoryFiltering(filteredcategoryIdx)
-                                                mStoreAdapter.datasetChanged(filteredStoreList)
-                                            }
-                                            binding.btnSnack.setOnClickListener{
-                                                val filteredcategoryIdx=6
-                                                val filteredStoreList=categoryFiltering(filteredcategoryIdx)
-                                                mStoreAdapter.datasetChanged(filteredStoreList)
-                                            }
-                                            binding.btnRiceAndNoodle.setOnClickListener{
-                                                val filteredcategoryIdx=6
-                                                val filteredStoreList=categoryFiltering(filteredcategoryIdx)
-                                                mStoreAdapter.datasetChanged(filteredStoreList)
-                                            }
-                                            binding.btnHealthy.setOnClickListener{
-                                                val filteredcategoryIdx=7
-                                                val filteredStoreList=categoryFiltering(filteredcategoryIdx)
-                                                mStoreAdapter.datasetChanged(filteredStoreList)
-                                            }
-                                            binding.btnLife.setOnClickListener{
-                                                val filteredcategoryIdx=8
-                                                val filteredStoreList=categoryFiltering(filteredcategoryIdx)
-                                                mStoreAdapter.datasetChanged(filteredStoreList)
-                                            }
-
-
-
-
-
-
-                                            // 정렬 기준 설정 bottomsheet 띄우기
-                                            val btnPriority = binding.btnPriority
-                                            btnPriority.setOnClickListener {
-                                                val bottomsheet = Bottomsheet_filterPriority()
-                                                bottomsheet.show(supportFragmentManager, bottomsheet.tag)
-                                            }
-                                        }
-
-                                        // 거리 범위 설정 bottomsheet 띄우기
-                                        val btnDistance = binding.btnFilterDistance
-                                        btnDistance.setOnClickListener{
-                                            val bottomsheet = Bottomsheet_filterDistance()
-                                            bottomsheet.show(supportFragmentManager, bottomsheet.tag)
-                                        }
-
-                                    }
-
-                            }
-
-                    }
-
-            }
-    }
-
-    fun categoryFiltering(categoryIdx:Int): ArrayList<StoreInfo> {
-        DbRefCategory.get()
-            .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
-            .addOnSuccessListener {
-                categoryHashMap = it.value as ArrayList<HashMap<String, Any>>
-                categoryStoreList = categoryHashMap!![categoryIdx]?.get("storeNames") as List<String>
-
-                DbRefStore.get()
-                    .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
-                    .addOnSuccessListener {
-                        storeHashMap = it.value as HashMap<String, HashMap<String, Any>>
-
-                        DbRefReview.get()
-                            .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
-                            .addOnSuccessListener {
-                                reviewHashMap = it.value as HashMap<String, HashMap<String, Any>>
-
-                                DbRefProduct.get()
-                                    .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
-                                    .addOnSuccessListener {
-                                        productHashMap = it.value as HashMap<String, HashMap<String, Any>>
-
-                                        if (categoryHashMap != null && storeHashMap != null && reviewHashMap != null && productHashMap != null && categoryStoreList != null)
-                                            Log.d("상점명 리스트_categoryFiltering()", categoryStoreList.toString())
-                                            for (i in 0 until (categoryStoreList?.size!!)){
-                                                // 상점명
-                                                val storeName = categoryStoreList!![i]
-
-                                                // 상점의 카테고리
-                                                val categories = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                    ?.get("categoryNames") as ArrayList<String>
-
-                                                // 상점 위치별 사용자와의 거리
-                                                val distanceHashMap = storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
-                                                    ?.get("distance") as HashMap<String, Any>
-                                                val distance=distanceHashMap.get(uid) as Double
-
-                                                // 상점의 리뷰 개수
-                                                val storereviewHashMap=reviewHashMap!!.get(storeName)
-                                                var reviewTotal= storereviewHashMap?.size
-                                                if (reviewTotal==null) reviewTotal=0
-
-                                                // 상점의 프로덕트 개수
-                                                // 상점의 최대 할인율
-                                                var prodNumTotal=0
-                                                var salePercentMax:Double=0.0
-                                                val productList = ArrayList<String>(productHashMap!!.keys)
-                                                for (i in 0 until productList!!.size){
-                                                    val storeproductHashMap=productHashMap!!.get(productList[i])
-
-                                                    if (storeproductHashMap?.get("storeName") == storeName) {
-                                                        prodNumTotal+=1
-                                                        salePercentMax=max(salePercentMax, storeproductHashMap?.get("discountRate") as Double)
-                                                    }
-
-                                                }
-
-                                                // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
-                                                // 추가
-                                                storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
-
-                                            }
-
-
-                                    }
-
-                            }
-
-                    }
+                if (storeproductHashMap?.get("storeName") == storeName) {
+                    prodNumTotal+=1
+                    salePercentMax=max(salePercentMax, storeproductHashMap?.get("discountRate") as Double)
+                }
 
             }
 
-        Log.d("상점명 리스트_categoryFiltering()_return", storeList[0].storeName.toString())
+            // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
+            // 추가
+            storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
+        }
         return storeList
     }
+
+
 
 
 }
