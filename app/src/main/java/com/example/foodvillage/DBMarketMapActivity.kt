@@ -358,7 +358,6 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
     // 커스텀 말풍선 클래스
     inner class CustomBalloonAdapter(inflater: LayoutInflater): CalloutBalloonAdapter {
         var mCalloutBalloon: View = inflater.inflate(R.layout.balloon_layout, null)
-        val DbRefStore = mDatabase.getReference("stores/")
 
         override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
 
