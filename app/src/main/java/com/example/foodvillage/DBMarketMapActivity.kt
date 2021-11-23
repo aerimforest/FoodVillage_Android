@@ -125,7 +125,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         // 위치 추척 시작
         if (checkPermissionForLocation(this)) {
             // 현위치 트래킹 - 이건 주소 설정할 때 해서 최초로 받는거
-            mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving)
+            mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving)
             updateLocation()
         }
 
@@ -317,7 +317,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 Log.d(TAG, "onRequestPermissionsResult() _ 권한 허용 클릭")
 
                 // 현위치 트래킹
-                mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
+                mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving);
                 updateLocation()
 
             } else {

@@ -1,6 +1,7 @@
 package com.example.foodvillage.menu
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.Handler
@@ -15,10 +16,10 @@ import com.bumptech.glide.Glide
 import com.example.foodvillage.*
 import com.example.foodvillage.R
 import com.example.foodvillage.PopularStoreData
-import com.example.foodvillage.storeList.StoreInfoData
 import com.example.foodvillage.ViewPagerAdapter
 import com.example.foodvillage.databinding.FragmentHomeBinding
 import com.example.foodvillage.schema.Product
+import com.example.foodvillage.storeList.StoreListActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
@@ -93,6 +94,13 @@ class HomeFragment : Fragment() {
                 }
             })
         }
+
+        binding.llyHomeAll.setOnClickListener {
+            val intent = Intent(context, StoreListActivity::class.java)
+            startActivity(intent)
+        }
+
+
     }
 
     inner class TodayPriceAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

@@ -7,5 +7,4 @@ data class Store(
         var address: String?=null,
         var categoryNames: List<String>? = null,
         var distance: HashMap<String, Double>?=null
-
 )
