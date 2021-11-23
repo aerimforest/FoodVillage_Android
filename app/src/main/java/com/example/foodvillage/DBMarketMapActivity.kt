@@ -13,14 +13,16 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.foodvillage.databinding.ActivityDbMarketMapBinding
-import com.example.foodvillage.marketmap.MarketProductAdapter
+import com.example.foodvillage.storeList.StoreInfo
 import com.google.android.gms.location.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
@@ -62,10 +64,15 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
     var uid = FirebaseAuth.getInstance().uid
     var DbRefUser = mDatabase.getReference("users/" + uid)
     val DbRefStore = mDatabase.getReference("stores/")
+    val DbRefReview = mDatabase.getReference("reviews/")
+    val DbRefProduct = mDatabase.getReference("products/")
 
     var storeHashMap: HashMap<String, HashMap<String, Any>>?=null
     var storeNameList: List<String>?=null
-
+    var reviewHashMap: HashMap<String, HashMap<String, Any>>?=null
+    var productHashMap: HashMap<String, HashMap<String, Any>>?=null
+    var categoryStoreList: List<String>?=null
+    var storeList=ArrayList<StoreInfo>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +93,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         // 현재 위치
         // LocationRequest() deprecated 되서 아래 방식으로 LocationRequest 객체 생성
         // mLocationRequest = LocationRequest() is deprecated
-        mLocationRequest =  LocationRequest.create().apply {
+        mLocationRequest = LocationRequest.create().apply {
             interval = 1000 // 업데이트 간격 단위(밀리초)
             //fastestInterval = 1000 // 가장 빠른 업데이트 간격 단위(밀리초)
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY // 정확성
@@ -98,10 +105,10 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
             .addOnSuccessListener {
                 var t_hashMap: HashMap<String, Any> = it.value as HashMap<String, Any>
-                curr_lat= t_hashMap.get("currentLatitude") as Double
-                curr_lon= t_hashMap.get("currentLongitude") as Double
-                AddressData=t_hashMap.get("address") as String
-                userName=t_hashMap.get("name")!! as String
+                curr_lat = t_hashMap.get("currentLatitude") as Double
+                curr_lon = t_hashMap.get("currentLongitude") as Double
+                AddressData = t_hashMap.get("address") as String
+                userName = t_hashMap.get("name")!! as String
 
                 // 저장된 위치 마커 찍기
                 var marker = MapPOIItem()
@@ -119,12 +126,30 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
 
                 Log.d("유저", "위, 경도: " + curr_lat + ", " + curr_lon)
             }
+
         DbRefStore.get()
             .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
             .addOnSuccessListener {
-                storeHashMap= it.value as HashMap<String, HashMap<String, Any>>
-                storeNameList= ArrayList<String>(storeHashMap!!.keys)
+                storeHashMap = it.value as HashMap<String, HashMap<String, Any>>
+                storeNameList = ArrayList<String>(storeHashMap!!.keys)
+                DbRefReview.get()
+                    .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
+                    .addOnSuccessListener {
+                        reviewHashMap = it.value as HashMap<String, HashMap<String, Any>>
+
+                        DbRefProduct.get()
+                            .addOnFailureListener { e ->
+                                Log.d(
+                                    ContentValues.TAG,
+                                    e.localizedMessage
+                                )
+                            }
+                            .addOnSuccessListener {
+                                productHashMap = it.value as HashMap<String, HashMap<String, Any>>
+                            }
+                    }
             }
+
 
         // 위치 추척 시작
         if (checkPermissionForLocation(this)) {
@@ -150,6 +175,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
 //        rv_dialog_fmi_product_list.setHasFixedSize(true)
 //        val layoutManager =
 //            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+//        val layoutManager = LinearLayoutManager(this@DBMarketMapActivity, LinearLayoutManager.VERTICAL, false)
 //        rv_dialog_fmi_product_list.layoutManager = layoutManager
 //        rv_dialog_fmi_product_list.adapter = MarketProductAdapter() // DB 연결 필요
 
@@ -438,45 +464,55 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             val dialog = BottomSheetDialog(this@DBMarketMapActivity)
             dialog.setContentView(R.layout.dialog_fmi_market)
 
-            val DbRefStore = mDatabase.getReference("stores/" + poiItem?.itemName)
+            val storeName=poiItem?.itemName
+            val selectedstoreHashMap=storeHashMap?.get(storeName) as HashMap<String, HashMap<String, Any>>
 
-            DbRefStore.get()
-                .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
-                .addOnSuccessListener {
-                    var t_hashMap: HashMap<String, HashMap<String, Any>> =
-                        it.value as HashMap<String, HashMap<String, Any>>
+            val market_dist = selectedstoreHashMap.get("distance")?.get(uid) as Double
+            val market_address = selectedstoreHashMap.get("address") as String
 
-                    val market_dist = t_hashMap.get("distance")?.get(uid) as Double
-                    val market_address = t_hashMap.get("address") as String
+            val tv_marketmapactivity_dialog_title =
+                dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_title)
+            tv_marketmapactivity_dialog_title!!.setText("${poiItem?.itemName}")
 
-                    val tv_marketmapactivity_dialog_title =
-                        dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_title)
-                    tv_marketmapactivity_dialog_title!!.setText("${poiItem?.itemName}")
+            val tv_marketmapactivity_dialog_minute =
+                dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_minute)
+            tv_marketmapactivity_dialog_minute!!.setText("도보 "+ round((market_dist / 3.5) * 60).toString() + "분")
 
+            val tv_marketmapactivity_dialog_distance =
+                dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_distance)
+            tv_marketmapactivity_dialog_distance!!.setText(""+ market_dist + "km")
 
+            tv_marketmapactivity_dialog_salepercent
+            tv_marketmapactivity_dialog_saleproduct
 
+            // 상점의 최대 할인율과 그 품목
+            var salePercentMax= 0.0
+            var salePercentMaxProduct=""
+            val productList = ArrayList<String>(productHashMap!!.keys)
+            for (i in 0 until productList!!.size) {
+                val storeproductHashMap =
+                    productHashMap!!.get(productList[i])
 
-                    val tv_marketmapactivity_dialog_content =
-                        dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_content)
-                    tv_marketmapactivity_dialog_content!!.setText(
-                        "다이얼로그\n주소: " + market_address + "\n거리: " + market_dist + "km" + "\n이동시간: " + round(
-                            (market_dist / 3.5) * 60
-                        ).toString() + "분"
-                   )
-                    Log.d(
-                        "시간",
-                        "다이얼로그용: " + market_dist.toString() + ", " + round((market_dist / 3.5) * 60).toString()
-                    )
-                    tv_marketmapactivity_dialog_content?.setOnClickListener {
-                        Toast.makeText(this@DBMarketMapActivity, "내용을 클릭하였습니다", Toast.LENGTH_LONG)
-                            .show()
-                        dialog.dismiss()
+                if (storeproductHashMap?.get("storeName") == storeName) {
+                    if (salePercentMax<storeproductHashMap?.get("discountRate") as Double){
+                        salePercentMax=storeproductHashMap?.get("discountRate") as Double
+                        salePercentMaxProduct = storeproductHashMap?.get("productName") as String
                     }
-
-                    dialog.show()
-
-                    Log.d("마커 디비_다이얼로그", poiItem?.itemName + ", " + market_dist + ", " + market_address)
                 }
+            }
+
+            val tv_marketmapactivity_dialog_salepercent =
+                dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_salepercent)
+            tv_marketmapactivity_dialog_salepercent!!.setText(""+ round(salePercentMax*100) + "%")
+
+            val tv_marketmapactivity_dialog_saleproduct =
+                dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_saleproduct)
+            tv_marketmapactivity_dialog_saleproduct!!.setText(salePercentMaxProduct)
+
+            // 더 필요한 거 있으면 StoreListActivity 참고 바람!
+
+            dialog.show()
+
 
         }
 
