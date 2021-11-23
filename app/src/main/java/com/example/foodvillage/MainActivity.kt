@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
     private var curr_lat:Double? = 0.0
     private var curr_lon:Double? = 0.0
 
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -172,9 +171,9 @@ class MainActivity : AppCompatActivity() {
                 Log.d("유저", "못 가져옴")
             }
             .addOnSuccessListener {
-                /*
+
                 ////////////////////////////////////////////////////////
-                애뮬레이터 안 되면 여기부터 주석처리
+                //애뮬레이터 안 되면 여기부터 주석처리
                 try{
                     var t_hashMap: HashMap<String, Any> = it.value as HashMap<String, Any>
                     Log.d("유저", "hash.name: " + t_hashMap.get("name"))
@@ -259,8 +258,8 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 ///////////////////////////////////////////////////////
-                애뮬레이터 안 되면 여기까지 주석처리
-                 */
+                //애뮬레이터 안 되면 여기까지 주석처리
+
             }
 
 
@@ -362,7 +361,7 @@ class MainActivity : AppCompatActivity() {
             Math.toRadians(lat2)
         )
         val c = 2 * Math.asin(Math.sqrt(a))
-        return round((R * c))/100
+        return round(R * c).toDouble() /1000
     }
     private fun getApiKeyFromManifest(context: Context): String? {
         var apiKey: String? = null
@@ -383,5 +382,18 @@ class MainActivity : AppCompatActivity() {
         }
         return apiKey
     }
+
+    //category
+    /*
+    나연마트1: 생활용품, 고기/계란, 수산/건어물
+    나연2: 건강/다이어트, 생활용품
+    나3: 건강/다이어트
+    예1: 밥/면/소스/캔, 수산/건어물
+    예2: 반찬/간편식, 밥/면/소스/캔
+    예3: 수산/건어물, 고기/계란
+    유1: 과일/채소, 간식/음료, 밥/면/소스/캔
+    유2: 간식/음료, 밥/면/소스/캔
+    유3: 고기/계란, 수산/건어물
+     */
 
 }
