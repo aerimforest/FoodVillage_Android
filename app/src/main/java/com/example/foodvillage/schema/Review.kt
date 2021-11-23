@@ -1,16 +1,13 @@
 package com.example.foodvillage.schema
 
 import android.net.Uri
-import java.time.LocalDate
-import java.util.*
 
 // 가게 이름 : Review data
-data class Review (
-    var userId: String?=null,
+data class Review(
+    var userId: String? = null,
     var userName: String? = null,
     var reportDate: String? = null,
     var reviewTitle: String? = null,
     var reviewContent: String? = null,
-    var reviewImg: Uri?=null
-
+    var reviewImg: Uri? = null
 )
