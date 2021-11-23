@@ -63,6 +63,11 @@ class HomeFragment : Fragment() {
 
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        binding.tvHomeLocation.setOnClickListener{
+            val intent=Intent(context, MyMapActivity::class.java)
+            startActivity(intent)
+        }
         binding.rcvHomeTodayPrice.adapter = TodayPriceAdapter()
         binding.rcvHomeTodayPrice.layoutManager = layoutManager
         binding.rcvHomeTodayPrice.setHasFixedSize(true)
