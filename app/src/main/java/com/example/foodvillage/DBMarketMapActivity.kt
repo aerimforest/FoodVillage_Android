@@ -146,12 +146,12 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             mapView?.setMapCenterPoint(mapPoint, true)
         }
 
-        // 어댑터 연결
-        rv_dialog_fmi_product_list.setHasFixedSize(true)
-        val layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        rv_dialog_fmi_product_list.layoutManager = layoutManager
-        rv_dialog_fmi_product_list.adapter = MarketProductAdapter() // DB 연결 필요
+//        // 어댑터 연결
+//        rv_dialog_fmi_product_list.setHasFixedSize(true)
+//        val layoutManager =
+//            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+//        rv_dialog_fmi_product_list.layoutManager = layoutManager
+//        rv_dialog_fmi_product_list.adapter = MarketProductAdapter() // DB 연결 필요
 
     }
 
@@ -462,7 +462,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                         "다이얼로그\n주소: " + market_address + "\n거리: " + market_dist + "km" + "\n이동시간: " + round(
                             (market_dist / 3.5) * 60
                         ).toString() + "분"
-                    )
+                   )
                     Log.d(
                         "시간",
                         "다이얼로그용: " + market_dist.toString() + ", " + round((market_dist / 3.5) * 60).toString()
