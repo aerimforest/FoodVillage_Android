@@ -6,11 +6,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.renderscript.RenderScript
 import android.util.Log
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodvillage.DBMarketMapActivity
 import com.example.foodvillage.R
 import com.example.foodvillage.databinding.ActivityStoreListBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import java.lang.Double.max
@@ -124,7 +127,8 @@ class StoreListActivity : AppCompatActivity() {
                                             // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
                                             // 추가
                                             storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
-
+                                            // 기본적으로 할인율 순
+                                            storeList.sortByDescending { it.salePercentMax}
                                         }
 
                                         if(storeList!=null) {
@@ -134,71 +138,98 @@ class StoreListActivity : AppCompatActivity() {
                                             var mStoreAdapter=StoreAdapter(storeList!!)
                                             binding.rvStore!!.adapter = mStoreAdapter
 
+                                            var filteredcategoryIdx=0
 
                                             binding.btnAll.setOnClickListener{
                                                 binding.btnAll.isSelected
-                                                val filteredcategoryIdx=0
+                                                filteredcategoryIdx=0
                                                 storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
                                             }
 
                                             binding.btnFruitVegi.setOnClickListener{
                                                 binding.btnFruitVegi.isSelected
-                                                val filteredcategoryIdx=1
+                                                filteredcategoryIdx=1
                                                 storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
 
                                             }
                                             binding.btnMeat.setOnClickListener{
                                                 binding.btnMeat.isSelected
-                                                val filteredcategoryIdx=2
+                                                filteredcategoryIdx=2
                                                 storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
                                             }
                                             binding.btnSeafood.setOnClickListener{
                                                 binding.btnSeafood.isSelected
-                                                val filteredcategoryIdx=3
+                                                filteredcategoryIdx=3
                                                 storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
                                             }
                                             binding.btnSideDish.setOnClickListener{
                                                 binding.btnSideDish.isSelected
-                                                val filteredcategoryIdx=4
+                                                filteredcategoryIdx=4
                                                 storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
                                             }
                                             binding.btnSnack.setOnClickListener{
                                                 binding.btnSnack.isSelected
-                                                val filteredcategoryIdx=5
+                                                filteredcategoryIdx=5
                                                 storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
                                             }
                                             binding.btnRiceAndNoodle.setOnClickListener{
                                                 binding.btnRiceAndNoodle.isSelected
-                                                val filteredcategoryIdx=6
+                                                filteredcategoryIdx=6
                                                 storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
                                             }
                                             binding.btnHealthy.setOnClickListener{
                                                 binding.btnHealthy.isSelected
-                                                val filteredcategoryIdx=7
+                                                filteredcategoryIdx=7
                                                 storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
                                             }
                                             binding.btnLife.setOnClickListener{
                                                 binding.btnLife.isSelected
-                                                val filteredcategoryIdx=8
+                                                filteredcategoryIdx=8
                                                 storeList=categoryFiltering(filteredcategoryIdx)
                                                 mStoreAdapter.datasetChanged(storeList)
                                             }
 
 
-
                                             // 정렬 기준 설정 bottomsheet 띄우기
                                             val btnPriority = binding.btnPriority
                                             btnPriority.setOnClickListener {
-                                                val bottomsheet = Bottomsheet_filterPriority()
-                                                bottomsheet.show(supportFragmentManager, bottomsheet.tag)
+                                                // val bottomsheet = Bottomsheet_filterPriority()
+                                                // bottomsheet.show(supportFragmentManager, bottomsheet.tag)
+                                                val dialogPriority = BottomSheetDialog(this@StoreListActivity)
+                                                dialogPriority.setContentView(R.layout.fragment_bottomsheet_priority_filter)
+                                                dialogPriority.findViewById<Button>(R.id.btn_priority_distance)
+                                                    ?.setOnClickListener{
+                                                        storeList=PriorityFiltering(filteredcategoryIdx, 0)
+                                                        mStoreAdapter.datasetChanged(storeList)
+                                                        dialogPriority.dismiss()
+                                                    }
+                                                dialogPriority.findViewById<Button>(R.id.btn_priority_sale)
+                                                    ?.setOnClickListener{
+                                                        storeList=PriorityFiltering(filteredcategoryIdx, 1)
+                                                        mStoreAdapter.datasetChanged(storeList)
+                                                        dialogPriority.dismiss()
+                                                    }
+                                                dialogPriority.findViewById<Button>(R.id.btn_priority_review)
+                                                    ?.setOnClickListener{
+                                                        storeList=PriorityFiltering(filteredcategoryIdx, 2)
+                                                        mStoreAdapter.datasetChanged(storeList)
+                                                        dialogPriority.dismiss()
+                                                    }
+                                                dialogPriority.findViewById<Button>(R.id.btn_priority_product)
+                                                    ?.setOnClickListener{
+                                                        storeList=PriorityFiltering(filteredcategoryIdx, 3)
+                                                        mStoreAdapter.datasetChanged(storeList)
+                                                        dialogPriority.dismiss()
+                                                    }
+                                                dialogPriority.show()
                                             }
                                         }
 
@@ -262,6 +293,31 @@ class StoreListActivity : AppCompatActivity() {
             // 추가
             storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
         }
+        // 기본 할인율 순
+        storeList.sortByDescending { it.salePercentMax}
+        return storeList
+    }
+
+    fun PriorityFiltering(filteredcategoryIdx:Int, priority:Int): ArrayList<StoreInfo> {
+        storeList=categoryFiltering(filteredcategoryIdx)
+        when (priority){
+            0->{
+                storeList.sortBy { it.distance}
+            }
+            1->{
+                storeList.sortByDescending { it.salePercentMax}
+            }
+            2->{
+                storeList.sortByDescending { it.reviewTotal}
+            }
+            3->{
+                storeList.sortByDescending { it.prodNumTotal}
+            }
+            else->{
+
+            }
+        }
+
         return storeList
     }
 
