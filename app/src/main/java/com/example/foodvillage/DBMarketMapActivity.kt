@@ -171,14 +171,6 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             mapView?.setMapCenterPoint(mapPoint, true)
         }
 
-//        // 어댑터 연결
-//        rv_dialog_fmi_product_list.setHasFixedSize(true)
-//        val layoutManager =
-//            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-//        val layoutManager = LinearLayoutManager(this@DBMarketMapActivity, LinearLayoutManager.VERTICAL, false)
-//        rv_dialog_fmi_product_list.layoutManager = layoutManager
-//        rv_dialog_fmi_product_list.adapter = MarketProductAdapter() // DB 연결 필요
-
     }
 
     override fun onDestroy() {

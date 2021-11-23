@@ -70,9 +70,13 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     2 -> {
-                        val aroundFragment = AroundFragment()
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.main_screen_panel, aroundFragment).commit()
+//                        val aroundFragment = AroundFragment()
+//                        supportFragmentManager.beginTransaction()
+//                            .replace(R.id.main_screen_panel, aroundFragment).commit()
+
+                        val intent=Intent(this@MainActivity, DBMarketMapActivity::class.java)
+                        startActivity(intent)
+
                     }
                     3 -> {
                         val myPageFragment = MyPageFragment()
