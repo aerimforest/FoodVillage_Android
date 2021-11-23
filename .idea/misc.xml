@@ -12,6 +12,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_market_map.xml" value="0.14895833333333333" />
         <entry key="app/src/main/res/layout/activity_my_map.xml" value="0.14895833333333333" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_store_list.xml" value="0.280188679245283" />
         <entry key="app/src/main/res/layout/activity_store_list_item.xml" value="0.26326530612244897" />
         <entry key="app/src/main/res/layout/dialog_fmi_market.xml" value="0.1" />
