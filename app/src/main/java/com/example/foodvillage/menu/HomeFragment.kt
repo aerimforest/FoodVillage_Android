@@ -15,18 +15,13 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.foodvillage.*
 import com.example.foodvillage.R
-<<<<<<< HEAD
 import com.example.foodvillage.PopularStoreData
-import com.example.foodvillage.ViewPagerAdapter
-import com.example.foodvillage.databinding.FragmentHomeBinding
-import com.example.foodvillage.schema.Product
 import com.example.foodvillage.storeList.StoreListActivity
-=======
 import com.example.foodvillage.ViewPagerAdapter
 import com.example.foodvillage.databinding.FragmentHomeBinding
 import com.example.foodvillage.schema.Product
 import com.example.foodvillage.schema.Store
->>>>>>> 39196742d6e4014e7190d7d19bc95737426ad455
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
@@ -100,8 +95,6 @@ class HomeFragment : Fragment() {
             val intent = Intent(context, StoreListActivity::class.java)
             startActivity(intent)
         }
-
-
     }
 
     inner class TodayPriceAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
