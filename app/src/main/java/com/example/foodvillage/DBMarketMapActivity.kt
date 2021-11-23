@@ -17,11 +17,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodvillage.databinding.ActivityDbMarketMapBinding
+import com.example.foodvillage.marketmap.MarketProductAdapter
 import com.google.android.gms.location.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.dialog_fmi_market.*
 import net.daum.mf.map.api.*
 import java.lang.Math.*
 import java.text.SimpleDateFormat
@@ -141,6 +145,14 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             var mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat!!, curr_lon!!)
             mapView?.setMapCenterPoint(mapPoint, true)
         }
+
+        // 어댑터 연결
+        rv_dialog_fmi_product_list.setHasFixedSize(true)
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        rv_dialog_fmi_product_list.layoutManager = layoutManager
+        rv_dialog_fmi_product_list.adapter = MarketProductAdapter() // DB 연결 필요
+
     }
 
     override fun onDestroy() {
@@ -440,6 +452,9 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                     val tv_marketmapactivity_dialog_title =
                         dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_title)
                     tv_marketmapactivity_dialog_title!!.setText("${poiItem?.itemName}")
+
+
+
 
                     val tv_marketmapactivity_dialog_content =
                         dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_content)

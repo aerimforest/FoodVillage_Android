@@ -8,8 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodvillage.R
 
-//xml이 없으면 viewbinding에 activity가 안뜨나?
-
 class StoreAdapter(val storeList : ArrayList<StoreInfo> ) : RecyclerView.Adapter<StoreAdapter.CustomViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {

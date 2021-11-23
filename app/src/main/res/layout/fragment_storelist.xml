@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    tools:context=".storeList.StoreListActivity">
+    tools:context=".storeList.StoreListFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lly_home_bar"
