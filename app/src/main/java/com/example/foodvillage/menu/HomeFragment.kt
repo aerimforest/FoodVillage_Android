@@ -64,7 +64,6 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.rcvHomeTodayPrice.adapter = TodayPriceAdapter()
-//        binding.rcvHomeTodayPrice.layoutManager = LinearLayoutManager(context)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rcvHomeTodayPrice.layoutManager = layoutManager
@@ -183,6 +182,27 @@ class HomeFragment : Fragment() {
     inner class PopularStoreAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         init {
+            databaseReference = firebaseDatabase.getReference("products")
+            databaseReference.orderByChild("discountRate").addValueEventListener(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                    // ArrayList 비워줌
+                    todayPriceList.clear()
+
+                    for (postSnapshot in dataSnapshot.children) {
+                        val item = postSnapshot.getValue(Product::class.java)
+
+                        if (item != null) {
+                            todayPriceList.add(0, item)
+                        }
+                    }
+                    notifyDataSetChanged()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -198,7 +218,8 @@ class HomeFragment : Fragment() {
             val viewHolder = (holder as ViewHolder).itemView
             viewHolder.tv_popular_store_name.text = popularStoreList[position].storeName
             viewHolder.tv_travel_time.text = popularStoreList[position].travelTime.toString()
-            viewHolder.tv_max_discount_rate.text = popularStoreList[position].maxDiscountRate.toString()
+            viewHolder.tv_max_discount_rate.text =
+                popularStoreList[position].maxDiscountRate.toString()
             viewHolder.tv_discount_product.text = popularStoreList[position].discountProduct
 
             // Todo: recyclerview item click listener
