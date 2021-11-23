@@ -1,65 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="223dp"
     android:background="@drawable/background_map_card_view"
     android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
-            android:layout_margin="4dp"
-            android:src="@drawable/image_ex" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_margin="2dp"
-                android:src="@drawable/image_ex" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_margin="2dp"
-                android:src="@drawable/image_ex" />
-        </LinearLayout>
-    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_marketmapactivity_dialog_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="제목" />
-
-    <View
-        android:layout_width="80dp"
-        android:layout_height="1dp"
-        android:layout_gravity="left"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/purple_700" />
+        android:text="소연이네 야채"
+        android:textColor="#000000"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_marketmapactivity_dialog_content"
-        android:layout_width="match_parent"
+        android:id="@+id/tv_marketmapactivity_dialog_minute"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="내용" />
-</LinearLayout>
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="1dp"
+        android:gravity="center"
+        android:text="도보 3분"
+        android:textColor="#000000"
+        android:textSize="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_marketmapactivity_dialog_title" />
+
+    <TextView
+        android:id="@+id/tv_marketmapactivity_dialog_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="1dp"
+        android:gravity="center"
+        android:text="100m"
+        android:textColor="#000000"
+        android:textSize="10dp"
+        app:layout_constraintStart_toEndOf="@+id/tv_marketmapactivity_dialog_minute"
+        app:layout_constraintTop_toBottomOf="@+id/tv_marketmapactivity_dialog_title" />
+
+    <TextView
+        android:id="@+id/tv_marketmapactivity_dialog_sale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="6dp"
+        android:text="최대 할인율"
+        android:textColor="#000000"
+        android:textSize="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/tv_marketmapactivity_dialog_salepercent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_marketmapactivity_dialog_salepercent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:text="15%"
+        android:textColor="#FF0202"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_marketmapactivity_dialog_saleproducttext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="4dp"
+        android:text="최대 할인 상품"
+        android:textColor="#000000"
+        android:textSize="10dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/tv_marketmapactivity_dialog_salepercent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_marketmapactivity_dialog_sale" />
+
+    <TextView
+        android:id="@+id/tv_marketmapactivity_dialog_saleproduct"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="고등어"
+        android:textColor="#000000"
+        android:textSize="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.289"
+        app:layout_constraintStart_toEndOf="@+id/tv_marketmapactivity_dialog_saleproducttext"
+        app:layout_constraintTop_toBottomOf="@+id/tv_marketmapactivity_dialog_salepercent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_dialog_fmi_product_list"
+        android:layout_width="365dp"
+        android:layout_height="130dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="77dp"
+        tools:ignore="MissingConstraints" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

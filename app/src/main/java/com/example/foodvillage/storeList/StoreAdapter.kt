@@ -7,11 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodvillage.R
-import com.google.android.gms.common.util.ArrayUtils.removeAll
 
-//xml이 없으면 viewbinding에 activity가 안뜨나?
-
-class StoreAdapter(var storeList : ArrayList<StoreInfo> ) : RecyclerView.Adapter<StoreAdapter.CustomViewHolder>() {
+class StoreAdapter(val storeList : ArrayList<StoreInfo> ) : RecyclerView.Adapter<StoreAdapter.CustomViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_store_list_item, parent, false)
@@ -24,23 +21,19 @@ class StoreAdapter(var storeList : ArrayList<StoreInfo> ) : RecyclerView.Adapter
         }
 
     }
-    fun datasetChanged(storeList: ArrayList<StoreInfo>){
-        this.storeList=storeList
-        notifyDataSetChanged()
-    }
 
     // view를 실제 어댑터에 연결
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         holder.storeImage.setImageResource(storeList.get(position).storeImage)
-        holder.name.text = storeList.get(position).storeName
+        holder.name.text = storeList.get(position).name
         holder.dist.text = storeList.get(position).distance
         //holder.review.text = "리뷰 "
-        holder.reviewNum.text = storeList.get(position).reviewTotal
+        holder.reviewNum.text = storeList.get(position).review
         //holder.product.text = "상품 수"
-        holder.productNum.text = storeList.get(position).prodNumTotal
-        holder.category.text = storeList.get(position).categories.toString()
+        holder.productNum.text = storeList.get(position).prodNum
+        holder.category.text = storeList.get(position).category
         //holder.sale.text = "최대 할인율"
-        holder.salePercent.text = storeList.get(position).salePercentMax
+        holder.salePercent.text = storeList.get(position).salePercent
     }
 
     override fun getItemCount(): Int {
