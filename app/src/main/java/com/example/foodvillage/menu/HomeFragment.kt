@@ -1,6 +1,7 @@
 package com.example.foodvillage.menu
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.Handler
@@ -16,6 +17,7 @@ import com.example.foodvillage.R
 import com.example.foodvillage.storeList.StoreInfoData
 import com.example.foodvillage.ViewPagerAdapter
 import com.example.foodvillage.databinding.FragmentHomeBinding
+import com.example.foodvillage.storeList.StoreListFragment
 import kotlinx.android.synthetic.main.item_today_popular_store.view.*
 import kotlinx.android.synthetic.main.item_today_sale.view.*
 import kotlinx.android.synthetic.main.item_today_sale.view.tv_store_name
@@ -90,6 +92,13 @@ class HomeFragment : Fragment() {
                     }
                 }
             })
+        }
+
+        binding.llyHomeAll.setOnClickListener {
+            val storeListFragment = StoreListFragment()
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.main_screen_panel, storeListFragment).commit()
         }
     }
 
