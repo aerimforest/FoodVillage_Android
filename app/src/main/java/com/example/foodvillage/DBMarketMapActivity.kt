@@ -26,7 +26,7 @@ import net.daum.mf.map.api.*
 import java.lang.Math.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.pow
+import kotlin.collections.HashMap
 
 
 class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener{
@@ -37,8 +37,6 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
     private var mapView: MapView?=null
 
     private val eventListener = MarkerEventListener(this)   // 마커 클릭 이벤트 리스너
-    // private val reverseGeoCoder:MapReverseGeoCoder// 마커 클릭 이벤트 리스너
-
 
     // 위치 추적을 위한 변수들
     val TAG: String = "로그"
@@ -47,16 +45,22 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
     internal lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
     private val REQUEST_PERMISSION_LOCATION = 10
 
-    var curr_lat=37.5406564
-    var curr_lon=126.8809048
+    var curr_lat:Double?=null
+    var curr_lon:Double?=null
+    var userName:String?=null
 
-    var selected_marker_lat:Double=curr_lat
-    var selected_marker_lon:Double=curr_lon
+    var selected_marker_lat:Double?=null
+    var selected_marker_lon:Double?=null
 
     var AddressData:String=""
-    var marker_distance:Int = 0
 
-    var marker_dist:Int=0
+    var mDatabase = FirebaseDatabase.getInstance()
+    var uid = FirebaseAuth.getInstance().uid
+    var DbRefUser = mDatabase.getReference("users/" + uid)
+    val DbRefStore = mDatabase.getReference("stores/")
+
+    var storeHashMap: HashMap<String, HashMap<String, Any>>?=null
+    var storeNameList: List<String>?=null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,9 +77,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
 
         mapView!!.setCurrentLocationEventListener(this)
         mapView!!.setPOIItemEventListener(eventListener)
-
-
-        //mapView!!.geo
+        mapView!!.setCalloutBalloonAdapter(CustomBalloonAdapter(layoutInflater))  // 커스텀 말풍선 등록
 
         // 현재 위치
         // LocationRequest() deprecated 되서 아래 방식으로 LocationRequest 객체 생성
@@ -87,12 +89,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             //maxWaitTime= 2000 // 위치 갱신 요청 최대 대기 시간 (밀리초)
         }
 
-        // 현재 위치 디비에서 받아오기
-        val mDatabase = FirebaseDatabase.getInstance()
-
-        val uid= FirebaseAuth.getInstance().uid
-        val DbRefUser = mDatabase.getReference("users/" + uid)
-
+        // 유저 정보 위치 디비에서 받아오기
         DbRefUser.get()
             .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
             .addOnSuccessListener {
@@ -100,35 +97,36 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 curr_lat= t_hashMap.get("currentLatitude") as Double
                 curr_lon= t_hashMap.get("currentLongitude") as Double
                 AddressData=t_hashMap.get("address") as String
-
+                userName=t_hashMap.get("name")!! as String
 
                 // 저장된 위치 마커 찍기
                 var marker = MapPOIItem()
                 marker.itemName = "저장된 내 위치"   // 마커 이름
-                marker.mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
+                marker.mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat!!, curr_lon!!)
                 marker.markerType = MapPOIItem.MarkerType.BluePin
                 marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
                 marker.setCustomImageAnchor(0.5f, 1.0f)
                 mapView?.addPOIItem(marker)
 
-
                 // 저장된 위치로 중심 이동
-                var mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
+                var mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat!!, curr_lon!!)
                 mapView?.setMapCenterPoint(mapPoint, true)
                 mapView?.setZoomLevel(2, true)
 
                 Log.d("유저", "위, 경도: " + curr_lat + ", " + curr_lon)
             }
-
+        DbRefStore.get()
+            .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
+            .addOnSuccessListener {
+                storeHashMap= it.value as HashMap<String, HashMap<String, Any>>
+                storeNameList= ArrayList<String>(storeHashMap!!.keys)
+            }
 
         // 위치 추척 시작
         if (checkPermissionForLocation(this)) {
             // 현위치 트래킹 - 이건 주소 설정할 때 해서 최초로 받는거
-            mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving)
-            // curr_lat, curr_lon 설정 여기서!!
+            mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving)
             updateLocation()
-            mapView!!.setCalloutBalloonAdapter(CustomBalloonAdapter(layoutInflater))  // 커스텀 말풍선 등록
-
         }
 
         binding.btnDbMarketMapActivityFindway.setOnClickListener{
@@ -140,29 +138,9 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         }
 
         binding.btnDbMarketMapActivityFloating.setOnClickListener{
-            var mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
+            var mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat!!, curr_lon!!)
             mapView?.setMapCenterPoint(mapPoint, true)
         }
-    }
-
-    private fun getApiKeyFromManifest(context: Context): String? {
-        var apiKey: String? = null
-        try {
-            val e = context.packageName
-            val ai = context
-                .packageManager
-                .getApplicationInfo(e, PackageManager.GET_META_DATA)
-            val bundle = ai.metaData
-            if (bundle != null) {
-                apiKey = bundle.getString("com.kakao.sdk.AppKey")
-            }
-        } catch (var6: Exception) {
-            Log.d(
-                "meta-data",
-                "Caught non-fatal exception while retrieving apiKey: $var6"
-            )
-        }
-        return apiKey
     }
 
     override fun onDestroy() {
@@ -182,160 +160,105 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         }
         Log.d(TAG, "updateLocation() 위치 권한이 하나라도 존재하는 경우")
 
-
-        // 이거 이따가 mymap에서 유저정보 저장하고, 거기있는거 가져오는걸로 바꾸면 될듯1!
-//        // 현재위치 주소값
-//        var reverseGeoCoder = MapReverseGeoCoder(
-//            getApiKeyFromManifest(this),
-//            MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon),
-//            object : MapReverseGeoCoder.ReverseGeoCodingResultListener {
-//                override fun onReverseGeoCoderFoundAddress(
-//                    mapReverseGeoCoder: MapReverseGeoCoder,
-//                    s: String
-//                ) { AddressData= s
-//                    binding.tvDbmarketmapactivityMylocation.setText(AddressData)
-//                }
-//                override fun onReverseGeoCoderFailedToFindAddress(mapReverseGeoCoder: MapReverseGeoCoder) {
-//                    binding.tvDbmarketmapactivityMylocation.setText("address not found")
-//                }
-//            },
-//            this
-//        )
-//
-//        reverseGeoCoder.startFindingAddress()
-
-        binding.tvDbmarketmapactivityMylocation.setText(AddressData)
-
-
-//        //마커 생성1
-//        //val markers=arrayListOf<MapPOIItem>() 클래스는 디비와 함께 넣기
-//        var marker = MapPOIItem()
-//        marker.itemName = "나연마트1"   // 마커 이름
-//        marker.mapPoint = MapPoint.mapPointWithGeoCoord(market_lat1, market_lon1)
-//        marker.markerType = MapPOIItem.MarkerType.CustomImage
-//        marker.customImageResourceId = R.drawable.fish_marker
-//        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-//        marker.customSelectedImageResourceId = R.drawable.fish_marker
-//        //isCustomImageAutoscale = false
-//        marker.setCustomImageAnchor(0.5f, 1.0f)
-//        mapView?.addPOIItem(marker)
-
-
-
-
-        // 다 보이게 레벨 조정
-        //mapView!!.fitMapViewAreaToShowAllPOIItems()
-
-        // 마커들 디비에서 받아오기
-        val mDatabase = FirebaseDatabase.getInstance()
-
-        val uid= FirebaseAuth.getInstance().uid
-        val DbRefUser = mDatabase.getReference("stores/")
-
         DbRefUser.get()
             .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
             .addOnSuccessListener {
-                var t_hashMap: HashMap<String, HashMap<String, Any>> = it.value as HashMap<String, HashMap<String, Any>>
-                val storeNameList: List<String> = ArrayList<String>(t_hashMap.keys)
-                var marker = MapPOIItem()
-                for (i in 0 until storeNameList.size){
-                    val storeName=t_hashMap.get(storeNameList[i])?.get("storeName") as String
-                    val currentLatitude=t_hashMap.get(storeNameList[i])?.get("currentLatitude") as Double
-                    val currentLongitude=t_hashMap.get(storeNameList[i])?.get("currentLongitude") as Double
-                    val address=t_hashMap.get(storeNameList[i])?.get("address") as String
-                    val categories=t_hashMap.get(storeNameList[i])?.get("categoryNames") as List<String>
+                var t_hashMap: HashMap<String, Any> = it.value as HashMap<String, Any>
+                curr_lat= t_hashMap.get("currentLatitude") as Double
+                curr_lon= t_hashMap.get("currentLongitude") as Double
+                AddressData=t_hashMap.get("address") as String
 
-                    marker = MapPOIItem()
-                    marker.itemName = storeName
-                    marker.mapPoint = MapPoint.mapPointWithGeoCoord(
-                        currentLatitude,
-                        currentLongitude
-                    )
-
-                    when(categories[0]){
-                        "과일/채소" -> {
-                            marker.markerType = MapPOIItem.MarkerType.CustomImage
-                            marker.customImageResourceId = R.drawable.marker_tomato
-                            marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                            marker.customSelectedImageResourceId = R.drawable.marker_tomato
-                        }
-                        "고기/계란" -> {
-                            marker.markerType = MapPOIItem.MarkerType.CustomImage
-                            marker.customImageResourceId = R.drawable.marker_meat
-                            marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                            marker.customSelectedImageResourceId = R.drawable.marker_meat
-                        }
-                        "수산/건어물" -> {
-                            marker.markerType = MapPOIItem.MarkerType.CustomImage
-                            marker.customImageResourceId = R.drawable.marker_fish
-                            marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                            marker.customSelectedImageResourceId = R.drawable.marker_fish
-                        }
-                        "반찬/간편식" -> {
-                            marker.markerType = MapPOIItem.MarkerType.CustomImage
-                            marker.customImageResourceId = R.drawable.marker_banchan
-                            marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                            marker.customSelectedImageResourceId = R.drawable.marker_banchan
-                        }
-                        "간식/음료" -> {
-                            marker.markerType = MapPOIItem.MarkerType.CustomImage
-                            marker.customImageResourceId = R.drawable.marker_choco
-                            marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                            marker.customSelectedImageResourceId = R.drawable.marker_choco
-                        }
-                        "밥/면/소스/캔" -> {
-                            marker.markerType = MapPOIItem.MarkerType.CustomImage
-                            marker.customImageResourceId = R.drawable.marker_bap
-                            marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                            marker.customSelectedImageResourceId = R.drawable.marker_bap
-                        }
-                        "건강/다이어트" -> {
-                            marker.markerType = MapPOIItem.MarkerType.CustomImage
-                            marker.customImageResourceId = R.drawable.marker_lettuce
-                            marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                            marker.customSelectedImageResourceId = R.drawable.marker_lettuce
-                        }
-                        "생활용품" -> {
-                            marker.markerType = MapPOIItem.MarkerType.CustomImage
-                            marker.customImageResourceId = R.drawable.marker_pan
-                            marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                            marker.customSelectedImageResourceId = R.drawable.marker_pan
-                        }
-                        else-> {
-                            marker.markerType = MapPOIItem.MarkerType.BluePin
-                            marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
-                        }
-
-                    }
-
-                    marker.setCustomImageAnchor(0.5f, 1.0f)
-                    mapView?.addPOIItem(marker)
-
-                }
-
-//                curr_lat= t_hashMap.get("currentLatitude") as Double
-//                curr_lon= t_hashMap.get("currentLongitude") as Double
-//                AddressData=t_hashMap.get("address") as String
-//
-//
-//                // 저장된 위치 마커 찍기
-//                var marker = MapPOIItem()
-//                marker.itemName = "저장된 내 위치"   // 마커 이름
-//                marker.mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
-//                marker.markerType = MapPOIItem.MarkerType.BluePin
-//                marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
-//                marker.setCustomImageAnchor(0.5f, 1.0f)
-//                mapView?.addPOIItem(marker)
-//
-//
-//                // 저장된 위치로 중심 이동
-//                var mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
-//                mapView?.setMapCenterPoint(mapPoint, true)
-//                mapView?.setZoomLevel(2, true)
-//
-//                Log.d("유저", "위, 경도: "+curr_lat+", "+curr_lon)
+                binding.tvDbmarketmapactivityMylocation.setText(AddressData)
             }
 
+
+        // 마커들 디비에서 받아오기
+        var marker = MapPOIItem()
+        DbRefStore.get()
+            .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
+            .addOnSuccessListener {
+                storeHashMap= it.value as HashMap<String, HashMap<String, Any>>
+                storeNameList= ArrayList<String>(storeHashMap!!.keys)
+
+            for (i in 0 until (storeNameList as ArrayList<String>).size) {
+                val storeName = storeHashMap!!.get((storeNameList!! as ArrayList<String>)[i])
+                    ?.get("storeName") as String
+                val currentLatitude = storeHashMap!!.get((storeNameList!! as ArrayList<String>)[i])
+                    ?.get("currentLatitude") as Double
+                val currentLongitude = storeHashMap!!.get((storeNameList!! as ArrayList<String>)[i])
+                    ?.get("currentLongitude") as Double
+                val address = storeHashMap!!.get((storeNameList!! as ArrayList<String>)[i])
+                    ?.get("address") as String
+                val categories = storeHashMap!!.get((storeNameList!! as ArrayList<String>)[i])
+                    ?.get("categoryNames") as List<String>
+
+                marker = MapPOIItem()
+                marker.itemName = storeName
+                marker.mapPoint = MapPoint.mapPointWithGeoCoord(
+                    currentLatitude,
+                    currentLongitude
+                )
+
+                when (categories[0]) {
+                    "과일/채소" -> {
+                        marker.markerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customImageResourceId = R.drawable.marker_tomato
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customSelectedImageResourceId = R.drawable.marker_tomato
+                    }
+                    "고기/계란" -> {
+                        marker.markerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customImageResourceId = R.drawable.marker_meat
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customSelectedImageResourceId = R.drawable.marker_meat
+                    }
+                    "수산/건어물" -> {
+                        marker.markerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customImageResourceId = R.drawable.marker_fish
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customSelectedImageResourceId = R.drawable.marker_fish
+                    }
+                    "반찬/간편식" -> {
+                        marker.markerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customImageResourceId = R.drawable.marker_banchan
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customSelectedImageResourceId = R.drawable.marker_banchan
+                    }
+                    "간식/음료" -> {
+                        marker.markerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customImageResourceId = R.drawable.marker_choco
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customSelectedImageResourceId = R.drawable.marker_choco
+                    }
+                    "밥/면/소스/캔" -> {
+                        marker.markerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customImageResourceId = R.drawable.marker_bap
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customSelectedImageResourceId = R.drawable.marker_bap
+                    }
+                    "건강/다이어트" -> {
+                        marker.markerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customImageResourceId = R.drawable.marker_lettuce
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customSelectedImageResourceId = R.drawable.marker_lettuce
+                    }
+                    "생활용품" -> {
+                        marker.markerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customImageResourceId = R.drawable.marker_pan
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customSelectedImageResourceId = R.drawable.marker_pan
+                    }
+                    else -> {
+                        marker.markerType = MapPOIItem.MarkerType.BluePin
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+                    }
+                }
+                marker.setCustomImageAnchor(0.5f, 1.0f)
+                mapView?.addPOIItem(marker)
+            }
+
+
+        }
 
     }
 
@@ -356,20 +279,6 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         val date: Date = Calendar.getInstance().time
         val simpleDateFormat = SimpleDateFormat("hh:mm:ss a")
 //        txtTime.text = "Updated at : " + simpleDateFormat.format(date) // 갱신된 날짜
-        //수원 화성의 위도, 경도
-        val mapPoint = MapPoint.mapPointWithGeoCoord(
-            mLastLocation.latitude,
-            mLastLocation.longitude
-        )
-        Log.d(TAG, "위도: " + mLastLocation.latitude + ", 경도: " + mLastLocation.longitude)
-        /*
-            여기서 현 위치 로그가 나오는데, 지도찾기할 때 이거 사용하고
-            버튼 클릭 - 현 위치로 설정? -> 예 선택 시 저장
-            -> 아니오시 계속 트래킹!
-         */
-        curr_lat=mLastLocation.latitude
-        curr_lon=mLastLocation.longitude
-
     }
 
     // 위치 권한이 있는지 확인하는 메서드
@@ -406,11 +315,10 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         if (requestCode == REQUEST_PERMISSION_LOCATION) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.d(TAG, "onRequestPermissionsResult() _ 권한 허용 클릭")
-                updateLocation()
 
                 // 현위치 트래킹
-                mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving);
-
+                mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithoutHeadingWithoutMapMoving);
+                updateLocation()
 
             } else {
                 Log.d(TAG, "onRequestPermissionsResult() _ 권한 허용 거부")
@@ -447,35 +355,34 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
     override fun onCurrentLocationUpdateCancelled(p0: MapView?) {
 
     }
-    fun getCurrLat(): Double {
-        return curr_lat
-    }
-    fun getCurrLon(): Double {
-        return curr_lon
-    }
-    fun getAddress():String{
-        return AddressData
-    }
-    fun getDist():Int{
-        return marker_distance
+    // 커스텀 말풍선 클래스
+    inner class CustomBalloonAdapter(inflater: LayoutInflater): CalloutBalloonAdapter {
+        var mCalloutBalloon: View = inflater.inflate(R.layout.balloon_layout, null)
+
+        override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
+
+            if (poiItem != null) {
+                val market_dist_hash= storeHashMap!!.get(poiItem?.itemName)?.get("distance") as HashMap<String, HashMap<String, Any>>
+                val market_dist=market_dist_hash.get(uid) as Double
+
+                (mCalloutBalloon.findViewById(R.id.ball_tv_name) as TextView).text =poiItem?.itemName
+                (mCalloutBalloon.findViewById(R.id.ball_tv_address) as TextView).text =market_dist.toString() + "km, "+round((market_dist / 3.5) * 60).toString()+"분"
+                Log.d("시간", "벌룬용(" + poiItem?.itemName + "): " + market_dist.toString() + ", " + round((market_dist / 3.5) * 60).toString())
+            }
+            return mCalloutBalloon
+
+        }
+
+        override fun getPressedCalloutBalloon(poiItem: MapPOIItem?): View {
+            // 말풍선 클릭 시
+            return mCalloutBalloon
+        }
     }
 
     inner class MarkerEventListener(val context: Context): MapView.POIItemEventListener {
-        private var currlat:Double=0.0
-        private var currlon:Double=0.0
-        private var AddressData:String=""
-
-        private var marker_name:String=""
-
-
-
         override fun onPOIItemSelected(mapView: MapView?, marker: MapPOIItem?) {
             Log.d("마커", "onPOIItemSelected()")
 
-            currlat=getCurrLat()
-            currlon=getCurrLon()
-
-            Log.d("마커", "폴리라인용 기준점: " + currlat + ", " + currlon)
             mapView!!.removeAllPolylines()
 
             // 라인 생성
@@ -487,51 +394,25 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             if (marker != null) {
                 // Polyline 좌표 지정
 
-                val market_lat=marker.mapPoint.mapPointGeoCoord.latitude
-                val market_lon=marker.mapPoint.mapPointGeoCoord.longitude
+                val market_lat = marker.mapPoint.mapPointGeoCoord.latitude
+                val market_lon = marker.mapPoint.mapPointGeoCoord.longitude
+
+                selected_marker_lat = market_lat
+                selected_marker_lon = market_lon
 
                 Log.d("마커", ": " + market_lat + ", " + market_lon)
 
-                selected_marker_lat=market_lat
-                selected_marker_lon=market_lon
-
-                polyline.addPoint(MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon))
+                polyline.addPoint(MapPoint.mapPointWithGeoCoord(curr_lat!!, curr_lon!!))
                 polyline.addPoint(MapPoint.mapPointWithGeoCoord(market_lat, market_lon))
 
                 // Polyline 지도에 올리기.
                 mapView!!.addPolyline(polyline)
 
                 val mapPointBounds = MapPointBounds(polyline.mapPoints)
-                val padding = 100 // px
+                val padding = 200 // px
 
                 mapView!!.moveCamera(CameraUpdateFactory.newMapPointBounds(mapPointBounds, padding))
 
-                marker_distance=getDistance(curr_lat, curr_lon, market_lat, market_lon)
-                marker_dist=marker_distance
-                marker_name=marker!!.itemName
-
-                Log.d("마커", "" + marker_name + ", " + marker_dist)  // 각각 잘 들어옴
-
-                // 주소값
-                var reverseGeoCoder = MapReverseGeoCoder(
-                    getApiKeyFromManifest(this@DBMarketMapActivity),
-                    MapPoint.mapPointWithGeoCoord(market_lat, market_lon),
-                    object : MapReverseGeoCoder.ReverseGeoCodingResultListener {
-                        override fun onReverseGeoCoderFoundAddress(
-                            mapReverseGeoCoder: MapReverseGeoCoder,
-                            s: String
-                        ) {
-                            AddressData = s
-                            binding.tvDbmarketmapactivityMarketlocation.setText(AddressData)
-                        }
-
-                        override fun onReverseGeoCoderFailedToFindAddress(mapReverseGeoCoder: MapReverseGeoCoder) {
-                            binding.tvDbmarketmapactivityMarketlocation.setText("address not found")
-                        }
-                    },
-                    this@DBMarketMapActivity
-                )
-                reverseGeoCoder.startFindingAddress()
             }
         }
 
@@ -540,77 +421,57 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             // 이 함수도 작동하지만 그냥 아래 있는 함수에 작성하자
         }
 
-        override fun onCalloutBalloonOfPOIItemTouched(
-            mapView: MapView?,
-            poiItem: MapPOIItem?,
-            buttonType: MapPOIItem.CalloutBalloonButtonType?
-        ) {
+        override fun onCalloutBalloonOfPOIItemTouched(mapView: MapView?, poiItem: MapPOIItem?, buttonType: MapPOIItem.CalloutBalloonButtonType?) {
 
-            val dialog: BottomSheetDialog = BottomSheetDialog(this@DBMarketMapActivity)
+            val dialog = BottomSheetDialog(this@DBMarketMapActivity)
             dialog.setContentView(R.layout.dialog_fmi_market)
-            val tv_marketmapactivity_dialog_content = dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_content)
-            tv_marketmapactivity_dialog_content!!.setText(
-                "주소: " + AddressData + "\n거리: " + (marker_distance.toDouble() / 1000).toString() + "km" + "\n이동시간: " + (round(
-                    ((marker_distance.toDouble() / 1000) / 3.5) * 60 * 10
-                ) / 10).toString() + "분"
-            )
-            tv_marketmapactivity_dialog_content?.setOnClickListener {
-                Toast.makeText(this@DBMarketMapActivity, "내용을 클릭하였습니다", Toast.LENGTH_LONG).show()
-                dialog.dismiss()
-            }
-            val tv_marketmapactivity_dialog_title = dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_title)
-            tv_marketmapactivity_dialog_title!!.setText("${poiItem?.itemName}")
 
-            dialog.show()
+            val DbRefStore = mDatabase.getReference("stores/" + poiItem?.itemName)
+
+            DbRefStore.get()
+                .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
+                .addOnSuccessListener {
+                    var t_hashMap: HashMap<String, HashMap<String, Any>> =
+                        it.value as HashMap<String, HashMap<String, Any>>
+
+                    val market_dist = t_hashMap.get("distance")?.get(uid) as Double
+                    val market_address = t_hashMap.get("address") as String
+
+                    val tv_marketmapactivity_dialog_title =
+                        dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_title)
+                    tv_marketmapactivity_dialog_title!!.setText("${poiItem?.itemName}")
+
+                    val tv_marketmapactivity_dialog_content =
+                        dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_content)
+                    tv_marketmapactivity_dialog_content!!.setText(
+                        "다이얼로그\n주소: " + market_address + "\n거리: " + market_dist + "km" + "\n이동시간: " + round(
+                            (market_dist / 3.5) * 60
+                        ).toString() + "분"
+                    )
+                    Log.d(
+                        "시간",
+                        "다이얼로그용: " + market_dist.toString() + ", " + round((market_dist / 3.5) * 60).toString()
+                    )
+                    tv_marketmapactivity_dialog_content?.setOnClickListener {
+                        Toast.makeText(this@DBMarketMapActivity, "내용을 클릭하였습니다", Toast.LENGTH_LONG)
+                            .show()
+                        dialog.dismiss()
+                    }
+
+                    dialog.show()
+
+                    Log.d("마커 디비_다이얼로그", poiItem?.itemName + ", " + market_dist + ", " + market_address)
+                }
+
         }
 
         override fun onDraggablePOIItemMoved(
             mapView: MapView?,
             poiItem: MapPOIItem?,
             mapPoint: MapPoint?
-        ) {
-            // 마커의 속성 중 isDraggable = true 일 때 마커를 이동시켰을 경우
-        }
-
-    }
-    // 커스텀 말풍선 클래스
-    inner class CustomBalloonAdapter(inflater: LayoutInflater): CalloutBalloonAdapter {
-        val mCalloutBalloon: View = inflater.inflate(R.layout.balloon_layout, null)
-        val name: TextView = mCalloutBalloon.findViewById(R.id.ball_tv_name)
-        val address: TextView = mCalloutBalloon.findViewById(R.id.ball_tv_address)
-        var dist:Int=0
-
-        override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
-            // 마커 클릭 시 나오는 말풍선
-            name.text = poiItem?.itemName   // 해당 마커의 정보 이용 가능
-            dist= marker_dist // 이 친구가 문제야 문제... -> 데이터 가져올 때 동시에 가져오면 만사 해결임
-            Log.d("마커 풍성", "" + poiItem?.itemName + ", " + marker_dist)
-
-
-            // 지금 순서때문에 거리 잘못 나온는데, 나중에 디비 연동했을 때 고치면 됨!!
-            address.text =(dist.toDouble() / 1000).toString() + "km, "+(round(((dist.toDouble() / 1000) / 3.5) * 60 * 10)/10).toString()+"분"
-            return mCalloutBalloon
-        }
-
-        override fun getPressedCalloutBalloon(poiItem: MapPOIItem?): View {
-            // 말풍선 클릭 시
-            return mCalloutBalloon
+        ) { // 마커의 속성 중 isDraggable = true 일 때 마커를 이동시켰을 경우
         }
     }
-    fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Int {
-        val R = 6372.8 * 1000
-
-        val dLat = toRadians(lat2 - lat1)
-        val dLon = toRadians(lon2 - lon1)
-        val a = sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(toRadians(lat1)) * cos(
-            toRadians(lat2)
-        )
-        val c = 2 * asin(sqrt(a))
-        return (R * c).toInt()
-    }
-
-
-
 
 }
 

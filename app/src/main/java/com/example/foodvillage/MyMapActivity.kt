@@ -187,6 +187,8 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
                                     getDistance(curr_lat!!,
                                         curr_lon!!, currentLatitude, currentLongitude)
 
+                                Log.d("파베1", storeNameList[i]+", "+curr_lat+", "+curr_lon+", "+currentLatitude+", "+currentLongitude+", "+marker_distance)
+
                                 // 현재위치 주소값
                                 var reverseGeoCoder = MapReverseGeoCoder(
                                     getApiKeyFromManifest(this),
@@ -232,7 +234,7 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
                             }
 
                             //이동시간
-                            // Math.round(((marker_distance.toDouble() / 1000) / 3.5) * 60 * 10 ) / 10).toString()
+                            // round( (market_dist / 3.5) * 60).toString()
 
                         }
 
@@ -444,6 +446,6 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
             Math.toRadians(lat2)
         )
         val c = 2 * Math.asin(Math.sqrt(a))
-        return round((R * c)) /100
+        return Math.round(R * c).toDouble() / 1000
     }
 }
