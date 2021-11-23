@@ -15,27 +15,27 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.example.foodvillage.*
 import com.example.foodvillage.R
+<<<<<<< HEAD
 import com.example.foodvillage.PopularStoreData
 import com.example.foodvillage.ViewPagerAdapter
 import com.example.foodvillage.databinding.FragmentHomeBinding
 import com.example.foodvillage.schema.Product
 import com.example.foodvillage.storeList.StoreListActivity
+=======
+import com.example.foodvillage.ViewPagerAdapter
+import com.example.foodvillage.databinding.FragmentHomeBinding
+import com.example.foodvillage.schema.Product
+import com.example.foodvillage.schema.Store
+>>>>>>> 39196742d6e4014e7190d7d19bc95737426ad455
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import kotlinx.android.synthetic.main.item_today_popular_store.view.*
 import kotlinx.android.synthetic.main.item_today_sale.view.*
+import kotlin.math.*
 
 class HomeFragment : Fragment() {
-
-    private var popularStoreList = arrayListOf(
-        PopularStoreData("이태리로 간 고등어", 10, 5, "고등어"),
-        PopularStoreData("이태리로 간 고등어", 10, 5, "고등어"),
-        PopularStoreData("이태리로 간 고등어", 10, 5, "고등어"),
-        PopularStoreData("이태리로 간 고등어", 10, 5, "고등어"),
-        PopularStoreData("이태리로 간 고등어", 10, 5, "고등어")
-    )
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -45,7 +45,9 @@ class HomeFragment : Fragment() {
 
     private val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
     private var databaseReference: DatabaseReference = firebaseDatabase.reference
+    private var databaseStoreReference: DatabaseReference = firebaseDatabase.reference
     private var todayPriceList = arrayListOf<Product>()
+    private var todayStoreList = arrayListOf<Store>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,10 +66,9 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.rcvHomeTodayPrice.adapter = TodayPriceAdapter()
-//        binding.rcvHomeTodayPrice.layoutManager = LinearLayoutManager(context)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rcvHomeTodayPrice.adapter = TodayPriceAdapter()
         binding.rcvHomeTodayPrice.layoutManager = layoutManager
         binding.rcvHomeTodayPrice.setHasFixedSize(true)
 
@@ -191,6 +192,27 @@ class HomeFragment : Fragment() {
     inner class PopularStoreAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         init {
+            databaseStoreReference = firebaseDatabase.getReference("stores")
+            databaseStoreReference.orderByChild("grade").addValueEventListener(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                    // ArrayList 비워줌
+                    todayStoreList.clear()
+
+                    for (postSnapshot in dataSnapshot.children) {
+                        val item = postSnapshot.getValue(Store::class.java)
+
+                        if (item != null) {
+                            todayStoreList.add(0, item)
+                        }
+                    }
+                    notifyDataSetChanged()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -204,16 +226,48 @@ class HomeFragment : Fragment() {
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val viewHolder = (holder as ViewHolder).itemView
-            viewHolder.tv_popular_store_name.text = popularStoreList[position].storeName
-            viewHolder.tv_travel_time.text = popularStoreList[position].travelTime.toString()
-            viewHolder.tv_max_discount_rate.text = popularStoreList[position].maxDiscountRate.toString()
-            viewHolder.tv_discount_product.text = popularStoreList[position].discountProduct
+            val auth: FirebaseAuth = FirebaseAuth.getInstance()
+            viewHolder.tv_popular_store_name.text = todayStoreList[position].storeName
+
+            val distance = todayStoreList[position].distance?.get(auth.uid)
+            if (distance != null) {
+                viewHolder.tv_travel_time.text =
+                    ((((distance.toDouble() / 1000) / 3.5) * 60 * 10).roundToInt() / 10).toString()
+            }
+
+            databaseReference.orderByChild("discountRate")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                        for (postSnapshot in dataSnapshot.children) {
+                            if (postSnapshot.child("storeName").value == todayStoreList[position].storeName) {
+                                viewHolder.tv_max_discount_rate.text =
+                                    postSnapshot.child("discountRate").value.toString()
+                                viewHolder.tv_discount_product.text =
+                                    postSnapshot.child("productName").value.toString()
+                            }
+                        }
+                        notifyDataSetChanged()
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                    }
+                })
+
+            // Todo: 오늘의 인기가게 이미지
+            val imageView = viewHolder.imv_product
+
+//            Firebase.storage.reference.child(todayStoreList[position].storeImg.toString()).downloadUrl.addOnCompleteListener {
+//                if (it.isSuccessful) {
+//                    Glide.with(this@HomeFragment).load(it.result).into(imageView)
+//                }
+//            }
 
             // Todo: recyclerview item click listener
         }
 
         override fun getItemCount(): Int {
-            return popularStoreList.size
+            return todayStoreList.size
         }
     }
 
