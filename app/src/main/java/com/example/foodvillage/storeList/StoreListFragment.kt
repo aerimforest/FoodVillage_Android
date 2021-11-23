@@ -17,14 +17,14 @@ import com.google.android.material.slider.RangeSlider
 class StoreListFragment : Fragment() {
 
     private val storeList = arrayListOf(
-        StoreInfo(R.drawable.subway, "써브웨이 대학로점", "100m", "10", "5", "건강/다이어트", "43%"),
-        StoreInfo(R.drawable.subway, "써브웨이 명동점", "1.6km", "30", "9", "건강/다이어트", "35%"),
-        StoreInfo(R.drawable.subway, "써브웨이 충무로점", "3.2km", "50", "8", "건강/다이어트", "43%"),
-        StoreInfo(R.drawable.subway, "써브웨이 충무로2점", "3.2km", "100+", "8", "건강/다이어트", "43%"),
-        StoreInfo(R.drawable.subway, "써브웨이 대학로점", "4.5km", "15", "5", "건강/다이어트", "3%"),
-        StoreInfo(R.drawable.subway, "써브웨이 명동점", "1.6km", "24", "9", "건강/다이어트", "35%"),
-        StoreInfo(R.drawable.subway, "써브웨이 충무로점", "3.2km", "75", "8", "건강/다이어트", "12%"),
-        StoreInfo(R.drawable.subway, "써브웨이 충무로2점", "3.2km", "1", "8", "건강/다이어트", "5%")
+        StoreInfo(R.drawable.subway, "써브웨이 대학로점", "100m", "10", "5", arrayListOf("건강/다이어트"), "43%"),
+        StoreInfo(R.drawable.subway, "써브웨이 명동점", "1.6km", "30", "9", arrayListOf("건강/다이어트"), "35%"),
+        StoreInfo(R.drawable.subway, "써브웨이 충무로점", "3.2km", "50", "8", arrayListOf("건강/다이어트"), "43%"),
+        StoreInfo(R.drawable.subway, "써브웨이 충무로2점", "3.2km", "100+", "8", arrayListOf("건강/다이어트"), "43%"),
+        StoreInfo(R.drawable.subway, "써브웨이 대학로점", "4.5km", "15", "5", arrayListOf("건강/다이어트"), "3%"),
+        StoreInfo(R.drawable.subway, "써브웨이 명동점", "1.6km", "24", "9", arrayListOf("건강/다이어트"), "35%"),
+        StoreInfo(R.drawable.subway, "써브웨이 충무로점", "3.2km", "75", "8", arrayListOf("건강/다이어트"), "12%"),
+        StoreInfo(R.drawable.subway, "써브웨이 충무로2점", "3.2km", "1", "8", arrayListOf("건강/다이어트"), "5%")
     )
 
     private var mBinding: FragmentStorelistBinding? = null

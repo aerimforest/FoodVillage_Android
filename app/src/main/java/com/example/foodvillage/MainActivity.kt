@@ -261,21 +261,74 @@ class MainActivity : AppCompatActivity() {
                 //애뮬레이터 안 되면 여기까지 주석처리
 
             }
-
-
+//
+//
 //        // 리뷰 생성
-//        storeName="예림마트"
-//        val DbRefReview = mDatabase.getReference("reviews/"+storeName)
-//        val Date: LocalDate = LocalDate.now()
-//        val review= Review()
-//        review.userId=user.id
-//        review.userName=user.name
+//        var storeName="예림마트1"
+//        var DbRefReview = mDatabase.getReference("reviews/"+storeName)
+//        var Date: LocalDate = LocalDate.now()
+//        var review= Review()
+//        review.userId="Cg70AwEYe6bxPcI34FuGDvewFwF2"
+//        review.userName="nana test"
 //        review.reportDate=Date.toString()
-//        review.reviewTitle="예림마트 반찬 jmt"
+//        review.reviewTitle="예림마트1-1 반찬 jmt"
 //        review.reviewContent="장조림 너모 맛있었어요~~ 최고최고~!"
 //        review.reviewImg=null
-//        DbRefReview.setValue(review)
+//        DbRefReview.child("Cg70AwEYe6bxPcI34FuGDvewFwF2").setValue(review)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+//
+//        storeName="예림마트1"
+//        DbRefReview = mDatabase.getReference("reviews/"+storeName)
+//        Date= LocalDate.now()
+//        review= Review()
+//        review.userId="OnkBTywPZCNP7mBksXrbWl7VjUl1"
+//        review.userName="옒"
+//        review.reportDate=Date.toString()
+//        review.reviewTitle="예림마트1-2 반찬 jmt"
+//        review.reviewContent="장조림 너모 맛있었어요~~ 최고최고~!"
+//        review.reviewImg=null
+//        DbRefReview.child("OnkBTywPZCNP7mBksXrbWl7VjUl1").setValue(review)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+//
+//        storeName="예림마트3"
+//        DbRefReview = mDatabase.getReference("reviews/"+storeName)
+//        Date= LocalDate.now()
+//        review= Review()
+//        review.userId="Cg70AwEYe6bxPcI34FuGDvewFwF2"
+//        review.userName="nana test"
+//        review.reportDate=Date.toString()
+//        review.reviewTitle="예림마트3 반찬 jmt"
+//        review.reviewContent="장조림 너모 맛있었어요~~ 최고최고~!"
+//        review.reviewImg=null
+//        DbRefReview.child("Cg70AwEYe6bxPcI34FuGDvewFwF2").setValue(review)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+//
+//        storeName="나연마트1"
+//        DbRefReview = mDatabase.getReference("reviews/"+storeName)
+//        Date= LocalDate.now()
+//        review= Review()
+//        review.userId="Cg70AwEYe6bxPcI34FuGDvewFwF2"
+//        review.userName="nana test"
+//        review.reportDate=Date.toString()
+//        review.reviewTitle="나연마트1 반찬 jmt"
+//        review.reviewContent="장조림 너모 맛있었어요~~ 최고최고~!"
+//        review.reviewImg=null
+//        DbRefReview.child("Cg70AwEYe6bxPcI34FuGDvewFwF2").setValue(review)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+//
+//        storeName="유진마트1"
+//        DbRefReview = mDatabase.getReference("reviews/"+storeName)
+//        Date= LocalDate.now()
+//        review= Review()
+//        review.userId="kDIrovjDfgTJKFCpFr0qZnezr1D2"
+//        review.userName="유진"
+//        review.reportDate=Date.toString()
+//        review.reviewTitle="유진마트1 반찬 jmt"
+//        review.reviewContent="장조림 너모 맛있었어요~~ 최고최고~!"
+//        review.reviewImg=null
+//        DbRefReview.child("kDIrovjDfgTJKFCpFr0qZnezr1D2").setValue(review)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+
 
 //        // 카테고리 생성
 //        var i=0

@@ -44,11 +44,11 @@ class AroundFragment : Fragment() {
             val intent = Intent(context, MyMapActivity::class.java)
             startActivity(intent)
         }
-
-        binding.btnMainactivityTomarketmap.setOnClickListener {
-            val intent = Intent(context, MarketMapActivity::class.java)
-            startActivity(intent)
-        }
+//
+//        binding.btnMainactivityTomarketmap.setOnClickListener {
+//            val intent = Intent(context, MarketMapActivity::class.java)
+//            startActivity(intent)
+//        }
         binding.btnMainactivityTodbmarketmap.setOnClickListener{
             val intent=Intent(context, DBMarketMapActivity::class.java)
             startActivity(intent)
