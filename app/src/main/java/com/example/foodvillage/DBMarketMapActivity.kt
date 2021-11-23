@@ -234,49 +234,49 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                         marker.markerType = MapPOIItem.MarkerType.CustomImage
                         marker.customImageResourceId = R.drawable.marker_tomato
                         marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customSelectedImageResourceId = R.drawable.marker_tomato
+                        marker.customSelectedImageResourceId = R.drawable.marker_tomato_selected
                     }
                     "고기/계란" -> {
                         marker.markerType = MapPOIItem.MarkerType.CustomImage
                         marker.customImageResourceId = R.drawable.marker_meat
                         marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customSelectedImageResourceId = R.drawable.marker_meat
+                        marker.customSelectedImageResourceId = R.drawable.marker_meat_selected
                     }
                     "수산/건어물" -> {
                         marker.markerType = MapPOIItem.MarkerType.CustomImage
                         marker.customImageResourceId = R.drawable.marker_fish
                         marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customSelectedImageResourceId = R.drawable.marker_fish
+                        marker.customSelectedImageResourceId = R.drawable.marker_fish_selected
                     }
                     "반찬/간편식" -> {
                         marker.markerType = MapPOIItem.MarkerType.CustomImage
                         marker.customImageResourceId = R.drawable.marker_banchan
                         marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customSelectedImageResourceId = R.drawable.marker_banchan
+                        marker.customSelectedImageResourceId = R.drawable.marker_banchan_selected
                     }
                     "간식/음료" -> {
                         marker.markerType = MapPOIItem.MarkerType.CustomImage
                         marker.customImageResourceId = R.drawable.marker_choco
                         marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customSelectedImageResourceId = R.drawable.marker_choco
+                        marker.customSelectedImageResourceId = R.drawable.marker_choco_selected
                     }
                     "밥/면/소스/캔" -> {
                         marker.markerType = MapPOIItem.MarkerType.CustomImage
                         marker.customImageResourceId = R.drawable.marker_bap
                         marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customSelectedImageResourceId = R.drawable.marker_bap
+                        marker.customSelectedImageResourceId = R.drawable.marker_bap_selected
                     }
                     "건강/다이어트" -> {
                         marker.markerType = MapPOIItem.MarkerType.CustomImage
                         marker.customImageResourceId = R.drawable.marker_lettuce
                         marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customSelectedImageResourceId = R.drawable.marker_lettuce
+                        marker.customSelectedImageResourceId = R.drawable.marker_lettuce_selected
                     }
                     "생활용품" -> {
                         marker.markerType = MapPOIItem.MarkerType.CustomImage
                         marker.customImageResourceId = R.drawable.marker_pan
                         marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customSelectedImageResourceId = R.drawable.marker_pan
+                        marker.customSelectedImageResourceId = R.drawable.marker_pan_selected
                     }
                     else -> {
                         marker.markerType = MapPOIItem.MarkerType.BluePin
