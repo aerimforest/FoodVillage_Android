@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import com.example.foodvillage.DBMarketMapActivity
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
-import com.example.foodvillage.MarketMapActivity
 import com.example.foodvillage.MyMapActivity
 import com.example.foodvillage.R
 import com.example.foodvillage.databinding.FragmentAroundBinding
