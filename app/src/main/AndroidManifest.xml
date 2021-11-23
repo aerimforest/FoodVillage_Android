@@ -11,12 +11,12 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodVillage"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".StoreListActivity" />
         <activity android:name=".MarketMapActivity" />
         <activity android:name=".MyMapActivity" />
         <activity android:name=".DBMarketMapActivity" />
