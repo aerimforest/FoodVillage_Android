@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodvillage.databinding.ActivityStoreInfoBinding
-import com.example.foodvillage.schema.StoreCategory
+import com.example.foodvillage.storeInfo.adapter.StoreCategory
 import com.example.foodvillage.storeInfo.adapter.StoreInfoCategoryAdapter
 
 class StoreInfoActivity : AppCompatActivity() {

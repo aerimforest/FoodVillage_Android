@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodvillage.R
-import com.example.foodvillage.schema.StoreCategory
 import kotlinx.android.synthetic.main.item_store_info_category.view.*
 
 class StoreInfoCategoryAdapter(
