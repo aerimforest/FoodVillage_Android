@@ -53,12 +53,7 @@ android {
             universalApk false
         }
     }
-    externalNativeBuild {
-        cmake {
-            path file('src/main/cpp/CMakeLists.txt')
-            version '3.10.2'
-        }
-    }
+    // external 어쩌구 다 지움.. cmake..
 }
 
 apply plugin: 'com.android.application'

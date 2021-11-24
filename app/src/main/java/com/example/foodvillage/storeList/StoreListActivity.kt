@@ -28,6 +28,7 @@ class StoreListActivity : AppCompatActivity() {
     var filteredcategoryIdx=0
     var categoryIdx=0
     var mStoreAdapter:StoreAdapter?=null
+    var distVal=3.0
 
 
     var mDatabase = FirebaseDatabase.getInstance()
@@ -48,7 +49,6 @@ class StoreListActivity : AppCompatActivity() {
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
-
         mBinding = ActivityStoreListBinding.inflate(layoutInflater)
         setContentView(binding.root)
         super.onCreate(savedInstanceState)
@@ -57,6 +57,15 @@ class StoreListActivity : AppCompatActivity() {
         if (intent.hasExtra("filteredcategoryIdx")) {
             categoryIdx = intent.getIntExtra("filteredcategoryIdx", 0)
             Log.d("필터 적용_목록", categoryIdx.toString())
+            if (intent.hasExtra("distVal")) {
+                distVal = intent.getDoubleExtra("distVal", 3.0)
+                Log.d("필터 적용_목록", distVal.toString())
+            } else {
+                Toast.makeText(this, "전달된 이름이 없습니다", Toast.LENGTH_SHORT).show()
+                Log.d("필터 적용_목록_노전달", distVal.toString())
+                distVal=3.0
+
+            }
         } else {
             Toast.makeText(this, "전달된 이름이 없습니다", Toast.LENGTH_SHORT).show()
             Log.d("필터 적용_목록_노전달", categoryIdx.toString())
@@ -66,6 +75,7 @@ class StoreListActivity : AppCompatActivity() {
         binding.btnMap.setOnClickListener{
             var mapintent = Intent(this@StoreListActivity, DBMarketMapActivity::class.java)
             mapintent.putExtra("filteredcategoryIdx", filteredcategoryIdx)
+            mapintent.putExtra("distVal", distVal)
             Log.d("필터 보내기_목록", filteredcategoryIdx.toString())
             startActivity(mapintent)
         }
@@ -140,8 +150,9 @@ class StoreListActivity : AppCompatActivity() {
                                                 // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
                                                 // 추가
                                                 storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
-                                                // 기본적으로 할인율 순
-                                                storeList.sortByDescending { it.salePercentMax}
+                                                // 기본적으로 가까운 순(3km 기본)
+                                                storeList= storeList.filter{ s-> s.distance.substring(0,3).toDouble() < distVal} as ArrayList<StoreInfo>
+                                                storeList.sortBy{ it.distance}
                                             }
                                             Log.d("필터", "스토어리스트가 생겼니: "+(storeList!=null).toString()+": "+storeList[0].storeName+", "+storeList[1].storeName)
 
@@ -220,24 +231,28 @@ class StoreListActivity : AppCompatActivity() {
                                                         ?.setOnClickListener{
                                                             storeList=PriorityFiltering(filteredcategoryIdx, 0)
                                                             mStoreAdapter!!.datasetChanged(storeList)
+                                                            btnPriority.text="가까운 순"
                                                             dialogPriority.dismiss()
                                                         }
                                                     dialogPriority.findViewById<Button>(R.id.btn_priority_sale)
                                                         ?.setOnClickListener{
                                                             storeList=PriorityFiltering(filteredcategoryIdx, 1)
                                                             mStoreAdapter!!.datasetChanged(storeList)
+                                                            btnPriority.text="할인율 순"
                                                             dialogPriority.dismiss()
                                                         }
                                                     dialogPriority.findViewById<Button>(R.id.btn_priority_review)
                                                         ?.setOnClickListener{
                                                             storeList=PriorityFiltering(filteredcategoryIdx, 2)
                                                             mStoreAdapter!!.datasetChanged(storeList)
+                                                            btnPriority.text="리뷰 많은 순"
                                                             dialogPriority.dismiss()
                                                         }
                                                     dialogPriority.findViewById<Button>(R.id.btn_priority_product)
                                                         ?.setOnClickListener{
                                                             storeList=PriorityFiltering(filteredcategoryIdx, 3)
                                                             mStoreAdapter!!.datasetChanged(storeList)
+                                                            btnPriority.text="상품 많은 순"
                                                             dialogPriority.dismiss()
                                                         }
                                                     dialogPriority.show()
@@ -251,16 +266,16 @@ class StoreListActivity : AppCompatActivity() {
                                                     kmPriority.setContentView(R.layout.fragment_bottomsheet_distance)
 
                                                     val tv_km = kmPriority.findViewById<TextView>(R.id.tv_km)
-                                                    var sliderIdx=0
+                                                    tv_km?.text=""+distVal+"km"
 
                                                     kmPriority.findViewById<RangeSliderView>(R.id.rs_distance)?.setOnSlideListener {
                                                         index->
                                                             Log.d("반경 선택", "" + index + "km")
                                                             tv_km?.text = "" + index + "km"
-                                                            sliderIdx=index
-                                                            storeList=KmFiltering(filteredcategoryIdx!!, sliderIdx)
-                                                            Log.d("반경 지정", tv_km?.text as String)
+                                                            storeList=KmFiltering(filteredcategoryIdx!!, index)
                                                             mStoreAdapter!!.datasetChanged(storeList)
+                                                            btnDistance.text="" + index + "km 이내"
+                                                            distVal= index.toDouble()
                                                     }
                                                     kmPriority.show()
                                                 }
@@ -321,8 +336,8 @@ class StoreListActivity : AppCompatActivity() {
             // 추가
             storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
         }
-        // 기본 할인율 순
-        storeList.sortByDescending { it.salePercentMax}
+        storeList= storeList.filter{ s-> s.distance.substring(0,3).toDouble() < 3.0} as ArrayList<StoreInfo>
+        storeList.sortBy{ it.distance}
         return storeList
     }
 
@@ -367,7 +382,7 @@ class StoreListActivity : AppCompatActivity() {
             else->{
             }
         }
-
+        storeList.sortBy{ it.distance}
         return storeList
     }
 

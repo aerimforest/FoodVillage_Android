@@ -231,7 +231,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:background="#00ff0000"
-                android:text="할인율 순"
+                android:text="가까운 순"
                 android:textSize="10sp"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
