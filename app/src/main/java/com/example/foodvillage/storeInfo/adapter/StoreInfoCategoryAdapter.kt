@@ -1,4 +1,4 @@
-package com.example.foodvillage.storeList
+package com.example.foodvillage.storeInfo.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodvillage.R
-import com.example.foodvillage.schema.StoreCategory
 import kotlinx.android.synthetic.main.item_store_info_category.view.*
 
 class StoreInfoCategoryAdapter(
@@ -51,7 +50,7 @@ class StoreInfoCategoryAdapter(
             holder.itemView.tv_category_item.setTextColor(Color.WHITE)
         } else {
             holder.itemView.tv_category_item.setBackgroundResource(R.drawable.background_category_non_selected)
-            holder.itemView.tv_category_item.setTextColor(R.color.gray_text)
+            holder.itemView.tv_category_item.setTextColor(Color.parseColor("#999999"))
         }
     }
 }
