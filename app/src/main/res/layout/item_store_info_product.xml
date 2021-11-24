@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -61,19 +62,38 @@
                     android:textSize="11sp"
                     tools:ignore="SmallSp" />
 
-                <TextView
-                    android:id="@+id/tv_store_info_product_fixed_price"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:fontFamily="@font/noto_sans_kr_medium"
-                    android:gravity="center"
-                    android:includeFontPadding="false"
-                    android:text="5000원"
-                    android:textColor="@color/black"
-                    android:textSize="11sp"
-                    tools:ignore="SmallSp" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_store_info_product_fixed"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/noto_sans_kr_medium"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="5000"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+                        tools:ignore="SmallSp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/noto_sans_kr_medium"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="원"
+                        android:textColor="@color/black"
+                        android:textSize="11sp"
+                        tools:ignore="SmallSp" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -110,32 +130,72 @@
                         android:textSize="10sp"
                         tools:ignore="RtlCompat,SmallSp" />
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:fontFamily="@font/noto_sans_kr_medium"
-                        android:gravity="center"
-                        android:includeFontPadding="false"
-                        android:text="30%"
-                        android:textAlignment="viewEnd"
-                        android:textColor="@color/red"
-                        android:textSize="10sp"
-                        tools:ignore="RtlCompat,SmallSp" />
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_store_info_discount_rate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="@font/noto_sans_kr_medium"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:text="30"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/red"
+                            android:textSize="10sp"
+                            tools:ignore="RtlCompat,SmallSp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/noto_sans_kr_medium"
+                            android:gravity="center"
+                            android:includeFontPadding="false"
+                            android:text="%"
+                            android:textAlignment="viewEnd"
+                            android:textColor="@color/red"
+                            android:textSize="10sp"
+                            tools:ignore="RtlCompat,SmallSp" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/noto_sans_kr_bold"
-                    android:gravity="center"
-                    android:includeFontPadding="false"
-                    android:text="3500원"
-                    android:textAlignment="viewEnd"
-                    android:textColor="@color/black"
-                    android:textSize="24sp"
-                    tools:ignore="RtlCompat" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_store_info_product_discounted"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans_kr_bold"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="3500"
+                        android:textAlignment="viewEnd"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        tools:ignore="RtlCompat" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans_kr_bold"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="원"
+                        android:textAlignment="viewEnd"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        tools:ignore="RtlCompat" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
