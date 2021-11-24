@@ -6,14 +6,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Address
 import android.location.Location
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -22,13 +21,18 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodvillage.databinding.ActivityDbMarketMapBinding
+import com.example.foodvillage.menu.HomeFragment
+import com.example.foodvillage.schema.Store
+import com.example.foodvillage.storeList.StoreAdapter
 import com.example.foodvillage.storeList.StoreInfo
+import com.example.foodvillage.storeList.StoreListActivity
 import com.google.android.gms.location.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.dialog_fmi_market.*
 import net.daum.mf.map.api.*
+import net.daum.mf.map.api.CameraUpdateFactory.newMapPointAndDiameter
 import java.lang.Math.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -39,6 +43,10 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
     // 뷰 바인딩
     private var mBinding: ActivityDbMarketMapBinding? = null
     private val binding get() = mBinding!!
+
+    var filteredcategoryIdx=0
+    var categoryIdx=0
+
 
     private var mapView: MapView?=null
 
@@ -66,13 +74,16 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
     val DbRefStore = mDatabase.getReference("stores/")
     val DbRefReview = mDatabase.getReference("reviews/")
     val DbRefProduct = mDatabase.getReference("products/")
+    val DbRefCategory=mDatabase.getReference("categories/")
 
     var storeHashMap: HashMap<String, HashMap<String, Any>>?=null
     var storeNameList: List<String>?=null
     var reviewHashMap: HashMap<String, HashMap<String, Any>>?=null
     var productHashMap: HashMap<String, HashMap<String, Any>>?=null
     var categoryStoreList: List<String>?=null
-    var storeList=ArrayList<StoreInfo>()
+    var storeList=ArrayList<Store>()
+    var categoryHashMap: ArrayList<HashMap<String, Any>>?=null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,6 +111,21 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             //maxWaitTime= 2000 // 위치 갱신 요청 최대 대기 시간 (밀리초)
         }
 
+        if (intent.hasExtra("filteredcategoryIdx")) {
+            categoryIdx = intent.getIntExtra("filteredcategoryIdx", 0)
+            Log.d("필터 적용_지도", categoryIdx.toString())
+        } else {
+            Toast.makeText(this, "전달된 이름이 없습니다", Toast.LENGTH_SHORT).show()
+            categoryIdx=0
+            Log.d("필터 적용_지도_노전달", categoryIdx.toString())
+        }
+        binding.btnList.setOnClickListener{
+            var listintent=Intent(this@DBMarketMapActivity, StoreListActivity::class.java)
+            listintent.putExtra("filteredcategoryIdx", filteredcategoryIdx)
+            Log.d("필터 보내기_지도", filteredcategoryIdx.toString())
+            startActivity(listintent)
+        }
+
         // 유저 정보 위치 디비에서 받아오기
         DbRefUser.get()
             .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
@@ -111,13 +137,15 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 userName = t_hashMap.get("name")!! as String
 
                 // 저장된 위치 마커 찍기
-                var marker = MapPOIItem()
-                marker.itemName = "저장된 내 위치"   // 마커 이름
-                marker.mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat!!, curr_lon!!)
-                marker.markerType = MapPOIItem.MarkerType.BluePin
-                marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
-                marker.setCustomImageAnchor(0.5f, 1.0f)
-                mapView?.addPOIItem(marker)
+                var mymarker = MapPOIItem()
+                mymarker.itemName = "저장된 내 위치"   // 마커 이름
+                mymarker.mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat!!, curr_lon!!)
+                mymarker.markerType = MapPOIItem.MarkerType.BluePin
+                mymarker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+                mymarker.setCustomImageAnchor(0.5f, 1.0f)
+                mapView?.addPOIItem(mymarker)
+
+                binding.tvHomeLocation.setText(AddressData)
 
                 // 저장된 위치로 중심 이동
                 var mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat!!, curr_lon!!)
@@ -127,29 +155,55 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 Log.d("유저", "위, 경도: " + curr_lat + ", " + curr_lon)
             }
 
-        DbRefStore.get()
+        DbRefCategory.get()
             .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
             .addOnSuccessListener {
-                storeHashMap = it.value as HashMap<String, HashMap<String, Any>>
-                storeNameList = ArrayList<String>(storeHashMap!!.keys)
-                DbRefReview.get()
+                Log.d("상점", it.value.toString())
+                categoryHashMap = it.value as ArrayList<HashMap<String, Any>>
+                categoryStoreList = categoryHashMap!![categoryIdx]?.get("storeNames") as List<String>
+
+                DbRefStore.get()
                     .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
                     .addOnSuccessListener {
-                        reviewHashMap = it.value as HashMap<String, HashMap<String, Any>>
-
-                        DbRefProduct.get()
-                            .addOnFailureListener { e ->
-                                Log.d(
-                                    ContentValues.TAG,
-                                    e.localizedMessage
-                                )
-                            }
+                        storeHashMap = it.value as HashMap<String, HashMap<String, Any>>
+                        storeNameList = ArrayList<String>(storeHashMap!!.keys)
+                        DbRefReview.get()
+                            .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
                             .addOnSuccessListener {
-                                productHashMap = it.value as HashMap<String, HashMap<String, Any>>
-                            }
+                                reviewHashMap = it.value as HashMap<String, HashMap<String, Any>>
+                                DbRefProduct.get()
+                                    .addOnFailureListener { e ->
+                                        Log.d(
+                                            ContentValues.TAG,
+                                            e.localizedMessage
+                                        )
+                                    }
+                                    .addOnSuccessListener {
+                                        productHashMap = it.value as HashMap<String, HashMap<String, Any>>
+                                        if (productHashMap != null && storeHashMap != null && reviewHashMap != null && productHashMap != null && categoryStoreList != null){
+                                            Log.d("상점명 리스트", categoryStoreList.toString())
+                                            for (i in 0 until (categoryStoreList?.size!!)){
+                                                // 상점명
+                                                val storeName = categoryStoreList!![i]
+                                                // 상점 정보
+                                                Log.d("상점명", storeHashMap!!.get(storeName).toString())
+                                                val filteredstorehash=storeHashMap!!.get(storeName)
+                                                val StoreIndi = Store()
+                                                StoreIndi.address= filteredstorehash?.get("address") as String?
+                                                StoreIndi.categoryNames= filteredstorehash?.get("categoryNames") as List<String>?
+                                                StoreIndi.distance= filteredstorehash?.get("distance") as HashMap<String, Double>?
+                                                StoreIndi.currentLongitude= filteredstorehash?.get("currentLongitude") as Double?
+                                                StoreIndi.currentLatitude= filteredstorehash?.get("currentLatitude") as Double?
+                                                StoreIndi.storeName= filteredstorehash?.get("storeName") as String?
+                                                StoreIndi.storeImg= filteredstorehash?.get("storeImg") as String?
+                                                storeList?.add(StoreIndi)
+                                            }
+                                            markersShow(storeList)
+                                        }
+                                }
+                        }
                     }
             }
-
 
         // 위치 추척 시작
         if (checkPermissionForLocation(this)) {
@@ -157,19 +211,20 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving)
             updateLocation()
         }
-
-        binding.btnDbMarketMapActivityFindway.setOnClickListener{
-            var intent= Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("kakaomap://route?sp=" + curr_lat + "," + curr_lon + "&ep=" + selected_marker_lat + "," + selected_marker_lon + "&by=FOOT")
-            )
-            startActivity(intent)
-        }
+            // 길찾기 하는 방법!! 중요함!!!
+//        binding.btnDbMarketMapActivityFindway.setOnClickListener{
+//            var intent= Intent(
+//                Intent.ACTION_VIEW,
+//                Uri.parse("kakaomap://route?sp=" + curr_lat + "," + curr_lon + "&ep=" + selected_marker_lat + "," + selected_marker_lon + "&by=FOOT")
+//            )
+//            startActivity(intent)
+//        }
 
         binding.btnDbMarketMapActivityFloating.setOnClickListener{
             var mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat!!, curr_lon!!)
             mapView?.setMapCenterPoint(mapPoint, true)
         }
+
 
     }
 
@@ -177,8 +232,14 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         super.onDestroy()
         mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff)
         mapView!!.setShowCurrentLocationMarker(false)
-    }
+//        intent= Intent(this@DBMarketMapActivity, MainActivity::class.java)
+//        startActivity(intent)
 
+//        val homeFragment = HomeFragment()
+//        supportFragmentManager.beginTransaction()
+//            .replace(R.id.main_screen_panel, homeFragment).commit()
+
+    }
 
     protected fun updateLocation() {
         Log.d(TAG, "updateLocation()")
@@ -198,99 +259,200 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 curr_lon= t_hashMap.get("currentLongitude") as Double
                 AddressData=t_hashMap.get("address") as String
 
-                binding.tvDbmarketmapactivityMylocation.setText(AddressData)
+                //binding.tvDbmarketmapactivityMylocation.setText(AddressData)
             }
 
 
-        // 마커들 디비에서 받아오기
-        var marker = MapPOIItem()
-        DbRefStore.get()
-            .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
-            .addOnSuccessListener {
-                storeHashMap= it.value as HashMap<String, HashMap<String, Any>>
-                storeNameList= ArrayList<String>(storeHashMap!!.keys)
+        if(storeList!=null) {
 
-            for (i in 0 until (storeNameList as ArrayList<String>).size) {
-                val storeName = storeHashMap!!.get((storeNameList!! as ArrayList<String>)[i])
-                    ?.get("storeName") as String
-                val currentLatitude = storeHashMap!!.get((storeNameList!! as ArrayList<String>)[i])
-                    ?.get("currentLatitude") as Double
-                val currentLongitude = storeHashMap!!.get((storeNameList!! as ArrayList<String>)[i])
-                    ?.get("currentLongitude") as Double
-                val address = storeHashMap!!.get((storeNameList!! as ArrayList<String>)[i])
-                    ?.get("address") as String
-                val categories = storeHashMap!!.get((storeNameList!! as ArrayList<String>)[i])
-                    ?.get("categoryNames") as List<String>
+            binding.btnAll.setOnClickListener {
+                binding.btnAll.isSelected
+                filteredcategoryIdx = 0
+                storeList = categoryFiltering(filteredcategoryIdx)
+                markersShow(storeList)
 
-                marker = MapPOIItem()
-                marker.itemName = storeName
-                marker.mapPoint = MapPoint.mapPointWithGeoCoord(
-                    currentLatitude,
-                    currentLongitude
-                )
-
-                when (categories[0]) {
-                    "과일/채소" -> {
-                        marker.markerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customImageResourceId = R.drawable.marker_tomato
-                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customSelectedImageResourceId = R.drawable.marker_tomato
-                    }
-                    "고기/계란" -> {
-                        marker.markerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customImageResourceId = R.drawable.marker_meat
-                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customSelectedImageResourceId = R.drawable.marker_meat
-                    }
-                    "수산/건어물" -> {
-                        marker.markerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customImageResourceId = R.drawable.marker_fish
-                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customSelectedImageResourceId = R.drawable.marker_fish
-                    }
-                    "반찬/간편식" -> {
-                        marker.markerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customImageResourceId = R.drawable.marker_banchan
-                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customSelectedImageResourceId = R.drawable.marker_banchan
-                    }
-                    "간식/음료" -> {
-                        marker.markerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customImageResourceId = R.drawable.marker_choco
-                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customSelectedImageResourceId = R.drawable.marker_choco
-                    }
-                    "밥/면/소스/캔" -> {
-                        marker.markerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customImageResourceId = R.drawable.marker_bap
-                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customSelectedImageResourceId = R.drawable.marker_bap
-                    }
-                    "건강/다이어트" -> {
-                        marker.markerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customImageResourceId = R.drawable.marker_lettuce
-                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customSelectedImageResourceId = R.drawable.marker_lettuce
-                    }
-                    "생활용품" -> {
-                        marker.markerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customImageResourceId = R.drawable.marker_pan
-                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                        marker.customSelectedImageResourceId = R.drawable.marker_pan
-                    }
-                    else -> {
-                        marker.markerType = MapPOIItem.MarkerType.BluePin
-                        marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
-                    }
-                }
-                marker.setCustomImageAnchor(0.5f, 1.0f)
-                mapView?.addPOIItem(marker)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
             }
 
-
+            binding.btnFruitVegi.setOnClickListener {
+                binding.btnFruitVegi.isSelected
+                filteredcategoryIdx = 1
+                storeList = categoryFiltering(filteredcategoryIdx)
+                markersShow(storeList)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
+            }
+            binding.btnMeat.setOnClickListener {
+                binding.btnMeat.isSelected
+                filteredcategoryIdx = 2
+                storeList = categoryFiltering(filteredcategoryIdx)
+                markersShow(storeList)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
+            }
+            binding.btnSeafood.setOnClickListener {
+                binding.btnSeafood.isSelected
+                filteredcategoryIdx = 3
+                storeList = categoryFiltering(filteredcategoryIdx)
+                markersShow(storeList)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
+            }
+            binding.btnSideDish.setOnClickListener {
+                binding.btnSideDish.isSelected
+                filteredcategoryIdx = 4
+                storeList = categoryFiltering(filteredcategoryIdx)
+                markersShow(storeList)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
+            }
+            binding.btnSnack.setOnClickListener {
+                binding.btnSnack.isSelected
+                filteredcategoryIdx = 5
+                storeList = categoryFiltering(filteredcategoryIdx)
+                markersShow(storeList)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
+            }
+            binding.btnRiceAndNoodle.setOnClickListener {
+                binding.btnRiceAndNoodle.isSelected
+                filteredcategoryIdx = 6
+                storeList = categoryFiltering(filteredcategoryIdx)
+                markersShow(storeList)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
+            }
+            binding.btnHealthy.setOnClickListener {
+                binding.btnHealthy.isSelected
+                filteredcategoryIdx = 7
+                storeList = categoryFiltering(filteredcategoryIdx)
+                markersShow(storeList)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
+            }
+            binding.btnLife.setOnClickListener {
+                binding.btnLife.isSelected
+                filteredcategoryIdx = 8
+                storeList = categoryFiltering(filteredcategoryIdx)
+                markersShow(storeList)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
+            }
         }
 
     }
+
+    fun markersShow(storeList: ArrayList<Store>){
+        mapView!!.removeAllPOIItems()
+        mapView!!.removeAllPolylines()
+
+        mapView!!.setCalloutBalloonAdapter(CustomBalloonAdapter(layoutInflater))  // 커스텀 말풍선 등록
+
+        var marker = MapPOIItem()
+        for (i in 0 until storeList.size) {
+
+            marker = MapPOIItem()
+            val storeName = storeList[i].storeName as String
+            val currentLatitude = storeList[i].currentLatitude as Double
+            val currentLongitude = storeList[i].currentLongitude as Double
+            val address = storeList[i].address as String
+            val categories = storeList[i].categoryNames as List<String>
+            marker.itemName = storeName
+            marker.mapPoint = MapPoint.mapPointWithGeoCoord(
+                currentLatitude,
+                currentLongitude
+            )
+
+            when (categories[0]) {
+                "과일/채소" -> {
+                    marker.markerType = MapPOIItem.MarkerType.CustomImage
+                    marker.customImageResourceId = R.drawable.marker_tomato
+                    marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                    marker.customSelectedImageResourceId = R.drawable.marker_tomato_selected
+                }
+                "고기/계란" -> {
+                    marker.markerType = MapPOIItem.MarkerType.CustomImage
+                    marker.customImageResourceId = R.drawable.marker_meat
+                    marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                    marker.customSelectedImageResourceId = R.drawable.marker_meat_selected
+                }
+                "수산/건어물" -> {
+                    marker.markerType = MapPOIItem.MarkerType.CustomImage
+                    marker.customImageResourceId = R.drawable.marker_fish
+                    marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                    marker.customSelectedImageResourceId = R.drawable.marker_fish_selected
+                }
+                "반찬/간편식" -> {
+                    marker.markerType = MapPOIItem.MarkerType.CustomImage
+                    marker.customImageResourceId = R.drawable.marker_banchan
+                    marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                    marker.customSelectedImageResourceId = R.drawable.marker_banchan_selected
+                }
+                "간식/음료" -> {
+                    marker.markerType = MapPOIItem.MarkerType.CustomImage
+                    marker.customImageResourceId = R.drawable.marker_choco
+                    marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                    marker.customSelectedImageResourceId = R.drawable.marker_choco_selected
+                }
+                "밥/면/소스/캔" -> {
+                    marker.markerType = MapPOIItem.MarkerType.CustomImage
+                    marker.customImageResourceId = R.drawable.marker_bap
+                    marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                    marker.customSelectedImageResourceId = R.drawable.marker_bap_selected
+                }
+                "건강/다이어트" -> {
+                    marker.markerType = MapPOIItem.MarkerType.CustomImage
+                    marker.customImageResourceId = R.drawable.marker_lettuce
+                    marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                    marker.customSelectedImageResourceId = R.drawable.marker_lettuce_selected
+                }
+                "생활용품" -> {
+                    marker.markerType = MapPOIItem.MarkerType.CustomImage
+                    marker.customImageResourceId = R.drawable.marker_pan
+                    marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                    marker.customSelectedImageResourceId = R.drawable.marker_pan_selected
+                }
+                else -> {
+                    marker.markerType = MapPOIItem.MarkerType.BluePin
+                    marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+                }
+            }
+            marker.setCustomImageAnchor(0.5f, 1.0f)
+            mapView?.addPOIItem(marker)
+        }
+        mapView?.fitMapViewAreaToShowAllPOIItems()
+        mapView?.zoomOut(true)
+    }
+
+    fun categoryFiltering(filteredcategoryIdx:Int): ArrayList<Store> {
+        categoryStoreList = categoryHashMap!![filteredcategoryIdx]?.get("storeNames") as List<String>
+        Log.d("상점명 리스트_filtered", categoryStoreList.toString())
+        storeList=ArrayList<Store>()
+
+        for (i in 0 until (categoryStoreList?.size!!)){
+            // 상점명
+            val storeName = categoryStoreList!![i]
+            // 상점 정보
+            val filteredstorehash=storeHashMap!!.get(storeName)
+            val StoreIndi = Store()
+            StoreIndi.address= filteredstorehash?.get("address") as String?
+            StoreIndi.categoryNames= filteredstorehash?.get("categoryNames") as List<String>?
+            StoreIndi.distance= filteredstorehash?.get("distance") as HashMap<String, Double>?
+            StoreIndi.currentLongitude= filteredstorehash?.get("currentLongitude") as Double?
+            StoreIndi.currentLatitude= filteredstorehash?.get("currentLatitude") as Double?
+            StoreIndi.storeName= filteredstorehash?.get("storeName") as String?
+            StoreIndi.storeImg= filteredstorehash?.get("storeImg") as String?
+
+            // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
+            // 추가
+            storeList?.add(StoreIndi)
+        }
+
+        return storeList
+    }
+
+
 
     // 시스템으로 부터 위치 정보를 콜백으로 받음
     private val mLocationCallback = object : LocationCallback() {
@@ -390,7 +552,6 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         var mCalloutBalloon: View = inflater.inflate(R.layout.balloon_layout, null)
 
         override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
-
             if (poiItem != null) {
                 val market_dist_hash= storeHashMap!!.get(poiItem?.itemName)?.get("distance") as HashMap<String, HashMap<String, Any>>
                 val market_dist=market_dist_hash.get(uid) as Double

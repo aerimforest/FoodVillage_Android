@@ -156,6 +156,37 @@ class MainActivity : AppCompatActivity() {
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 
+//
+//
+//        val mmDatabase = FirebaseDatabase.getInstance()
+//        // 마트 생성
+//        var storeName="소연마트1"
+//        var DbRefStore = mmDatabase.getReference("stores/"+storeName)
+//        var store= Store(storeName, 37.478, 126.956, "서울시 김구 예림동 123" , listOf("고기/계란", "수산/건어물" ))
+//        DbRefStore.setValue(store)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+//
+//        storeName="소연마트2"
+//        DbRefStore = mmDatabase.getReference("stores/"+storeName)
+//        store= Store(storeName, 37.475, 126.953, "서울시 김구 예림동 123" , listOf("과일/채소","간식/음료", "고기/계란", "밥/면/소스/캔"))
+//        DbRefStore.setValue(store)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+//
+//        storeName="소연마트3"
+//        DbRefStore = mmDatabase.getReference("stores/"+storeName)
+//        store= Store(storeName, 37.481, 126.952, "서울시 김구 예림동 123" , listOf("반찬/간편식", "건강/다이어트", "밥/면/소스/캔"))
+//        DbRefStore.setValue(store)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+//
+//        storeName="소연 정육점"
+//        DbRefStore = mmDatabase.getReference("stores/"+storeName)
+//        store= Store(storeName, 37.476, 126.951, "서울시 김구 예림동 123" , listOf("고기/계란"))
+//        DbRefStore.setValue(store)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+//
+//
+
+
 
 //        DbRefUser.get()
 //            .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
