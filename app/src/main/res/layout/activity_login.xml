@@ -7,73 +7,142 @@
     android:background="@color/white"
     tools:context=".login.ui.LoginActivity">
 
-    <LinearLayout
-        android:id="@+id/lly_login_email"
-        android:layout_width="match_parent"
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="36dp"
-        android:layout_marginTop="300dp"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginTop="39dp"
+        android:text="로그인"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8">
+
+        <TextView
+            android:id="@+id/tv_activity_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="아이디"
+            android:textColor="#000000"
+            android:textSize="12dp" />
 
         <EditText
             android:id="@+id/et_login_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#76B045"
-            android:hint="이메일을 입력하세요"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/activity_login_btn_design"
             android:importantForAutofill="no"
             android:inputType="text"
-            android:paddingBottom="15dp"
+            android:paddingStart="20dp"
             android:singleLine="true"
             android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_activity_login"
             tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="57dp"
+            android:text="비밀번호"
+            android:textColor="#000000"
+            android:textSize="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/et_login_id" />
 
         <EditText
             android:id="@+id/et_login_pwd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:backgroundTint="#76B045"
-            android:hint="비밀번호를 입력하세요"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/activity_login_btn_design"
             android:importantForAutofill="no"
             android:inputType="text"
-            android:paddingBottom="15dp"
+            android:paddingStart="20dp"
             android:singleLine="true"
             android:textSize="14sp"
-            tools:ignore="HardcodedText" />
+            app:layout_constraintTop_toBottomOf="@+id/textView9"
+            tools:ignore="HardcodedText"
+            tools:layout_editor_absoluteX="0dp" />
 
-        <Button
-            android:id="@+id/btn_login_email"
-            android:layout_width="match_parent"
-            android:layout_height="55dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/background_btn_email_login"
-            android:gravity="center"
-            android:text="이메일로 로그인 및 회원가입"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_login_email"
+        android:layout_width="267dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="59dp"
+        android:background="@drawable/background_btn_email_login"
+        android:gravity="center"
+        android:text="로그인"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/btn_login_google"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_width="267dp"
+        android:layout_height="48dp"
         android:layout_marginHorizontal="36dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="62dp"
         android:background="@drawable/background_btn_google_login"
         android:drawableStart="@drawable/icon_google_login"
         android:gravity="center"
         android:paddingHorizontal="24dp"
-        android:text="구글 계정으로 로그인"
+        android:text="구글 계정으로 로그인/회원가입"
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@+id/lly_login_email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_login_email"
         tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/tv_acitivity_login_findidpwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginBottom="40dp"
+        android:text="아이디/비밀번호 찾기"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_activity_login_signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="49dp"
+        android:layout_marginBottom="40dp"
+        android:text="회원가입"
+        android:textColor="#000000"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

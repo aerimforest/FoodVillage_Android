@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
-        android:text="1km"
+        android:text="기본 3km"
         android:textColor="#63B22F"
         android:textSize="24dp"
         android:textStyle="bold"

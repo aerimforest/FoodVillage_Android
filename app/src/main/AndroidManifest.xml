@@ -34,7 +34,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddressSettingAcitivity" />
+        <activity android:name=".AddressSettingAcitivity"/>
+        <activity android:name=".SignUpActivity"/>
+        <activity android:name=".EcoScoreAcitivity"/>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
