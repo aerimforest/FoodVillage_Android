@@ -9,6 +9,7 @@ import android.os.Handler
 import android.renderscript.RenderScript
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodvillage.DBMarketMapActivity
 import com.example.foodvillage.R
@@ -24,6 +25,10 @@ class StoreListActivity : AppCompatActivity() {
 
     private var mBinding: ActivityStoreListBinding? = null
     private val binding get() = mBinding!!
+    var filteredcategoryIdx=0
+    var categoryIdx=0
+    var mStoreAdapter:StoreAdapter?=null
+
 
     var mDatabase = FirebaseDatabase.getInstance()
     var uid = FirebaseAuth.getInstance().uid
@@ -48,10 +53,21 @@ class StoreListActivity : AppCompatActivity() {
         setContentView(binding.root)
         super.onCreate(savedInstanceState)
 
+        // 전체이므로 카테고리값=0(0~8까지 있음)
+        if (intent.hasExtra("filteredcategoryIdx")) {
+            categoryIdx = intent.getIntExtra("filteredcategoryIdx", 0)
+            Log.d("필터 적용_목록", categoryIdx.toString())
+        } else {
+            Toast.makeText(this, "전달된 이름이 없습니다", Toast.LENGTH_SHORT).show()
+            Log.d("필터 적용_목록_노전달", categoryIdx.toString())
+            categoryIdx=0
 
+        }
         binding.btnMap.setOnClickListener{
-            intent= Intent(this@StoreListActivity, DBMarketMapActivity::class.java)
-            startActivity(intent)
+            var mapintent = Intent(this@StoreListActivity, DBMarketMapActivity::class.java)
+            mapintent.putExtra("filteredcategoryIdx", filteredcategoryIdx)
+            Log.d("필터 보내기_목록", filteredcategoryIdx.toString())
+            startActivity(mapintent)
         }
 
         DbRefUser.get()
@@ -62,15 +78,12 @@ class StoreListActivity : AppCompatActivity() {
                 binding.tvHomeLocation.text = userHashMap.get("address").toString()
             }
 
-
-        // 전체이므로 카테고리값=0(0~8까지 있음)
-        var categoryIdx=0
-
         DbRefCategory.get()
             .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
             .addOnSuccessListener {
                 Log.d("상점", it.value.toString())
                 categoryHashMap = it.value as ArrayList<HashMap<String, Any>>
+                Log.d("필터", "안쪽에서 카테고리: "+categoryIdx)
                 categoryStoreList = categoryHashMap!![categoryIdx]?.get("storeNames") as List<String>
 
                 DbRefStore.get()
@@ -88,6 +101,7 @@ class StoreListActivity : AppCompatActivity() {
                                     .addOnSuccessListener {
                                         productHashMap = it.value as HashMap<String, HashMap<String, Any>>
 
+                                        Log.d("필터", "맞니 안 맞니..: " + (categoryHashMap != null).toString() + (storeHashMap != null).toString() + (reviewHashMap != null).toString() + (productHashMap != null).toString() + (categoryStoreList != null).toString())
                                         if (categoryHashMap != null && storeHashMap != null && reviewHashMap != null && productHashMap != null && categoryStoreList != null){
                                             Log.d("상점명 리스트", categoryStoreList.toString())
                                             for (i in 0 until (categoryStoreList?.size!!)){
@@ -129,71 +143,70 @@ class StoreListActivity : AppCompatActivity() {
                                                 // 기본적으로 할인율 순
                                                 storeList.sortByDescending { it.salePercentMax}
                                             }
+                                            Log.d("필터", "스토어리스트가 생겼니: "+(storeList!=null).toString()+": "+storeList[0].storeName+", "+storeList[1].storeName)
 
                                             if(storeList!=null) {
                                                 binding.rvStore.layoutManager =
                                                     LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                                                 binding.rvStore!!.setHasFixedSize(true)
-                                                var mStoreAdapter=StoreAdapter(storeList!!)
+                                                mStoreAdapter=StoreAdapter(storeList!!)
                                                 binding.rvStore!!.adapter = mStoreAdapter
-
-                                                var filteredcategoryIdx=0
 
                                                 binding.btnAll.setOnClickListener{
                                                     binding.btnAll.isSelected
                                                     filteredcategoryIdx=0
                                                     storeList=categoryFiltering(filteredcategoryIdx)
-                                                    mStoreAdapter.datasetChanged(storeList)
+                                                    mStoreAdapter!!.datasetChanged(storeList)
                                                 }
 
                                                 binding.btnFruitVegi.setOnClickListener{
                                                     binding.btnFruitVegi.isSelected
                                                     filteredcategoryIdx=1
                                                     storeList=categoryFiltering(filteredcategoryIdx)
-                                                    mStoreAdapter.datasetChanged(storeList)
+                                                    mStoreAdapter!!.datasetChanged(storeList)
 
                                                 }
                                                 binding.btnMeat.setOnClickListener{
                                                     binding.btnMeat.isSelected
                                                     filteredcategoryIdx=2
                                                     storeList=categoryFiltering(filteredcategoryIdx)
-                                                    mStoreAdapter.datasetChanged(storeList)
+                                                    mStoreAdapter!!.datasetChanged(storeList)
                                                 }
                                                 binding.btnSeafood.setOnClickListener{
                                                     binding.btnSeafood.isSelected
                                                     filteredcategoryIdx=3
                                                     storeList=categoryFiltering(filteredcategoryIdx)
-                                                    mStoreAdapter.datasetChanged(storeList)
+                                                    mStoreAdapter!!.datasetChanged(storeList)
                                                 }
                                                 binding.btnSideDish.setOnClickListener{
                                                     binding.btnSideDish.isSelected
                                                     filteredcategoryIdx=4
                                                     storeList=categoryFiltering(filteredcategoryIdx)
-                                                    mStoreAdapter.datasetChanged(storeList)
+                                                    mStoreAdapter!!.datasetChanged(storeList)
                                                 }
                                                 binding.btnSnack.setOnClickListener{
                                                     binding.btnSnack.isSelected
                                                     filteredcategoryIdx=5
                                                     storeList=categoryFiltering(filteredcategoryIdx)
-                                                    mStoreAdapter.datasetChanged(storeList)
+                                                    mStoreAdapter!!.datasetChanged(storeList)
                                                 }
                                                 binding.btnRiceAndNoodle.setOnClickListener{
                                                     binding.btnRiceAndNoodle.isSelected
                                                     filteredcategoryIdx=6
                                                     storeList=categoryFiltering(filteredcategoryIdx)
-                                                    mStoreAdapter.datasetChanged(storeList)
+                                                    mStoreAdapter!!.datasetChanged(storeList)
                                                 }
                                                 binding.btnHealthy.setOnClickListener{
                                                     binding.btnHealthy.isSelected
                                                     filteredcategoryIdx=7
                                                     storeList=categoryFiltering(filteredcategoryIdx)
-                                                    mStoreAdapter.datasetChanged(storeList)
+                                                    mStoreAdapter!!.datasetChanged(storeList)
                                                 }
                                                 binding.btnLife.setOnClickListener{
                                                     binding.btnLife.isSelected
                                                     filteredcategoryIdx=8
                                                     storeList=categoryFiltering(filteredcategoryIdx)
-                                                    mStoreAdapter.datasetChanged(storeList)
+                                                    mStoreAdapter!!.datasetChanged(storeList)
                                                 }
 
 
@@ -207,25 +220,25 @@ class StoreListActivity : AppCompatActivity() {
                                                     dialogPriority.findViewById<Button>(R.id.btn_priority_distance)
                                                         ?.setOnClickListener{
                                                             storeList=PriorityFiltering(filteredcategoryIdx, 0)
-                                                            mStoreAdapter.datasetChanged(storeList)
+                                                            mStoreAdapter!!.datasetChanged(storeList)
                                                             dialogPriority.dismiss()
                                                         }
                                                     dialogPriority.findViewById<Button>(R.id.btn_priority_sale)
                                                         ?.setOnClickListener{
                                                             storeList=PriorityFiltering(filteredcategoryIdx, 1)
-                                                            mStoreAdapter.datasetChanged(storeList)
+                                                            mStoreAdapter!!.datasetChanged(storeList)
                                                             dialogPriority.dismiss()
                                                         }
                                                     dialogPriority.findViewById<Button>(R.id.btn_priority_review)
                                                         ?.setOnClickListener{
                                                             storeList=PriorityFiltering(filteredcategoryIdx, 2)
-                                                            mStoreAdapter.datasetChanged(storeList)
+                                                            mStoreAdapter!!.datasetChanged(storeList)
                                                             dialogPriority.dismiss()
                                                         }
                                                     dialogPriority.findViewById<Button>(R.id.btn_priority_product)
                                                         ?.setOnClickListener{
                                                             storeList=PriorityFiltering(filteredcategoryIdx, 3)
-                                                            mStoreAdapter.datasetChanged(storeList)
+                                                            mStoreAdapter!!.datasetChanged(storeList)
                                                             dialogPriority.dismiss()
                                                         }
                                                     dialogPriority.show()

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.location.Address
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
@@ -24,12 +25,14 @@ import com.example.foodvillage.menu.HomeFragment
 import com.example.foodvillage.schema.Store
 import com.example.foodvillage.storeList.StoreAdapter
 import com.example.foodvillage.storeList.StoreInfo
+import com.example.foodvillage.storeList.StoreListActivity
 import com.google.android.gms.location.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.dialog_fmi_market.*
 import net.daum.mf.map.api.*
+import net.daum.mf.map.api.CameraUpdateFactory.newMapPointAndDiameter
 import java.lang.Math.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,6 +43,10 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
     // 뷰 바인딩
     private var mBinding: ActivityDbMarketMapBinding? = null
     private val binding get() = mBinding!!
+
+    var filteredcategoryIdx=0
+    var categoryIdx=0
+
 
     private var mapView: MapView?=null
 
@@ -104,6 +111,21 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             //maxWaitTime= 2000 // 위치 갱신 요청 최대 대기 시간 (밀리초)
         }
 
+        if (intent.hasExtra("filteredcategoryIdx")) {
+            categoryIdx = intent.getIntExtra("filteredcategoryIdx", 0)
+            Log.d("필터 적용_지도", categoryIdx.toString())
+        } else {
+            Toast.makeText(this, "전달된 이름이 없습니다", Toast.LENGTH_SHORT).show()
+            categoryIdx=0
+            Log.d("필터 적용_지도_노전달", categoryIdx.toString())
+        }
+        binding.btnList.setOnClickListener{
+            var listintent=Intent(this@DBMarketMapActivity, StoreListActivity::class.java)
+            listintent.putExtra("filteredcategoryIdx", filteredcategoryIdx)
+            Log.d("필터 보내기_지도", filteredcategoryIdx.toString())
+            startActivity(listintent)
+        }
+
         // 유저 정보 위치 디비에서 받아오기
         DbRefUser.get()
             .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
@@ -115,13 +137,15 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 userName = t_hashMap.get("name")!! as String
 
                 // 저장된 위치 마커 찍기
-                var marker = MapPOIItem()
-                marker.itemName = "저장된 내 위치"   // 마커 이름
-                marker.mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat!!, curr_lon!!)
-                marker.markerType = MapPOIItem.MarkerType.BluePin
-                marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
-                marker.setCustomImageAnchor(0.5f, 1.0f)
-                mapView?.addPOIItem(marker)
+                var mymarker = MapPOIItem()
+                mymarker.itemName = "저장된 내 위치"   // 마커 이름
+                mymarker.mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat!!, curr_lon!!)
+                mymarker.markerType = MapPOIItem.MarkerType.BluePin
+                mymarker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+                mymarker.setCustomImageAnchor(0.5f, 1.0f)
+                mapView?.addPOIItem(mymarker)
+
+                binding.tvHomeLocation.setText(AddressData)
 
                 // 저장된 위치로 중심 이동
                 var mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat!!, curr_lon!!)
@@ -130,8 +154,6 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
 
                 Log.d("유저", "위, 경도: " + curr_lat + ", " + curr_lon)
             }
-
-        var categoryIdx=0
 
         DbRefCategory.get()
             .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
@@ -183,7 +205,6 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                     }
             }
 
-
         // 위치 추척 시작
         if (checkPermissionForLocation(this)) {
             // 현위치 트래킹 - 이건 주소 설정할 때 해서 최초로 받는거
@@ -204,6 +225,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             mapView?.setMapCenterPoint(mapPoint, true)
         }
 
+
     }
 
     override fun onDestroy() {
@@ -216,10 +238,8 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
 //        val homeFragment = HomeFragment()
 //        supportFragmentManager.beginTransaction()
 //            .replace(R.id.main_screen_panel, homeFragment).commit()
-//
 
     }
-
 
     protected fun updateLocation() {
         Log.d(TAG, "updateLocation()")
@@ -245,14 +265,14 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
 
         if(storeList!=null) {
 
-            var filteredcategoryIdx = 0
-
             binding.btnAll.setOnClickListener {
                 binding.btnAll.isSelected
                 filteredcategoryIdx = 0
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
+
                 mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
             }
 
             binding.btnFruitVegi.setOnClickListener {
@@ -261,6 +281,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
                 mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
             }
             binding.btnMeat.setOnClickListener {
                 binding.btnMeat.isSelected
@@ -268,6 +289,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
                 mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
             }
             binding.btnSeafood.setOnClickListener {
                 binding.btnSeafood.isSelected
@@ -275,6 +297,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
                 mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
             }
             binding.btnSideDish.setOnClickListener {
                 binding.btnSideDish.isSelected
@@ -282,6 +305,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
                 mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
             }
             binding.btnSnack.setOnClickListener {
                 binding.btnSnack.isSelected
@@ -289,6 +313,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
                 mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
             }
             binding.btnRiceAndNoodle.setOnClickListener {
                 binding.btnRiceAndNoodle.isSelected
@@ -296,6 +321,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
                 mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
             }
             binding.btnHealthy.setOnClickListener {
                 binding.btnHealthy.isSelected
@@ -303,6 +329,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
                 mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
             }
             binding.btnLife.setOnClickListener {
                 binding.btnLife.isSelected
@@ -310,6 +337,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
                 mapView?.fitMapViewAreaToShowAllPOIItems()
+                mapView?.zoomOut(true)
             }
         }
 
@@ -393,6 +421,8 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             marker.setCustomImageAnchor(0.5f, 1.0f)
             mapView?.addPOIItem(marker)
         }
+        mapView?.fitMapViewAreaToShowAllPOIItems()
+        mapView?.zoomOut(true)
     }
 
     fun categoryFiltering(filteredcategoryIdx:Int): ArrayList<Store> {
@@ -413,28 +443,6 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             StoreIndi.currentLatitude= filteredstorehash?.get("currentLatitude") as Double?
             StoreIndi.storeName= filteredstorehash?.get("storeName") as String?
             StoreIndi.storeImg= filteredstorehash?.get("storeImg") as String?
-//            // 상점의 리뷰 개수
-//            val storereviewHashMap=reviewHashMap!!.get(storeName)
-//            var reviewTotal= storereviewHashMap?.size
-//            if (reviewTotal==null) reviewTotal=0
-//
-//            // 상점의 프로덕트 개수
-//            // 상점의 최대 할인율
-//            var prodNumTotal=0
-//            var salePercentMax:Double=0.0
-//            val productList = ArrayList<String>(productHashMap!!.keys)
-//            for (i in 0 until productList!!.size){
-//                val storeproductHashMap=productHashMap!!.get(productList[i])
-//
-//                if (storeproductHashMap?.get("storeName") == storeName) {
-//                    prodNumTotal+=1
-//                    salePercentMax= java.lang.Double.max(
-//                        salePercentMax,
-//                        storeproductHashMap?.get("discountRate") as Double
-//                    )
-//                }
-
-//            }
 
             // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
             // 추가
