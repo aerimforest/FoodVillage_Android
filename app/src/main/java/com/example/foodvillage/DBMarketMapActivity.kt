@@ -427,7 +427,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
 
     fun categoryFiltering(filteredcategoryIdx:Int): ArrayList<Store> {
         categoryStoreList = categoryHashMap!![filteredcategoryIdx]?.get("storeNames") as List<String>
-        Log.d("상점명 리스트_filtered", categoryStoreList.toString())
+        Log.d("상점명 리스트_filtered", categoryStoreList.toString())
         storeList=ArrayList<Store>()
 
         for (i in 0 until (categoryStoreList?.size!!)){
@@ -678,4 +678,3 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
     }
 
 }
-
