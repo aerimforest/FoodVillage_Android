@@ -21,7 +21,6 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodvillage.databinding.ActivityDbMarketMapBinding
-
 import com.example.foodvillage.menu.HomeFragment
 import com.example.foodvillage.schema.Store
 import com.example.foodvillage.storeList.StoreAdapter
@@ -201,8 +200,8 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                                             }
                                             markersShow(storeList)
                                         }
-                                    }
-                            }
+                                }
+                        }
                     }
             }
 
@@ -212,7 +211,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving)
             updateLocation()
         }
-        // 길찾기 하는 방법!! 중요함!!!
+            // 길찾기 하는 방법!! 중요함!!!
 //        binding.btnDbMarketMapActivityFindway.setOnClickListener{
 //            var intent= Intent(
 //                Intent.ACTION_VIEW,
@@ -245,7 +244,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
     protected fun updateLocation() {
         Log.d(TAG, "updateLocation()")
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+       if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "updateLocation() 두 위치 권한중 하나라도 없는 경우 ")
             return

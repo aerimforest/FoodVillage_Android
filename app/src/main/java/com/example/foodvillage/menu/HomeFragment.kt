@@ -64,6 +64,12 @@ class HomeFragment : Fragment() {
 
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        // 주소 설정 페이지로 이동하기
+        binding.tvHomeLocation.setOnClickListener{
+            val intent=Intent(context, AddressSettingAcitivity::class.java)
+            startActivity(intent)
+        }
         binding.rcvHomeTodayPrice.adapter = TodayPriceAdapter()
         binding.rcvHomeTodayPrice.layoutManager = layoutManager
         binding.rcvHomeTodayPrice.setHasFixedSize(true)
