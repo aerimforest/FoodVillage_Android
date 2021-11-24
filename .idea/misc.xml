@@ -3,16 +3,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/activity_login_btn_design.xml" value="0.10032894736842106" />
+        <entry key="app/src/main/res/drawable/activity_signup.xml" value="0.10032894736842106" />
+        <entry key="app/src/main/res/drawable/background_btn_email_login.xml" value="0.10032894736842106" />
+        <entry key="app/src/main/res/drawable/background_btn_google_login.xml" value="0.335" />
         <entry key="app/src/main/res/drawable/filter_btn.xml" value="0.16197916666666667" />
         <entry key="app/src/main/res/drawable/priority_btn_design.xml" value="0.10427631578947369" />
         <entry key="app/src/main/res/drawable/top_btn_design.xml" value="0.5" />
         <entry key="app/src/main/res/drawable/top_category_btn_design.xml" value="0.10032894736842106" />
         <entry key="app/src/main/res/drawable/tv_category_design.xml" value="0.10427631578947369" />
-        <entry key="app/src/main/res/layout/activity_address_setting.xml" value="0.148224043715847" />
+        <entry key="app/src/main/res/layout/activity_address_setting.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_db_market_map.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_market_map.xml" value="0.14895833333333333" />
         <entry key="app/src/main/res/layout/activity_my_map.xml" value="0.14895833333333333" />
+        <entry key="app/src/main/res/layout/activity_signup.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_store_list.xml" value="0.280188679245283" />
         <entry key="app/src/main/res/layout/activity_store_list_item.xml" value="0.26326530612244897" />
@@ -21,7 +27,7 @@
         <entry key="app/src/main/res/layout/fragment_bottomsheet_distance.xml" value="0.22558872261590168" />
         <entry key="app/src/main/res/layout/fragment_bottomsheet_priority_filter.xml" value="0.20458379070629387" />
         <entry key="app/src/main/res/layout/fragment_dib.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_home.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_mypage.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_storeList.xml" value="0.47560975609756095" />
         <entry key="app/src/main/res/layout/fragment_storelist.xml" value="0.165" />
