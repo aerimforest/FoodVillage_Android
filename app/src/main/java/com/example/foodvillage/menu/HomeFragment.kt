@@ -1,11 +1,13 @@
 package com.example.foodvillage.menu
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.util.Log
 import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -46,6 +48,13 @@ class HomeFragment : Fragment() {
     private var todayPriceList = arrayListOf<Product>()
     private var todayStoreList = arrayListOf<Store>()
 
+    var uid = FirebaseAuth.getInstance().uid
+    var DbRefUser = firebaseDatabase.getReference("users/" + uid)
+
+    var AddressData:String?=null
+    var userName:String?=null
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -65,6 +74,17 @@ class HomeFragment : Fragment() {
 
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        DbRefUser.get()
+            .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
+            .addOnSuccessListener {
+                var t_hashMap: HashMap<String, Any> = it.value as HashMap<String, Any>
+                AddressData = t_hashMap.get("address") as String
+                userName = t_hashMap.get("name")!! as String
+
+                binding.tvHomeLocation.text=AddressData
+            }
+
 
         // 주소 설정 페이지로 이동하기
         binding.tvHomeLocation.setOnClickListener{
@@ -103,6 +123,8 @@ class HomeFragment : Fragment() {
             val intent = Intent(context, StoreListActivity::class.java)
             startActivity(intent)
         }
+
+
     }
 
     inner class TodayPriceAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
