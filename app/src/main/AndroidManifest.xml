@@ -16,15 +16,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodVillage"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".storeList.StoreInfoActivity" />
         <activity android:name=".MyMapActivity" />
         <activity android:name=".DBMarketMapActivity" />
         <activity android:name=".storeList.StoreListActivity" />
         <activity android:name=".login.ui.LoginActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
         <activity android:name=".MainActivity" />
         <activity android:name=".SplashActivity">
@@ -40,6 +41,6 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="fa4beeecb60297b77f7dd90a3b2d4c64" />
-
     </application>
+
 </manifest>
