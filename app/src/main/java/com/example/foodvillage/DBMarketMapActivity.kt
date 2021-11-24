@@ -26,6 +26,7 @@ import com.example.foodvillage.schema.Store
 import com.example.foodvillage.storeList.StoreAdapter
 import com.example.foodvillage.storeList.StoreInfo
 import com.example.foodvillage.storeList.StoreListActivity
+import com.github.channguyen.rsv.RangeSliderView
 import com.google.android.gms.location.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
@@ -46,7 +47,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
 
     var filteredcategoryIdx=0
     var categoryIdx=0
-
+    var distVal=3.0
 
     private var mapView: MapView?=null
 
@@ -114,6 +115,15 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         if (intent.hasExtra("filteredcategoryIdx")) {
             categoryIdx = intent.getIntExtra("filteredcategoryIdx", 0)
             Log.d("필터 적용_지도", categoryIdx.toString())
+            if (intent.hasExtra("distVal")) {
+                distVal = intent.getDoubleExtra("distVal", 3.0)
+                Log.d("필터 적용_목록", distVal.toString())
+            } else {
+                Toast.makeText(this, "전달된 이름이 없습니다", Toast.LENGTH_SHORT).show()
+                Log.d("필터 적용_목록_노전달", distVal.toString())
+                distVal=3.0
+
+            }
         } else {
             Toast.makeText(this, "전달된 이름이 없습니다", Toast.LENGTH_SHORT).show()
             categoryIdx=0
@@ -122,6 +132,8 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         binding.btnList.setOnClickListener{
             var listintent=Intent(this@DBMarketMapActivity, StoreListActivity::class.java)
             listintent.putExtra("filteredcategoryIdx", filteredcategoryIdx)
+            listintent.putExtra("distVal", distVal)
+
             Log.d("필터 보내기_지도", filteredcategoryIdx.toString())
             startActivity(listintent)
         }
@@ -196,7 +208,10 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                                                 StoreIndi.currentLatitude= filteredstorehash?.get("currentLatitude") as Double?
                                                 StoreIndi.storeName= filteredstorehash?.get("storeName") as String?
                                                 StoreIndi.storeImg= filteredstorehash?.get("storeImg") as String?
-                                                storeList?.add(StoreIndi)
+                                                if (StoreIndi.distance?.get(uid)!! <= distVal){
+                                                    storeList?.add(StoreIndi)
+                                                }
+
                                             }
                                             markersShow(storeList)
                                         }
@@ -340,7 +355,51 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 mapView?.zoomOut(true)
             }
         }
+        // 거리 범위 설정 bottomsheet 띄우기
+        val btnDistance = binding.btnFilterDistance
+        btnDistance?.setOnClickListener{
 
+            val kmPriority = BottomSheetDialog(this@DBMarketMapActivity)
+            kmPriority.setContentView(R.layout.fragment_bottomsheet_distance)
+
+            val tv_km = kmPriority.findViewById<TextView>(R.id.tv_km)
+            tv_km?.text=""+distVal+"km"
+
+            kmPriority.findViewById<RangeSliderView>(R.id.rs_distance)?.setOnSlideListener {
+                    index->
+                Log.d("반경 선택", "" + index + "km")
+                tv_km?.text = "" + index + "km"
+                storeList=KmFiltering(filteredcategoryIdx!!, index)
+                markersShow(storeList)
+                btnDistance.text="" + index + "km 이내"
+                distVal= index.toDouble()
+            }
+            tv_km?.text="기본 3km"
+            kmPriority.show()
+        }
+
+
+    }
+    fun KmFiltering(filteredcategoryIdx:Int, priority:Int): ArrayList<Store> {
+        storeList=categoryFiltering(filteredcategoryIdx)
+        when (priority){
+            1->{
+                storeList= storeList.filter{ s-> s.distance?.get(uid)?.toDouble()!! < 1.0} as ArrayList<Store>
+            }
+            2->{
+                storeList= storeList.filter{ s-> s.distance?.get(uid)?.toDouble()!! < 2.0} as ArrayList<Store>
+            }
+            3->{
+                storeList= storeList.filter{ s-> s.distance?.get(uid)?.toDouble()!! < 3.0} as ArrayList<Store>
+            }
+            4->{
+                storeList= storeList.filter{ s-> s.distance?.get(uid)?.toDouble()!! < 4.0} as ArrayList<Store>
+            }
+            else->{
+            }
+        }
+        storeList.sortBy{ it.distance?.get(uid)}
+        return storeList
     }
 
     fun markersShow(storeList: ArrayList<Store>){
@@ -352,77 +411,81 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         var marker = MapPOIItem()
         for (i in 0 until storeList.size) {
 
-            marker = MapPOIItem()
             val storeName = storeList[i].storeName as String
             val currentLatitude = storeList[i].currentLatitude as Double
             val currentLongitude = storeList[i].currentLongitude as Double
             val address = storeList[i].address as String
             val categories = storeList[i].categoryNames as List<String>
-            marker.itemName = storeName
-            marker.mapPoint = MapPoint.mapPointWithGeoCoord(
-                currentLatitude,
-                currentLongitude
-            )
+            val markerdistVal = storeList[i].distance?.get(uid)!!
 
-            when (categories[0]) {
-                "과일/채소" -> {
-                    marker.markerType = MapPOIItem.MarkerType.CustomImage
-                    marker.customImageResourceId = R.drawable.marker_tomato
-                    marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                    marker.customSelectedImageResourceId = R.drawable.marker_tomato_selected
+            if (distVal >= markerdistVal) {
+                marker = MapPOIItem()
+                marker.itemName = storeName
+                marker.mapPoint = MapPoint.mapPointWithGeoCoord(
+                    currentLatitude,
+                    currentLongitude
+                )
+
+                when (categories[0]) {
+                    "과일/채소" -> {
+                        marker.markerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customImageResourceId = R.drawable.marker_tomato
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customSelectedImageResourceId = R.drawable.marker_tomato_selected
+                    }
+                    "고기/계란" -> {
+                        marker.markerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customImageResourceId = R.drawable.marker_meat
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customSelectedImageResourceId = R.drawable.marker_meat_selected
+                    }
+                    "수산/건어물" -> {
+                        marker.markerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customImageResourceId = R.drawable.marker_fish
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customSelectedImageResourceId = R.drawable.marker_fish_selected
+                    }
+                    "반찬/간편식" -> {
+                        marker.markerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customImageResourceId = R.drawable.marker_banchan
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customSelectedImageResourceId = R.drawable.marker_banchan_selected
+                    }
+                    "간식/음료" -> {
+                        marker.markerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customImageResourceId = R.drawable.marker_choco
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customSelectedImageResourceId = R.drawable.marker_choco_selected
+                    }
+                    "밥/면/소스/캔" -> {
+                        marker.markerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customImageResourceId = R.drawable.marker_bap
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customSelectedImageResourceId = R.drawable.marker_bap_selected
+                    }
+                    "건강/다이어트" -> {
+                        marker.markerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customImageResourceId = R.drawable.marker_lettuce
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customSelectedImageResourceId = R.drawable.marker_lettuce_selected
+                    }
+                    "생활용품" -> {
+                        marker.markerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customImageResourceId = R.drawable.marker_pan
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
+                        marker.customSelectedImageResourceId = R.drawable.marker_pan_selected
+                    }
+                    else -> {
+                        marker.markerType = MapPOIItem.MarkerType.BluePin
+                        marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
+                    }
                 }
-                "고기/계란" -> {
-                    marker.markerType = MapPOIItem.MarkerType.CustomImage
-                    marker.customImageResourceId = R.drawable.marker_meat
-                    marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                    marker.customSelectedImageResourceId = R.drawable.marker_meat_selected
-                }
-                "수산/건어물" -> {
-                    marker.markerType = MapPOIItem.MarkerType.CustomImage
-                    marker.customImageResourceId = R.drawable.marker_fish
-                    marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                    marker.customSelectedImageResourceId = R.drawable.marker_fish_selected
-                }
-                "반찬/간편식" -> {
-                    marker.markerType = MapPOIItem.MarkerType.CustomImage
-                    marker.customImageResourceId = R.drawable.marker_banchan
-                    marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                    marker.customSelectedImageResourceId = R.drawable.marker_banchan_selected
-                }
-                "간식/음료" -> {
-                    marker.markerType = MapPOIItem.MarkerType.CustomImage
-                    marker.customImageResourceId = R.drawable.marker_choco
-                    marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                    marker.customSelectedImageResourceId = R.drawable.marker_choco_selected
-                }
-                "밥/면/소스/캔" -> {
-                    marker.markerType = MapPOIItem.MarkerType.CustomImage
-                    marker.customImageResourceId = R.drawable.marker_bap
-                    marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                    marker.customSelectedImageResourceId = R.drawable.marker_bap_selected
-                }
-                "건강/다이어트" -> {
-                    marker.markerType = MapPOIItem.MarkerType.CustomImage
-                    marker.customImageResourceId = R.drawable.marker_lettuce
-                    marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                    marker.customSelectedImageResourceId = R.drawable.marker_lettuce_selected
-                }
-                "생활용품" -> {
-                    marker.markerType = MapPOIItem.MarkerType.CustomImage
-                    marker.customImageResourceId = R.drawable.marker_pan
-                    marker.selectedMarkerType = MapPOIItem.MarkerType.CustomImage
-                    marker.customSelectedImageResourceId = R.drawable.marker_pan_selected
-                }
-                else -> {
-                    marker.markerType = MapPOIItem.MarkerType.BluePin
-                    marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin
-                }
+                marker.setCustomImageAnchor(0.5f, 1.0f)
+                mapView?.addPOIItem(marker)
             }
-            marker.setCustomImageAnchor(0.5f, 1.0f)
-            mapView?.addPOIItem(marker)
+            mapView?.fitMapViewAreaToShowAllPOIItems()
+            mapView?.zoomOut(true)
         }
-        mapView?.fitMapViewAreaToShowAllPOIItems()
-        mapView?.zoomOut(true)
     }
 
     fun categoryFiltering(filteredcategoryIdx:Int): ArrayList<Store> {
