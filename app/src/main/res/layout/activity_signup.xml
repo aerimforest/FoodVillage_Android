@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/btn_activity_signup_back"
+        android:layout_width="10dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="130dp"
+        android:src="@drawable/activity_signup_btn_back"
+        app:layout_constraintEnd_toStartOf="@+id/tv_activity_signup"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_activity_signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="39dp"
+        android:text="회원가입"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="54dp"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@+id/tv_activity_signup">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="37dp">
+
+                <TextView
+                    android:id="@+id/tv_activity_signup_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="아이디"
+                    android:textColor="#000000"
+                    android:textSize="12dp" />
+
+                <EditText
+                    android:id="@+id/et_activity_signup_id"
+                    android:layout_width="330dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/activity_login_btn_design"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:paddingStart="20dp"
+                    android:singleLine="true"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_activity_signup_id"
+                    tools:ignore="HardcodedText" />
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_activity_signup_id_unavailable"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:text="사용할 수 없는 아이디 입니다."-->
+<!--                    android:textColor="#000000"-->
+<!--                    android:textSize="12dp"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/et_activity_signup_id" />-->
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="55dp"
+                    android:text="비밀번호"
+                    android:textColor="#000000"
+                    android:textSize="12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_activity_signup_id" />
+
+                <EditText
+                    android:id="@+id/et_activity_signup_pwd"
+                    android:layout_width="330dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/activity_login_btn_design"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:paddingStart="20dp"
+                    android:singleLine="true"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@+id/textView9"
+                    tools:ignore="HardcodedText"
+                    tools:layout_editor_absoluteX="0dp" />
+
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="55dp"
+                    android:text="비밀번호 확인"
+                    android:textColor="#000000"
+                    android:textSize="12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_activity_signup_pwd" />
+
+                <EditText
+                    android:id="@+id/et_activity_signup_pwdcheck"
+                    android:layout_width="330dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/activity_login_btn_design"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:paddingStart="20dp"
+                    android:singleLine="true"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@+id/textView10"
+                    tools:ignore="HardcodedText"
+                    tools:layout_editor_absoluteX="0dp" />
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="55dp"
+                    android:text="닉네임"
+                    android:textColor="#000000"
+                    android:textSize="12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_activity_signup_pwdcheck" />
+
+                <EditText
+                    android:id="@+id/et_activity_signup_nickname"
+                    android:layout_width="330dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/activity_login_btn_design"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:paddingStart="20dp"
+                    android:singleLine="true"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@+id/textView11"
+                    tools:ignore="HardcodedText"
+                    tools:layout_editor_absoluteX="0dp" />
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_activity_signup_nickname_available"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:text="사용할 수 있는 닉네임 입니다."-->
+<!--                    android:textColor="#000000"-->
+<!--                    android:textSize="12dp"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/et_activity_signup_nickname" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_activity_signup_nickname_unavailable"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:text="사용할 수 없는 닉네임 입니다."-->
+<!--                    android:textColor="#000000"-->
+<!--                    android:textSize="12dp"-->
+<!--                    app:layout_constraintStart_toStartOf="parent"-->
+<!--                    app:layout_constraintTop_toBottomOf="@+id/et_activity_signup_nickname" />-->
+
+                <TextView
+                    android:id="@+id/textView12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="55dp"
+                    android:text="핸드폰 번호"
+                    android:textColor="#000000"
+                    android:textSize="12dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_activity_signup_nickname" />
+
+                <EditText
+                    android:id="@+id/et_activity_signup_phone"
+                    android:layout_width="330dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/activity_login_btn_design"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:paddingStart="20dp"
+                    android:singleLine="true"
+                    android:textSize="14sp"
+                    app:layout_constraintTop_toBottomOf="@+id/textView12"
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    android:id="@+id/btn_activity_signup"
+                    android:layout_width="300dp"
+                    android:layout_height="50dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="59dp"
+                    android:layout_marginBottom="200dp"
+                    android:background="@drawable/background_btn_email_login"
+                    android:text="회원가입"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,8 +9,10 @@ import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.widget.Toast
+import com.example.foodvillage.AddressSettingAcitivity
 import com.example.foodvillage.MainActivity
 import com.example.foodvillage.R
+import com.example.foodvillage.SignUpActivity
 import com.example.foodvillage.databinding.ActivityLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -46,6 +48,12 @@ class LoginActivity : AppCompatActivity() {
 
         binding.btnLoginEmail.setOnClickListener {
             logInWithEmail()
+        }
+
+        // 회원가입 페이지로 넘어가기
+        binding.tvActivityLoginSignup.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
         }
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
