@@ -32,7 +32,6 @@ class StoreInfoActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        // Adapter 연결
         val storeInfoCategoryAdapter = StoreInfoCategoryAdapter(this, categoryList)
         binding.rvStoreInfoCategory.adapter = storeInfoCategoryAdapter
 
@@ -42,7 +41,12 @@ class StoreInfoActivity : AppCompatActivity() {
 
         val storeInfoProductAdapter = StoreInfoProductAdapter(this, productList)
         binding.rcvStoreInfoProduct.adapter = storeInfoProductAdapter
-        binding.rcvStoreInfoProduct.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.rcvStoreInfoProduct.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.rcvStoreInfoProduct.setHasFixedSize(true)
+
+        val storeName = intent.getStringExtra("storeName")
+
+        // Todo: storeName으로 Product 테이블 접근해서 productList 업데이트
     }
 }

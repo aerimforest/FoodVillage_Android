@@ -1,15 +1,20 @@
 package com.example.foodvillage.storeList
 
-import android.view.ViewGroup
-import android.view.View
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodvillage.R
+import com.example.foodvillage.storeInfo.ui.StoreInfoActivity
 
 class StoreAdapter(var storeList: ArrayList<StoreInfo>) :
     RecyclerView.Adapter<StoreAdapter.CustomViewHolder>() {
+
+    private val mContext: Context? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -34,6 +39,12 @@ class StoreAdapter(var storeList: ArrayList<StoreInfo>) :
         holder.category.text = storeList[position].categories.toString()
         //holder.sale.text = "최대 할인율"
         holder.salePercent.text = storeList[position].salePercentMax
+
+        holder.itemView.setOnClickListener(View.OnClickListener {
+            val intent = Intent(mContext, StoreInfoActivity::class.java)
+            intent.putExtra("storeName", storeList[position].storeName)
+            mContext?.startActivity(intent)
+        })
     }
 
     override fun getItemCount(): Int {
