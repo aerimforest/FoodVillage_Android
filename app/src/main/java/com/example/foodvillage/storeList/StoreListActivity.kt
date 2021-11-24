@@ -5,15 +5,15 @@ import android.content.ContentValues
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.renderscript.RenderScript
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodvillage.DBMarketMapActivity
 import com.example.foodvillage.R
 import com.example.foodvillage.databinding.ActivityStoreListBinding
+import com.github.channguyen.rsv.RangeSliderView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -213,10 +213,9 @@ class StoreListActivity : AppCompatActivity() {
                                                 // 정렬 기준 설정 bottomsheet 띄우기
                                                 val btnPriority = binding.btnPriority
                                                 btnPriority.setOnClickListener {
-                                                    // val bottomsheet = Bottomsheet_filterPriority()
-                                                    // bottomsheet.show(supportFragmentManager, bottomsheet.tag)
                                                     val dialogPriority = BottomSheetDialog(this@StoreListActivity)
                                                     dialogPriority.setContentView(R.layout.fragment_bottomsheet_priority_filter)
+
                                                     dialogPriority.findViewById<Button>(R.id.btn_priority_distance)
                                                         ?.setOnClickListener{
                                                             storeList=PriorityFiltering(filteredcategoryIdx, 0)
@@ -243,13 +242,29 @@ class StoreListActivity : AppCompatActivity() {
                                                         }
                                                     dialogPriority.show()
                                                 }
-                                            }
 
-                                            // 거리 범위 설정 bottomsheet 띄우기
-                                            val btnDistance = binding.btnFilterDistance
-                                            btnDistance.setOnClickListener{
-                                                val bottomsheet = Bottomsheet_filterDistance()
-                                                bottomsheet.show(supportFragmentManager, bottomsheet.tag)
+                                                // 거리 범위 설정 bottomsheet 띄우기
+                                                val btnDistance = binding.btnFilterDistance
+                                                btnDistance?.setOnClickListener{
+
+                                                    val kmPriority = BottomSheetDialog(this@StoreListActivity)
+                                                    kmPriority.setContentView(R.layout.fragment_bottomsheet_distance)
+
+                                                    val tv_km = kmPriority.findViewById<TextView>(R.id.tv_km)
+                                                    var sliderIdx=0
+
+                                                    kmPriority.findViewById<RangeSliderView>(R.id.rs_distance)?.setOnSlideListener {
+                                                        index->
+                                                            Log.d("반경 선택", "" + index + "km")
+                                                            tv_km?.text = "" + index + "km"
+                                                            sliderIdx=index
+                                                            storeList=KmFiltering(filteredcategoryIdx!!, sliderIdx)
+                                                            Log.d("반경 지정", tv_km?.text as String)
+                                                            mStoreAdapter!!.datasetChanged(storeList)
+                                                    }
+                                                    kmPriority.show()
+                                                }
+
                                             }
 
                                         }
@@ -328,6 +343,28 @@ class StoreListActivity : AppCompatActivity() {
             }
             else->{
 
+            }
+        }
+
+        return storeList
+    }
+
+    fun KmFiltering(filteredcategoryIdx:Int, priority:Int): ArrayList<StoreInfo> {
+        storeList=categoryFiltering(filteredcategoryIdx)
+        when (priority){
+            1->{
+                storeList= storeList.filter{ s-> s.distance.substring(0,3).toDouble() < 1.0} as ArrayList<StoreInfo>
+            }
+            2->{
+                storeList= storeList.filter{ s-> s.distance.substring(0,3).toDouble() < 2.0} as ArrayList<StoreInfo>
+            }
+            3->{
+                storeList= storeList.filter{ s-> s.distance.substring(0,3).toDouble() < 3.0} as ArrayList<StoreInfo>
+            }
+            4->{
+                storeList= storeList.filter{ s-> s.distance.substring(0,3).toDouble() < 4.0} as ArrayList<StoreInfo>
+            }
+            else->{
             }
         }
 
