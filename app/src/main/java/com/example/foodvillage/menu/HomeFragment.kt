@@ -12,22 +12,23 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
-import com.example.foodvillage.*
 import com.example.foodvillage.R
-import com.example.foodvillage.PopularStoreData
 import com.example.foodvillage.storeList.StoreListActivity
 import com.example.foodvillage.ViewPagerAdapter
 import com.example.foodvillage.databinding.FragmentHomeBinding
 import com.example.foodvillage.schema.Product
 import com.example.foodvillage.schema.Store
-
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import kotlinx.android.synthetic.main.item_today_popular_store.view.*
-import kotlinx.android.synthetic.main.item_today_sale.view.*
+import kotlinx.android.synthetic.main.item_today_sale.view.imv_product
+import kotlinx.android.synthetic.main.item_today_sale.view.tv_discount_rate
+import kotlinx.android.synthetic.main.item_today_sale.view.tv_discounted_price
+import kotlinx.android.synthetic.main.item_today_sale.view.tv_distance
+import kotlinx.android.synthetic.main.item_today_sale.view.tv_fixed_price
+import kotlinx.android.synthetic.main.item_today_sale.view.tv_fixed_price_won
+import kotlinx.android.synthetic.main.item_today_sale.view.tv_product_name
+import kotlinx.android.synthetic.main.item_today_sale.view.tv_store_name
 import kotlin.math.*
 
 class HomeFragment : Fragment() {
@@ -145,13 +146,13 @@ class HomeFragment : Fragment() {
                 todayPriceList[position].discountRate!!
             ))?.toInt().toString()
 
-            val imageView = viewHolder.imv_product
-
-            Firebase.storage.reference.child(todayPriceList[position].imgUrl.toString()).downloadUrl.addOnCompleteListener {
-                if (it.isSuccessful) {
-                    Glide.with(this@HomeFragment).load(it.result).into(imageView)
-                }
-            }
+            // drawable 파일에서 이미지 검색 후 적용
+            val id = context!!.resources.getIdentifier(
+                todayPriceList[position].imgUrl.toString(),
+                "drawable",
+                context!!.packageName
+            )
+            viewHolder.imv_product.setImageResource(id)
 
             val auth: FirebaseAuth = FirebaseAuth.getInstance()
             val databaseDistanceReference: DatabaseReference =
@@ -247,14 +248,13 @@ class HomeFragment : Fragment() {
                     }
                 })
 
-            // Todo: 오늘의 인기가게 이미지
-            val imageView = viewHolder.imv_product
-
-//            Firebase.storage.reference.child(todayStoreList[position].storeImg.toString()).downloadUrl.addOnCompleteListener {
-//                if (it.isSuccessful) {
-//                    Glide.with(this@HomeFragment).load(it.result).into(imageView)
-//                }
-//            }
+            // drawable 파일에서 이미지 검색 후 적용
+            val id = context!!.resources.getIdentifier(
+                todayStoreList[position].storeImg.toString(),
+                "drawable",
+                context!!.packageName
+            )
+            viewHolder.imv_popular_store.setImageResource(id)
 
             // Todo: recyclerview item click listener
         }
