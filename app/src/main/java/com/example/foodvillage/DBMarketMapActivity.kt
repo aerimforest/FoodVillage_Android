@@ -20,6 +20,7 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodvillage.databinding.ActivityDbMarketMapBinding
+import com.example.foodvillage.menu.HomeFragment
 import com.example.foodvillage.schema.Store
 import com.example.foodvillage.storeList.StoreAdapter
 import com.example.foodvillage.storeList.StoreInfo
@@ -209,8 +210,14 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         super.onDestroy()
         mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff)
         mapView!!.setShowCurrentLocationMarker(false)
-        intent= Intent(this@DBMarketMapActivity, MainActivity::class.java)
-        startActivity(intent)
+//        intent= Intent(this@DBMarketMapActivity, MainActivity::class.java)
+//        startActivity(intent)
+
+//        val homeFragment = HomeFragment()
+//        supportFragmentManager.beginTransaction()
+//            .replace(R.id.main_screen_panel, homeFragment).commit()
+//
+
     }
 
 
@@ -245,6 +252,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 filteredcategoryIdx = 0
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
             }
 
             binding.btnFruitVegi.setOnClickListener {
@@ -252,48 +260,56 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 filteredcategoryIdx = 1
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
             }
             binding.btnMeat.setOnClickListener {
                 binding.btnMeat.isSelected
                 filteredcategoryIdx = 2
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
             }
             binding.btnSeafood.setOnClickListener {
                 binding.btnSeafood.isSelected
                 filteredcategoryIdx = 3
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
             }
             binding.btnSideDish.setOnClickListener {
                 binding.btnSideDish.isSelected
                 filteredcategoryIdx = 4
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
             }
             binding.btnSnack.setOnClickListener {
                 binding.btnSnack.isSelected
                 filteredcategoryIdx = 5
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
             }
             binding.btnRiceAndNoodle.setOnClickListener {
                 binding.btnRiceAndNoodle.isSelected
                 filteredcategoryIdx = 6
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
             }
             binding.btnHealthy.setOnClickListener {
                 binding.btnHealthy.isSelected
                 filteredcategoryIdx = 7
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
             }
             binding.btnLife.setOnClickListener {
                 binding.btnLife.isSelected
                 filteredcategoryIdx = 8
                 storeList = categoryFiltering(filteredcategoryIdx)
                 markersShow(storeList)
+                mapView?.fitMapViewAreaToShowAllPOIItems()
             }
         }
 
@@ -308,6 +324,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         var marker = MapPOIItem()
         for (i in 0 until storeList.size) {
 
+            marker = MapPOIItem()
             val storeName = storeList[i].storeName as String
             val currentLatitude = storeList[i].currentLatitude as Double
             val currentLongitude = storeList[i].currentLongitude as Double

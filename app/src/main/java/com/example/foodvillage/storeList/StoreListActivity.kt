@@ -49,7 +49,6 @@ class StoreListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
 
-
         binding.btnMap.setOnClickListener{
             intent= Intent(this@StoreListActivity, DBMarketMapActivity::class.java)
             startActivity(intent)
