@@ -1,4 +1,4 @@
-package com.example.foodvillage.storeList
+package com.example.foodvillage.storeInfo.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
