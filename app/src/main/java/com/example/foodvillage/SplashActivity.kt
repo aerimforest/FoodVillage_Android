@@ -3,6 +3,8 @@ package com.example.foodvillage
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.WindowManager
+import android.view.WindowManager.LayoutParams.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.foodvillage.login.ui.LoginActivity
 import kotlinx.coroutines.CoroutineScope
@@ -17,6 +19,9 @@ class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
+
+        window.setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN)
+
         setContentView(R.layout.activity_splash)
         this.supportActionBar?.hide()
         CoroutineScope(Dispatchers.IO).launch {
