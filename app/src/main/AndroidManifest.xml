@@ -37,6 +37,8 @@
         <activity android:name=".AddressSettingAcitivity"/>
         <activity android:name=".SignUpActivity"/>
         <activity android:name=".EcoScoreAcitivity"/>
+        <activity android:name=".CurrentAddreessActivity"/>
+        <activity android:name=".DetailAddressActivity"/>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
