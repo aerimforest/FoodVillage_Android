@@ -826,6 +826,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             dialog.setContentView(R.layout.dialog_fmi_market)
 
             val storeName = poiItem?.itemName
+            Log.d("다이얼로그", storeName!!)
 
             // 상품 목록 HorizontalScrollView
             val layoutManager = LinearLayoutManager(this@DBMarketMapActivity, LinearLayoutManager.HORIZONTAL, false)
