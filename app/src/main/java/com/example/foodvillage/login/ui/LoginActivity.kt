@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.widget.Toast
-import com.example.foodvillage.AddressSettingAcitivity
 import com.example.foodvillage.MainActivity
 import com.example.foodvillage.R
 import com.example.foodvillage.SignUpActivity
@@ -121,7 +120,7 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    moveMainPage(task.result?.user)
+                    //moveMainPage(task.result?.user)
                     moveUserNamePage(auth.currentUser)
                 } else {
                     Toast.makeText(this, task.exception?.message, Toast.LENGTH_SHORT).show()
@@ -141,7 +140,7 @@ class LoginActivity : AppCompatActivity() {
     private fun moveUserNamePage(user: FirebaseUser?) {
         // user가 있는 경우(로그인 한 경우)
         if (user != null) {
-            //val intent = Intent(this, UserNameActivity::class.java)
+            val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
             finish()
         }
@@ -156,7 +155,7 @@ class LoginActivity : AppCompatActivity() {
                 when {
                     task.isSuccessful -> {
                         Toast.makeText(this, "로그인 성공!", Toast.LENGTH_SHORT).show()
-                        // moveUserNamePage(auth.currentUser)
+                        moveUserNamePage(auth.currentUser)
                     }
                     task.exception?.message.isNullOrEmpty() -> {
                         Toast.makeText(this, task.exception!!.message, Toast.LENGTH_SHORT).show()

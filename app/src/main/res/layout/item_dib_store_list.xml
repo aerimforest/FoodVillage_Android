@@ -33,7 +33,7 @@
             android:includeFontPadding="false"
             android:text="가게명"
             android:textColor="@color/black"
-            android:textSize="12sp"
+            android:textSize="13sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/imv_dib_store_image"
             app:layout_constraintTop_toTopOf="parent" />
@@ -48,7 +48,7 @@
             android:includeFontPadding="false"
             android:text="거리"
             android:textColor="@color/black"
-            android:textSize="9sp"
+            android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/imv_dib_store_image"
             app:layout_constraintTop_toBottomOf="@+id/tv_dib_store_name" />
 
@@ -62,7 +62,7 @@
             android:includeFontPadding="false"
             android:text="리뷰 수"
             android:textColor="@color/black"
-            android:textSize="9sp"
+            android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/tv_store_distance"
             app:layout_constraintTop_toBottomOf="@+id/tv_dib_store_name" />
@@ -77,7 +77,7 @@
             android:includeFontPadding="false"
             android:text="175개"
             android:textColor="@color/black"
-            android:textSize="9sp"
+            android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/tv_store_review"
             app:layout_constraintTop_toBottomOf="@+id/tv_dib_store_name" />
 
@@ -91,7 +91,7 @@
             android:includeFontPadding="false"
             android:text="상품 수"
             android:textColor="@color/black"
-            android:textSize="9sp"
+            android:textSize="10sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/tv_review_num"
             app:layout_constraintTop_toBottomOf="@+id/tv_dib_store_name" />
@@ -106,7 +106,7 @@
             android:includeFontPadding="false"
             android:text="30개"
             android:textColor="@color/black"
-            android:textSize="9sp"
+            android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/tv_product"
             app:layout_constraintTop_toBottomOf="@+id/tv_dib_store_name" />
 
@@ -120,7 +120,7 @@
             android:includeFontPadding="false"
             android:text="최대 할인율"
             android:textColor="@color/black"
-            android:textSize="9sp"
+            android:textSize="10sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -138,23 +138,32 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_sale" />
 
-        <TextView
-            android:id="@+id/tv_category"
+        <!--카테고리-->
+        <HorizontalScrollView
+            android:id="@+id/hsv_dib_store_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginHorizontal="16dp"
             android:layout_marginTop="7dp"
-            android:background="@drawable/tv_category_design"
-            android:fontFamily="@font/noto_sans_kr_medium"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:paddingHorizontal="7dp"
-            android:paddingVertical="3dp"
-            android:text="과일/채소"
-            android:textColor="@color/white"
-            android:textSize="9sp"
+            android:scrollbars="none"
             app:layout_constraintStart_toEndOf="@+id/imv_dib_store_image"
-            app:layout_constraintTop_toBottomOf="@+id/tv_store_distance" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_store_distance">
+
+            <!--HorizontallScrollView에 RecyclerView 넣을 때에는 반드시 RelativeLayout으로 한 번 감싸기-->
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_dib_store_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            </RelativeLayout>
+
+        </HorizontalScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
