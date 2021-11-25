@@ -20,6 +20,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import java.lang.Double.max
+import java.security.AccessController.getContext
 import java.util.ArrayList
 import kotlin.math.round
 
@@ -63,13 +64,11 @@ class StoreListActivity : AppCompatActivity() {
                 distVal = intent.getDoubleExtra("distVal", 3.0)
                 Log.d("필터 적용_목록", distVal.toString())
             } else {
-                Toast.makeText(this, "전달된 이름이 없습니다", Toast.LENGTH_SHORT).show()
                 Log.d("필터 적용_목록_노전달", distVal.toString())
                 distVal=3.0
 
             }
         } else {
-            Toast.makeText(this, "전달된 이름이 없습니다", Toast.LENGTH_SHORT).show()
             Log.d("필터 적용_목록_노전달", categoryIdx.toString())
             categoryIdx=0
 
@@ -130,6 +129,8 @@ class StoreListActivity : AppCompatActivity() {
                                                     ?.get("distance") as HashMap<String, Any>
                                                 val distance=distanceHashMap.get(uid) as Double
 
+                                                val storeImage=storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
+                                                    ?.get("storeImg") as String
                                                 // 상점의 리뷰 개수
                                                 val storereviewHashMap=reviewHashMap!!.get(storeName)
                                                 var reviewTotal= storereviewHashMap?.size
@@ -152,9 +153,9 @@ class StoreListActivity : AppCompatActivity() {
 
                                                 // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
                                                 // 추가
-                                                storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
+                                                storeList?.add(StoreInfo(storeImage, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
                                                 // 기본적으로 가까운 순(3km 기본)
-                                                storeList= storeList.filter{ s-> s.distance.substring(0,3).toDouble() < distVal} as ArrayList<StoreInfo>
+                                                storeList= storeList.filter{ s-> s.distance?.substring(0,3)?.toDouble()!! < distVal} as ArrayList<StoreInfo>
                                                 storeList.sortBy{ it.distance}
                                             }
                                             //Log.d("필터", "스토어리스트가 생겼니: "+(storeList!=null).toString()+": "+storeList[0].storeName+", "+storeList[1].storeName)
@@ -163,7 +164,7 @@ class StoreListActivity : AppCompatActivity() {
                                                 binding.rvStore.layoutManager =
                                                     LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                                                 binding.rvStore!!.setHasFixedSize(true)
-                                                mStoreAdapter=StoreAdapter(storeList!!)
+                                                mStoreAdapter=StoreAdapter(storeList!!, this.applicationContext)
                                                 binding.rvStore!!.adapter = mStoreAdapter
 
                                                 // 가게 리스트 클릭 이벤트
@@ -324,6 +325,8 @@ class StoreListActivity : AppCompatActivity() {
                 ?.get("distance") as HashMap<String, Any>
             val distance=distanceHashMap.get(uid) as Double
 
+            val storeImage=storeHashMap!!.get((categoryStoreList!! as ArrayList<String>)[i])
+                ?.get("storeImg") as String
             // 상점의 리뷰 개수
             val storereviewHashMap=reviewHashMap!!.get(storeName)
             var reviewTotal= storereviewHashMap?.size
@@ -346,9 +349,9 @@ class StoreListActivity : AppCompatActivity() {
 
             // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
             // 추가
-            storeList?.add(StoreInfo(R.drawable.subway, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
+            storeList?.add(StoreInfo(storeImage, storeName, distance.toString()+"km", reviewTotal.toString(), prodNumTotal.toString(), categories, (round(salePercentMax*100)).toString()+"%"))
         }
-        storeList= storeList.filter{ s-> s.distance.substring(0,3).toDouble() < 3.0} as ArrayList<StoreInfo>
+        storeList= storeList.filter{ s-> s.distance?.substring(0,3)?.toDouble()!! < 3.0} as ArrayList<StoreInfo>
         storeList.sortBy{ it.distance}
         return storeList
     }
@@ -380,16 +383,16 @@ class StoreListActivity : AppCompatActivity() {
         storeList=categoryFiltering(filteredcategoryIdx)
         when (priority){
             1->{
-                storeList= storeList.filter{ s-> s.distance.substring(0,3).toDouble() < 1.0} as ArrayList<StoreInfo>
+                storeList= storeList.filter{ s-> s.distance?.substring(0,3)?.toDouble()!! < 1.0} as ArrayList<StoreInfo>
             }
             2->{
-                storeList= storeList.filter{ s-> s.distance.substring(0,3).toDouble() < 2.0} as ArrayList<StoreInfo>
+                storeList= storeList.filter{ s-> s.distance?.substring(0,3)?.toDouble()!! < 2.0} as ArrayList<StoreInfo>
             }
             3->{
-                storeList= storeList.filter{ s-> s.distance.substring(0,3).toDouble() < 3.0} as ArrayList<StoreInfo>
+                storeList= storeList.filter{ s-> s.distance?.substring(0,3)?.toDouble()!! < 3.0} as ArrayList<StoreInfo>
             }
             4->{
-                storeList= storeList.filter{ s-> s.distance.substring(0,3).toDouble() < 4.0} as ArrayList<StoreInfo>
+                storeList= storeList.filter{ s-> s.distance?.substring(0,3)?.toDouble()!! < 4.0} as ArrayList<StoreInfo>
             }
             else->{
             }

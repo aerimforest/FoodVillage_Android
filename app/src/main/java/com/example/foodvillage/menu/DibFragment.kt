@@ -203,16 +203,17 @@ class DibFragment : Fragment() {
                         val arr = uidList.split(", ")
                         arr2 = categoryListString.split(", ")
 
+
                         for (i in arr) {
                             if (i == auth.uid) {
                                 if (item != null) {
+                                    val catList=item.categoryNames
+                                    for (i in catList!!){
+                                        categoryList.add(0, i)
+                                    }
                                     storeList.add(0, item)
                                 }
                             }
-                        }
-
-                        for (j in arr2) {
-                            categoryList.add(0, j)
                         }
                     }
                     notifyDataSetChanged()
