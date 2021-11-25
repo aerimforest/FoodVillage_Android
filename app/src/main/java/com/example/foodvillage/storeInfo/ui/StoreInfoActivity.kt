@@ -3,6 +3,7 @@ package com.example.foodvillage.storeInfo.ui
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -38,14 +39,16 @@ class StoreInfoActivity : AppCompatActivity() {
     private var databaseReference: DatabaseReference = firebaseDatabase.reference
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    //val storeName = intent.getStringExtra("storeName")
-    val storeName = "나연마트1"
+    private var storeName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStoreInfoBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+
+        storeName = intent.getStringExtra("storeName").toString()
+        binding.tvStoreInfoName.text = storeName
 
         val storeInfoCategoryAdapter = StoreInfoCategoryAdapter(this, categoryList)
         binding.rvStoreInfoCategory.adapter = storeInfoCategoryAdapter
@@ -64,9 +67,7 @@ class StoreInfoActivity : AppCompatActivity() {
 
         setStoreInfo()
 
-//        if (storeName != null) {
-//            iconHeartClickEvent(storeName)
-//        }
+        iconHeartClickEvent(storeName)
 
         binding.tvProductInfo.setOnClickListener {
             productInfoClickEvent()
@@ -82,18 +83,16 @@ class StoreInfoActivity : AppCompatActivity() {
     }
 
     private fun setStoreInfo() {
-        val databaseStoreReference: DatabaseReference =
-            firebaseDatabase.getReference(storeName)
+
+        val databaseStoreReference = firebaseDatabase.getReference("stores")
 
         databaseStoreReference.addValueEventListener(object :
             ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-
                 for (postSnapshot in dataSnapshot.children) {
                     val item = postSnapshot.getValue(Store::class.java)
                     if (item != null) {
                         if (item.storeName == storeName) {
-                            binding.tvStoreInfoName.text = item.storeName
                             binding.tvStoreInfoPhone.text = item.phoneNumber
                             binding.tvStoreInfoTime2.text = item.time
                             binding.tvStoreInfoTime.text = item.time
