@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.foodvillage.AddressSettingAcitivity
-import com.example.foodvillage.MyMapActivity
 import com.example.foodvillage.R
 import com.example.foodvillage.storeList.StoreListActivity
 import com.example.foodvillage.ViewPagerAdapter

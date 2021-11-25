@@ -209,89 +209,89 @@ class MainActivity : AppCompatActivity() {
 
                 ////////////////////////////////////////////////////////
                 //애뮬레이터 안 되면 여기부터 주석처리
-                try{
-                    var t_hashMap: HashMap<String, Any> = it.value as HashMap<String, Any>
-                    Log.d("유저", "hash.name: " + t_hashMap.get("name"))
-
-                    curr_lat = t_hashMap.get("currentLatitude") as Double
-                    curr_lon = t_hashMap.get("currentLongitude") as Double
-
-
-                    // user 찾으면 현 위치 설정
-                    val DbRefStores = mDatabase.getReference("stores/")
-
-                    DbRefStores.get()
-                        .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
-                        .addOnSuccessListener {
-                            var t_hashMap: HashMap<String, HashMap<String, Any>> =
-                                it.value as HashMap<String, HashMap<String, Any>>
-
-                            Log.d("파베", "Main: " + t_hashMap.toString())
-
-                            val storeNameList: List<String> = ArrayList<String>(t_hashMap.keys)
-                            for (i in 0 until storeNameList.size) {
-                                val currentLatitude =
-                                    t_hashMap.get(storeNameList[i])?.get("currentLatitude") as Double
-                                val currentLongitude =
-                                    t_hashMap.get(storeNameList[i])?.get("currentLongitude") as Double
-                                val marker_distance =
-                                    getDistance(curr_lat!!,
-                                        curr_lon!!, currentLatitude, currentLongitude)
-
-                                // 현재위치 주소값
-                                var reverseGeoCoder = MapReverseGeoCoder(
-                                    getApiKeyFromManifest(this),
-                                    MapPoint.mapPointWithGeoCoord(currentLatitude, currentLongitude),
-                                    object : MapReverseGeoCoder.ReverseGeoCodingResultListener {
-                                        override fun onReverseGeoCoderFoundAddress(
-                                            mapReverseGeoCoder: MapReverseGeoCoder,
-                                            s: String
-                                        ) {
-                                            val AddressData = s
-                                            DbRefStores.child(storeNameList[i]).child("address").setValue(AddressData)
-                                                .addOnFailureListener {
-                                                    e -> Log.d(ContentValues.TAG, e.localizedMessage)
-                                                    Log.d("파베", "주소 왜 저장 안 됨?")
-                                                }
-                                                .addOnSuccessListener {}
-                                        }
-                                        override fun onReverseGeoCoderFailedToFindAddress(mapReverseGeoCoder: MapReverseGeoCoder) {
-
-                                        }
-                                    },
-                                    this
-                                )
-                                reverseGeoCoder.startFindingAddress()
-
-                                try {
-                                    var updateHashMap=t_hashMap.get(storeNameList[i])?.get("distance") as HashMap<String, Double>
-                                    updateHashMap.put(uid!!, marker_distance!!.toDouble())
-
-                                    DbRefStores.child(storeNameList[i]).child("distance").setValue(updateHashMap)
-                                        .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
-                                        .addOnSuccessListener {}
-                                }
-                                catch (e:NullPointerException) {
-                                    var updateHashMap:HashMap<String, Double> = HashMap()
-                                    updateHashMap.put(uid!!, marker_distance!!.toDouble())
-
-                                    DbRefStores.child(storeNameList[i]).child("distance").setValue(updateHashMap)
-                                        .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
-                                        .addOnSuccessListener {}
-                                }
-
-                            }
-
-                            //이동시간
-                            // Math.round(((marker_distance.toDouble() / 1000) / 3.5) * 60 * 10 ) / 10).toString()
-
-                        }
-                }
-                catch(e:java.lang.NullPointerException){
-                    Toast.makeText(this@MainActivity, "사용자 정보를 등록해주세요", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this@MainActivity, MyMapActivity::class.java)
-                    startActivity(intent)
-                }
+//                try{
+//                    var t_hashMap: HashMap<String, Any> = it.value as HashMap<String, Any>
+//                    Log.d("유저", "hash.name: " + t_hashMap.get("name"))
+//
+//                    curr_lat = t_hashMap.get("currentLatitude") as Double
+//                    curr_lon = t_hashMap.get("currentLongitude") as Double
+//
+//
+//                    // user 찾으면 현 위치 설정
+//                    val DbRefStores = mDatabase.getReference("stores/")
+//
+//                    DbRefStores.get()
+//                        .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
+//                        .addOnSuccessListener {
+//                            var t_hashMap: HashMap<String, HashMap<String, Any>> =
+//                                it.value as HashMap<String, HashMap<String, Any>>
+//
+//                            Log.d("파베", "Main: " + t_hashMap.toString())
+//
+//                            val storeNameList: List<String> = ArrayList<String>(t_hashMap.keys)
+//                            for (i in 0 until storeNameList.size) {
+//                                val currentLatitude =
+//                                    t_hashMap.get(storeNameList[i])?.get("currentLatitude") as Double
+//                                val currentLongitude =
+//                                    t_hashMap.get(storeNameList[i])?.get("currentLongitude") as Double
+//                                val marker_distance =
+//                                    getDistance(curr_lat!!,
+//                                        curr_lon!!, currentLatitude, currentLongitude)
+//
+//                                // 현재위치 주소값
+//                                var reverseGeoCoder = MapReverseGeoCoder(
+//                                    getApiKeyFromManifest(this),
+//                                    MapPoint.mapPointWithGeoCoord(currentLatitude, currentLongitude),
+//                                    object : MapReverseGeoCoder.ReverseGeoCodingResultListener {
+//                                        override fun onReverseGeoCoderFoundAddress(
+//                                            mapReverseGeoCoder: MapReverseGeoCoder,
+//                                            s: String
+//                                        ) {
+//                                            val AddressData = s
+//                                            DbRefStores.child(storeNameList[i]).child("address").setValue(AddressData)
+//                                                .addOnFailureListener {
+//                                                    e -> Log.d(ContentValues.TAG, e.localizedMessage)
+//                                                    Log.d("파베", "주소 왜 저장 안 됨?")
+//                                                }
+//                                                .addOnSuccessListener {}
+//                                        }
+//                                        override fun onReverseGeoCoderFailedToFindAddress(mapReverseGeoCoder: MapReverseGeoCoder) {
+//
+//                                        }
+//                                    },
+//                                    this
+//                                )
+//                                reverseGeoCoder.startFindingAddress()
+//
+//                                try {
+//                                    var updateHashMap=t_hashMap.get(storeNameList[i])?.get("distance") as HashMap<String, Double>
+//                                    updateHashMap.put(uid!!, marker_distance!!.toDouble())
+//
+//                                    DbRefStores.child(storeNameList[i]).child("distance").setValue(updateHashMap)
+//                                        .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
+//                                        .addOnSuccessListener {}
+//                                }
+//                                catch (e:NullPointerException) {
+//                                    var updateHashMap:HashMap<String, Double> = HashMap()
+//                                    updateHashMap.put(uid!!, marker_distance!!.toDouble())
+//
+//                                    DbRefStores.child(storeNameList[i]).child("distance").setValue(updateHashMap)
+//                                        .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
+//                                        .addOnSuccessListener {}
+//                                }
+//
+//                            }
+//
+//                            //이동시간
+//                            // Math.round(((marker_distance.toDouble() / 1000) / 3.5) * 60 * 10 ) / 10).toString()
+//
+//                        }
+//                }
+//                catch(e:java.lang.NullPointerException){
+//                    Toast.makeText(this@MainActivity, "사용자 정보를 등록해주세요", Toast.LENGTH_SHORT).show()
+//                    val intent = Intent(this@MainActivity, MyMapActivity::class.java)
+//                    startActivity(intent)
+//                }
                 ///////////////////////////////////////////////////////
                 //애뮬레이터 안 되면 여기까지 주석처리
 
