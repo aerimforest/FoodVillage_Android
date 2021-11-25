@@ -43,7 +43,7 @@
                 android:includeFontPadding="false"
                 android:text="고등어"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="15sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -59,8 +59,7 @@
                     android:includeFontPadding="false"
                     android:text="정상가"
                     android:textColor="@color/black"
-                    android:textSize="11sp"
-                    tools:ignore="SmallSp" />
+                    android:textSize="12sp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -78,8 +77,7 @@
                         android:includeFontPadding="false"
                         android:text="5000"
                         android:textColor="@color/black"
-                        android:textSize="11sp"
-                        tools:ignore="SmallSp" />
+                        android:textSize="12sp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -90,8 +88,7 @@
                         android:includeFontPadding="false"
                         android:text="원"
                         android:textColor="@color/black"
-                        android:textSize="11sp"
-                        tools:ignore="SmallSp" />
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -127,8 +124,8 @@
                         android:text="할인율"
                         android:textAlignment="viewEnd"
                         android:textColor="@color/black"
-                        android:textSize="10sp"
-                        tools:ignore="RtlCompat,SmallSp" />
+                        android:textSize="12sp"
+                        tools:ignore="RtlCompat" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -146,8 +143,8 @@
                             android:text="30"
                             android:textAlignment="viewEnd"
                             android:textColor="@color/red"
-                            android:textSize="10sp"
-                            tools:ignore="RtlCompat,SmallSp" />
+                            android:textSize="12sp"
+                            tools:ignore="RtlCompat" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -158,8 +155,8 @@
                             android:text="%"
                             android:textAlignment="viewEnd"
                             android:textColor="@color/red"
-                            android:textSize="10sp"
-                            tools:ignore="RtlCompat,SmallSp" />
+                            android:textSize="12sp"
+                            tools:ignore="RtlCompat" />
 
                     </LinearLayout>
 
