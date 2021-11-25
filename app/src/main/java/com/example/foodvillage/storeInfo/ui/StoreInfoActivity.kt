@@ -3,11 +3,15 @@ package com.example.foodvillage.storeInfo.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.foodvillage.R
 import com.example.foodvillage.databinding.ActivityStoreInfoBinding
 import com.example.foodvillage.schema.Product
 import com.example.foodvillage.storeInfo.adapter.StoreCategory
 import com.example.foodvillage.storeInfo.adapter.StoreInfoCategoryAdapter
 import com.example.foodvillage.storeInfo.adapter.StoreInfoProductAdapter
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
 class StoreInfoActivity : AppCompatActivity() {
 
@@ -25,6 +29,10 @@ class StoreInfoActivity : AppCompatActivity() {
         Product("이태리로 간 고등어", "고등어4", 0.3, 5000, listOf(), 3, "fish"),
         Product("이태리로 간 고등어", "고등어5", 0.3, 5000, listOf(), 3, "fish")
     )
+
+    private val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
+    private var databaseReference: DatabaseReference = firebaseDatabase.reference
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,5 +56,17 @@ class StoreInfoActivity : AppCompatActivity() {
         val storeName = intent.getStringExtra("storeName")
 
         // Todo: storeName으로 Product 테이블 접근해서 productList 업데이트
+
+        if (storeName != null) {
+            iconHeartClickEvent(storeName)
+        }
+    }
+
+    private fun iconHeartClickEvent(storeName: String) {
+        binding.imvStoreInfoHeart.setOnClickListener {
+            binding.imvStoreInfoHeart.setImageResource(R.drawable.icon_heart_fill_white)
+            databaseReference = firebaseDatabase.getReference("stores/$storeName")
+            databaseReference.child("dibPeople").push().setValue(auth.uid)
+        }
     }
 }
