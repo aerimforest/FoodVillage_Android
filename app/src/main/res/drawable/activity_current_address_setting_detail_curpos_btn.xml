@@ -3,8 +3,10 @@
     <!-- button color -->
     <item>
         <shape>
-            <solid android:color="@color/main_green" />
+            <solid android:color="#FFFFFF" />
             <corners android:radius="50dp" />
+            <stroke android:width="1dp"
+                android:color="@color/main_green"/>
         </shape>
     </item>
 </layer-list>

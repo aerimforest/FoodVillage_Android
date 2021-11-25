@@ -1,5 +1,6 @@
 package com.example.foodvillage
 
+
 import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
@@ -47,6 +48,12 @@ class AddressSettingAcitivity : AppCompatActivity(){
 
         binding.btnActivityAddressSettingCancel.setOnClickListener{
             this.finish()
+        }
+
+        // 현재 위치 설정 액티비티로 전환
+        binding.clyActivityAddressSettingCurrentpos.setOnClickListener{
+            val intent= Intent(this, CurrentAddreessActivity::class.java)
+            startActivity(intent)
         }
 
 

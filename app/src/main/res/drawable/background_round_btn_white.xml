@@ -3,8 +3,8 @@
     <!-- button color -->
     <item>
         <shape>
-            <solid android:color="@color/main_green" />
-            <corners android:radius="50dp" />
+            <solid android:color="@color/white" />
+            <corners android:radius="10dp" />
         </shape>
     </item>
 </layer-list>

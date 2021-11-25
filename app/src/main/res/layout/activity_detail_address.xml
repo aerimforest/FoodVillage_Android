@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 상단바 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cly_activity_address_setting_detail_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_activity_current_adress_setting_detail_back"
+            android:layout_width="10dp"
+            android:layout_height="17dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/activity_signup_btn_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="83dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="82dp"
+            android:text="상세 주소 입력"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/btn_activity_address_setting_detail_cancel"
+            app:layout_constraintStart_toEndOf="@+id/btn_activity_current_adress_setting_detail_back"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_activity_address_setting_detail_cancel"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginTop="42dp"
+            android:layout_marginEnd="33dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/activity_address_setting_btn_cancel"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- 주소 입력창-->
+    <LinearLayout
+        android:id="@+id/lly_activity_current_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cly_activity_address_setting_detail_top">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="서울특별시 관악구 신림로 71길 18 제이앤제이"
+            android:textColor="#000000"
+            android:textSize="12sp" />
+
+        <EditText
+            android:id="@+id/et_activity_detail_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="38dp"
+            android:hint="상세주소를 입력해주세요"
+            android:textColor="#999999"
+            android:textSize="12sp"
+            android:background="@null"/>
+    </LinearLayout>
+
+    <!-- 집, 회사, 기타 설정 버튼 -->
+    <LinearLayout
+        android:id="@+id/lly_buttons"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="57dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lly_activity_current_address">
+
+        <Button
+            android:layout_width="17dp"
+            android:layout_height="32dp"
+            android:background="@drawable/activity_address_setting_btn_home"/>
+
+        <Button
+            android:layout_width="20dp"
+            android:layout_height="31dp"
+            android:layout_marginStart="88dp"
+            android:background="@drawable/activity_address_setting_btn_company"/>
+
+        <Button
+            android:layout_width="16dp"
+            android:layout_height="33dp"
+            android:background="@drawable/activity_address_setting_btn_etc"
+            android:layout_marginStart="88dp"/>
+    </LinearLayout>
+
+
+    <!-- 지도 확인하기 버튼 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cly_activity_current_adress_setting_detail_checkmap"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/activity_current_address_setting_detail_curpos_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lly_buttons">
+
+        <ImageView
+            android:id="@+id/iv_activity_current_address_setting_detail_map"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/activity_current_address_setting_detail_map_btn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="지도에서 확인하기"
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:textColor="#000000"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_activity_current_address_setting_detail_map"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="17dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!-- 현재 위치로 설정 버튼 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cly_activity_current_address_detail_decide"
+        android:layout_width="296dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="350dp"
+        android:layout_marginBottom="38dp"
+        android:background="@drawable/activity_address_setting_btn_current"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cly_activity_current_adress_setting_detail_checkmap">
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="76dp"
+            android:src="@drawable/activity_address_setting_btn_current2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="현재 위치로 설정"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView5"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
