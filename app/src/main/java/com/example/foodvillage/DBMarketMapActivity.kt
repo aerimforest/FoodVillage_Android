@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.Paint
 import android.location.Address
 import android.location.Location
 import android.os.Build
@@ -13,6 +14,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodvillage.databinding.ActivityDbMarketMapBinding
 import com.example.foodvillage.menu.HomeFragment
+import com.example.foodvillage.schema.Product
 import com.example.foodvillage.schema.Store
 import com.example.foodvillage.storeList.StoreAdapter
 import com.example.foodvillage.storeList.StoreInfo
@@ -30,8 +33,9 @@ import com.github.channguyen.rsv.RangeSliderView
 import com.google.android.gms.location.*
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.dialog_fmi_market.*
+import kotlinx.android.synthetic.main.item_today_sale.view.*
 import net.daum.mf.map.api.*
 import net.daum.mf.map.api.CameraUpdateFactory.newMapPointAndDiameter
 import java.lang.Math.*
@@ -40,34 +44,39 @@ import java.util.*
 import kotlin.collections.HashMap
 
 
-class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener{
+class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener {
     // 뷰 바인딩
     private var mBinding: ActivityDbMarketMapBinding? = null
     private val binding get() = mBinding!!
 
-    var filteredcategoryIdx=0
-    var categoryIdx=0
-    var distVal=3.0
+    private val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
+    private var databaseReference: DatabaseReference = firebaseDatabase.reference
+    private var productList = arrayListOf<Product>()
 
-    private var mapView: MapView?=null
+    var filteredcategoryIdx = 0
+    var categoryIdx = 0
+    var distVal = 3.0
+
+    private var mapView: MapView? = null
 
     private val eventListener = MarkerEventListener(this)   // 마커 클릭 이벤트 리스너
 
     // 위치 추적을 위한 변수들
     val TAG: String = "로그"
-    private var mFusedLocationProviderClient: FusedLocationProviderClient? = null // 현재 위치를 가져오기 위한 변수
+    private var mFusedLocationProviderClient: FusedLocationProviderClient? =
+        null // 현재 위치를 가져오기 위한 변수
     lateinit var mLastLocation: Location // 위치 값을 가지고 있는 객체
     internal lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
     private val REQUEST_PERMISSION_LOCATION = 10
 
-    var curr_lat:Double?=null
-    var curr_lon:Double?=null
-    var userName:String?=null
+    var curr_lat: Double? = null
+    var curr_lon: Double? = null
+    var userName: String? = null
 
-    var selected_marker_lat:Double?=null
-    var selected_marker_lon:Double?=null
+    var selected_marker_lat: Double? = null
+    var selected_marker_lon: Double? = null
 
-    var AddressData:String=""
+    var AddressData: String = ""
 
     var mDatabase = FirebaseDatabase.getInstance()
     var uid = FirebaseAuth.getInstance().uid
@@ -75,15 +84,15 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
     val DbRefStore = mDatabase.getReference("stores/")
     val DbRefReview = mDatabase.getReference("reviews/")
     val DbRefProduct = mDatabase.getReference("products/")
-    val DbRefCategory=mDatabase.getReference("categories/")
+    val DbRefCategory = mDatabase.getReference("categories/")
 
-    var storeHashMap: HashMap<String, HashMap<String, Any>>?=null
-    var storeNameList: List<String>?=null
-    var reviewHashMap: HashMap<String, HashMap<String, Any>>?=null
-    var productHashMap: HashMap<String, HashMap<String, Any>>?=null
-    var categoryStoreList: List<String>?=null
-    var storeList=ArrayList<Store>()
-    var categoryHashMap: ArrayList<HashMap<String, Any>>?=null
+    var storeHashMap: HashMap<String, HashMap<String, Any>>? = null
+    var storeNameList: List<String>? = null
+    var reviewHashMap: HashMap<String, HashMap<String, Any>>? = null
+    var productHashMap: HashMap<String, HashMap<String, Any>>? = null
+    var categoryStoreList: List<String>? = null
+    var storeList = ArrayList<Store>()
+    var categoryHashMap: ArrayList<HashMap<String, Any>>? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,6 +101,12 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         // 바인딩
         mBinding = ActivityDbMarketMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+//        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//        val productListRcv = findViewById<RecyclerView>(R.id.rv_dialog_fmi_product_list)
+//        productListRcv.adapter = ProductListDialogAdapter()
+//        productListRcv.layoutManager = layoutManager
+//        productListRcv.setHasFixedSize(true)
 
         // 맵
         // 임포트 잘 해줘야함... mf들어간걸로!
@@ -121,16 +136,16 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             } else {
                 Toast.makeText(this, "전달된 이름이 없습니다", Toast.LENGTH_SHORT).show()
                 Log.d("필터 적용_목록_노전달", distVal.toString())
-                distVal=3.0
+                distVal = 3.0
 
             }
         } else {
             Toast.makeText(this, "전달된 이름이 없습니다", Toast.LENGTH_SHORT).show()
-            categoryIdx=0
+            categoryIdx = 0
             Log.d("필터 적용_지도_노전달", categoryIdx.toString())
         }
-        binding.btnList.setOnClickListener{
-            var listintent=Intent(this@DBMarketMapActivity, StoreListActivity::class.java)
+        binding.btnList.setOnClickListener {
+            var listintent = Intent(this@DBMarketMapActivity, StoreListActivity::class.java)
             listintent.putExtra("filteredcategoryIdx", filteredcategoryIdx)
             listintent.putExtra("distVal", distVal)
 
@@ -172,7 +187,8 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             .addOnSuccessListener {
                 Log.d("상점", it.value.toString())
                 categoryHashMap = it.value as ArrayList<HashMap<String, Any>>
-                categoryStoreList = categoryHashMap!![categoryIdx]?.get("storeNames") as List<String>
+                categoryStoreList =
+                    categoryHashMap!![categoryIdx]?.get("storeNames") as List<String>
 
                 DbRefStore.get()
                     .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
@@ -180,7 +196,12 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                         storeHashMap = it.value as HashMap<String, HashMap<String, Any>>
                         storeNameList = ArrayList<String>(storeHashMap!!.keys)
                         DbRefReview.get()
-                            .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
+                            .addOnFailureListener { e ->
+                                Log.d(
+                                    ContentValues.TAG,
+                                    e.localizedMessage
+                                )
+                            }
                             .addOnSuccessListener {
                                 reviewHashMap = it.value as HashMap<String, HashMap<String, Any>>
                                 DbRefProduct.get()
@@ -191,24 +212,36 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                                         )
                                     }
                                     .addOnSuccessListener {
-                                        productHashMap = it.value as HashMap<String, HashMap<String, Any>>
-                                        if (productHashMap != null && storeHashMap != null && reviewHashMap != null && productHashMap != null && categoryStoreList != null){
+                                        productHashMap =
+                                            it.value as HashMap<String, HashMap<String, Any>>
+                                        if (productHashMap != null && storeHashMap != null && reviewHashMap != null && productHashMap != null && categoryStoreList != null) {
                                             Log.d("상점명 리스트", categoryStoreList.toString())
-                                            for (i in 0 until (categoryStoreList?.size!!)){
+                                            for (i in 0 until (categoryStoreList?.size!!)) {
                                                 // 상점명
                                                 val storeName = categoryStoreList!![i]
                                                 // 상점 정보
-                                                Log.d("상점명", storeHashMap!!.get(storeName).toString())
-                                                val filteredstorehash=storeHashMap!!.get(storeName)
+                                                Log.d(
+                                                    "상점명",
+                                                    storeHashMap!!.get(storeName).toString()
+                                                )
+                                                val filteredstorehash =
+                                                    storeHashMap!!.get(storeName)
                                                 val StoreIndi = Store()
-                                                StoreIndi.address= filteredstorehash?.get("address") as String?
-                                                StoreIndi.categoryNames= filteredstorehash?.get("categoryNames") as List<String>?
-                                                StoreIndi.distance= filteredstorehash?.get("distance") as HashMap<String, Double>?
-                                                StoreIndi.currentLongitude= filteredstorehash?.get("currentLongitude") as Double?
-                                                StoreIndi.currentLatitude= filteredstorehash?.get("currentLatitude") as Double?
-                                                StoreIndi.storeName= filteredstorehash?.get("storeName") as String?
-                                                StoreIndi.storeImg= filteredstorehash?.get("storeImg") as String?
-                                                if (StoreIndi.distance?.get(uid)!! <= distVal){
+                                                StoreIndi.address =
+                                                    filteredstorehash?.get("address") as String?
+                                                StoreIndi.categoryNames =
+                                                    filteredstorehash?.get("categoryNames") as List<String>?
+                                                StoreIndi.distance =
+                                                    filteredstorehash?.get("distance") as HashMap<String, Double>?
+                                                StoreIndi.currentLongitude =
+                                                    filteredstorehash?.get("currentLongitude") as Double?
+                                                StoreIndi.currentLatitude =
+                                                    filteredstorehash?.get("currentLatitude") as Double?
+                                                StoreIndi.storeName =
+                                                    filteredstorehash?.get("storeName") as String?
+                                                StoreIndi.storeImg =
+                                                    filteredstorehash?.get("storeImg") as String?
+                                                if (StoreIndi.distance?.get(uid)!! <= distVal) {
                                                     storeList?.add(StoreIndi)
                                                 }
 
@@ -235,7 +268,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
 //            startActivity(intent)
 //        }
 
-        binding.btnDbMarketMapActivityFloating.setOnClickListener{
+        binding.btnDbMarketMapActivityFloating.setOnClickListener {
             var mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat!!, curr_lon!!)
             mapView?.setMapCenterPoint(mapPoint, true)
         }
@@ -256,11 +289,102 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
 
     }
 
+//    inner class ProductListDialogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+//
+//        init {
+//            databaseReference = firebaseDatabase.getReference("products")
+//            databaseReference.orderByChild("discountRate").addValueEventListener(object :
+//                ValueEventListener {
+//                override fun onDataChange(dataSnapshot: DataSnapshot) {
+//
+//                    productList.clear()
+//
+//                    for (postSnapshot in dataSnapshot.children) {
+//                        val item = postSnapshot.getValue(Product::class.java)
+//
+//                        if (item != null) {
+//                            productList.add(0, item)
+//                        }
+//                    }
+//                    notifyDataSetChanged()
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//                }
+//            })
+//        }
+//
+//        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+//            val view = LayoutInflater.from(parent.context)
+//                .inflate(R.layout.item_today_sale, parent, false)
+//            return ViewHolder(view)
+//        }
+//
+//        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+//        }
+//
+//        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+//            val viewHolder = (holder as ViewHolder).itemView
+//
+//            viewHolder.tv_product_name?.text = productList[position].productName
+//            viewHolder.tv_store_name?.text = productList[position].storeName
+//            viewHolder.tv_discount_rate?.text =
+//                (productList[position].discountRate?.times(100))?.toInt()
+//                    .toString()
+//            viewHolder.tv_fixed_price?.text = productList[position].fixedPrice.toString()
+//            viewHolder.tv_discounted_price?.text = (productList[position].fixedPrice?.times(
+//                productList[position].discountRate!!
+//            ))?.toInt().toString()
+//
+//            // drawable 파일에서 이미지 검색 후 적용
+//            val id = resources.getIdentifier(
+//                productList[position].imgUrl.toString(),
+//                "drawable",
+//                packageName
+//            )
+//            viewHolder.imv_product.setImageResource(id)
+//
+//            val auth: FirebaseAuth = FirebaseAuth.getInstance()
+//            val databaseDistanceReference: DatabaseReference =
+//                firebaseDatabase.getReference("stores/${productList[position].storeName}/distance/${auth.uid}")
+//
+//            databaseDistanceReference.addValueEventListener(object :
+//                ValueEventListener {
+//                override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                    viewHolder.tv_distance.text = dataSnapshot.value.toString()
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//                }
+//            })
+//
+//            viewHolder.tv_fixed_price.apply {
+//                paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+//            }
+//            viewHolder.tv_fixed_price_won.apply {
+//                paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+//            }
+//
+//            // Todo: recyclerview item click listener
+//        }
+//
+//        override fun getItemCount(): Int {
+//            return productList.size
+//        }
+//    }
+
     protected fun updateLocation() {
         Log.d(TAG, "updateLocation()")
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             Log.d(TAG, "updateLocation() 두 위치 권한중 하나라도 없는 경우 ")
             return
         }
@@ -270,15 +394,15 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
             .addOnSuccessListener {
                 var t_hashMap: HashMap<String, Any> = it.value as HashMap<String, Any>
-                curr_lat= t_hashMap.get("currentLatitude") as Double
-                curr_lon= t_hashMap.get("currentLongitude") as Double
-                AddressData=t_hashMap.get("address") as String
+                curr_lat = t_hashMap.get("currentLatitude") as Double
+                curr_lon = t_hashMap.get("currentLongitude") as Double
+                AddressData = t_hashMap.get("address") as String
 
                 //binding.tvDbmarketmapactivityMylocation.setText(AddressData)
             }
 
 
-        if(storeList!=null) {
+        if (storeList != null) {
 
             binding.btnAll.setOnClickListener {
                 binding.btnAll.isSelected
@@ -357,52 +481,61 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         }
         // 거리 범위 설정 bottomsheet 띄우기
         val btnDistance = binding.btnFilterDistance
-        btnDistance?.setOnClickListener{
+        btnDistance?.setOnClickListener {
 
             val kmPriority = BottomSheetDialog(this@DBMarketMapActivity)
             kmPriority.setContentView(R.layout.fragment_bottomsheet_distance)
 
             val tv_km = kmPriority.findViewById<TextView>(R.id.tv_km)
-            tv_km?.text=""+distVal+"km"
+            tv_km?.text = "" + distVal + "km"
 
-            kmPriority.findViewById<RangeSliderView>(R.id.rs_distance)?.setOnSlideListener {
-                    index->
-                Log.d("반경 선택", "" + index + "km")
-                tv_km?.text = "" + index + "km"
-                storeList=KmFiltering(filteredcategoryIdx!!, index)
-                markersShow(storeList)
-                btnDistance.text="" + index + "km 이내"
-                distVal= index.toDouble()
-            }
-            tv_km?.text="기본 3km"
+            kmPriority.findViewById<RangeSliderView>(R.id.rs_distance)
+                ?.setOnSlideListener { index ->
+                    Log.d("반경 선택", "" + index + "km")
+                    tv_km?.text = "" + index + "km"
+                    storeList = KmFiltering(filteredcategoryIdx!!, index)
+                    markersShow(storeList)
+                    btnDistance.text = "" + index + "km 이내"
+                    distVal = index.toDouble()
+                }
+            tv_km?.text = "기본 3km"
             kmPriority.show()
         }
 
 
     }
-    fun KmFiltering(filteredcategoryIdx:Int, priority:Int): ArrayList<Store> {
-        storeList=categoryFiltering(filteredcategoryIdx)
-        when (priority){
-            1->{
-                storeList= storeList.filter{ s-> s.distance?.get(uid)?.toDouble()!! < 1.0} as ArrayList<Store>
+
+    fun KmFiltering(filteredcategoryIdx: Int, priority: Int): ArrayList<Store> {
+        storeList = categoryFiltering(filteredcategoryIdx)
+        when (priority) {
+            1 -> {
+                storeList = storeList.filter { s ->
+                    s.distance?.get(uid)?.toDouble()!! < 1.0
+                } as ArrayList<Store>
             }
-            2->{
-                storeList= storeList.filter{ s-> s.distance?.get(uid)?.toDouble()!! < 2.0} as ArrayList<Store>
+            2 -> {
+                storeList = storeList.filter { s ->
+                    s.distance?.get(uid)?.toDouble()!! < 2.0
+                } as ArrayList<Store>
             }
-            3->{
-                storeList= storeList.filter{ s-> s.distance?.get(uid)?.toDouble()!! < 3.0} as ArrayList<Store>
+            3 -> {
+                storeList = storeList.filter { s ->
+                    s.distance?.get(uid)?.toDouble()!! < 3.0
+                } as ArrayList<Store>
             }
-            4->{
-                storeList= storeList.filter{ s-> s.distance?.get(uid)?.toDouble()!! < 4.0} as ArrayList<Store>
+            4 -> {
+                storeList = storeList.filter { s ->
+                    s.distance?.get(uid)?.toDouble()!! < 4.0
+                } as ArrayList<Store>
             }
-            else->{
+            else -> {
             }
         }
-        storeList.sortBy{ it.distance?.get(uid)}
+        storeList.sortBy { it.distance?.get(uid) }
         return storeList
     }
 
-    fun markersShow(storeList: ArrayList<Store>){
+    fun markersShow(storeList: ArrayList<Store>) {
         mapView!!.removeAllPOIItems()
         mapView!!.removeAllPolylines()
 
@@ -488,24 +621,25 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         }
     }
 
-    fun categoryFiltering(filteredcategoryIdx:Int): ArrayList<Store> {
-        categoryStoreList = categoryHashMap!![filteredcategoryIdx]?.get("storeNames") as List<String>
+    fun categoryFiltering(filteredcategoryIdx: Int): ArrayList<Store> {
+        categoryStoreList =
+            categoryHashMap!![filteredcategoryIdx]?.get("storeNames") as List<String>
         Log.d("상점명 리스트_filtered", categoryStoreList.toString())
-        storeList=ArrayList<Store>()
+        storeList = ArrayList<Store>()
 
-        for (i in 0 until (categoryStoreList?.size!!)){
+        for (i in 0 until (categoryStoreList?.size!!)) {
             // 상점명
             val storeName = categoryStoreList!![i]
             // 상점 정보
-            val filteredstorehash=storeHashMap!!.get(storeName)
+            val filteredstorehash = storeHashMap!!.get(storeName)
             val StoreIndi = Store()
-            StoreIndi.address= filteredstorehash?.get("address") as String?
-            StoreIndi.categoryNames= filteredstorehash?.get("categoryNames") as List<String>?
-            StoreIndi.distance= filteredstorehash?.get("distance") as HashMap<String, Double>?
-            StoreIndi.currentLongitude= filteredstorehash?.get("currentLongitude") as Double?
-            StoreIndi.currentLatitude= filteredstorehash?.get("currentLatitude") as Double?
-            StoreIndi.storeName= filteredstorehash?.get("storeName") as String?
-            StoreIndi.storeImg= filteredstorehash?.get("storeImg") as String?
+            StoreIndi.address = filteredstorehash?.get("address") as String?
+            StoreIndi.categoryNames = filteredstorehash?.get("categoryNames") as List<String>?
+            StoreIndi.distance = filteredstorehash?.get("distance") as HashMap<String, Double>?
+            StoreIndi.currentLongitude = filteredstorehash?.get("currentLongitude") as Double?
+            StoreIndi.currentLatitude = filteredstorehash?.get("currentLatitude") as Double?
+            StoreIndi.storeName = filteredstorehash?.get("storeName") as String?
+            StoreIndi.storeImg = filteredstorehash?.get("storeImg") as String?
 
             // Log.d("상점 정보들", ""+storeName+", "+distance.toString()+", "+reviewTotal.toString()+", "+prodNumTotal.toString()+", "+categories+", "+(round(salePercentMax*100)).toString()+"%")
             // 추가
@@ -514,7 +648,6 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
 
         return storeList
     }
-
 
 
     // 시스템으로 부터 위치 정보를 콜백으로 받음
@@ -610,18 +743,25 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
     override fun onCurrentLocationUpdateCancelled(p0: MapView?) {
 
     }
+
     // 커스텀 말풍선 클래스
-    inner class CustomBalloonAdapter(inflater: LayoutInflater): CalloutBalloonAdapter {
+    inner class CustomBalloonAdapter(inflater: LayoutInflater) : CalloutBalloonAdapter {
         var mCalloutBalloon: View = inflater.inflate(R.layout.balloon_layout, null)
 
         override fun getCalloutBalloon(poiItem: MapPOIItem?): View {
             if (poiItem != null) {
-                val market_dist_hash= storeHashMap!!.get(poiItem?.itemName)?.get("distance") as HashMap<String, HashMap<String, Any>>
-                val market_dist=market_dist_hash.get(uid) as Double
+                val market_dist_hash = storeHashMap!!.get(poiItem?.itemName)
+                    ?.get("distance") as HashMap<String, HashMap<String, Any>>
+                val market_dist = market_dist_hash.get(uid) as Double
 
-                (mCalloutBalloon.findViewById(R.id.ball_tv_name) as TextView).text =poiItem?.itemName
-                (mCalloutBalloon.findViewById(R.id.ball_tv_address) as TextView).text =market_dist.toString() + "km, "+round((market_dist / 3.5) * 60).toString()+"분"
-                Log.d("시간", "벌룬용(" + poiItem?.itemName + "): " + market_dist.toString() + ", " + round((market_dist / 3.5) * 60).toString())
+                (mCalloutBalloon.findViewById(R.id.ball_tv_name) as TextView).text =
+                    poiItem?.itemName
+                (mCalloutBalloon.findViewById(R.id.ball_tv_address) as TextView).text =
+                    market_dist.toString() + "km, " + round((market_dist / 3.5) * 60).toString() + "분"
+                Log.d(
+                    "시간",
+                    "벌룬용(" + poiItem?.itemName + "): " + market_dist.toString() + ", " + round((market_dist / 3.5) * 60).toString()
+                )
             }
             return mCalloutBalloon
 
@@ -633,7 +773,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         }
     }
 
-    inner class MarkerEventListener(val context: Context): MapView.POIItemEventListener {
+    inner class MarkerEventListener(val context: Context) : MapView.POIItemEventListener {
         override fun onPOIItemSelected(mapView: MapView?, marker: MapPOIItem?) {
             Log.d("마커", "onPOIItemSelected()")
 
@@ -675,13 +815,26 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             // 이 함수도 작동하지만 그냥 아래 있는 함수에 작성하자
         }
 
-        override fun onCalloutBalloonOfPOIItemTouched(mapView: MapView?, poiItem: MapPOIItem?, buttonType: MapPOIItem.CalloutBalloonButtonType?) {
+        override fun onCalloutBalloonOfPOIItemTouched(
+            mapView: MapView?,
+            poiItem: MapPOIItem?,
+            buttonType: MapPOIItem.CalloutBalloonButtonType?
+        ) {
 
             val dialog = BottomSheetDialog(this@DBMarketMapActivity)
             dialog.setContentView(R.layout.dialog_fmi_market)
 
-            val storeName=poiItem?.itemName
-            val selectedstoreHashMap=storeHashMap?.get(storeName) as HashMap<String, HashMap<String, Any>>
+            val storeName = poiItem?.itemName
+
+            // 상품 목록 HorizontalScrollView
+            val layoutManager = LinearLayoutManager(this@DBMarketMapActivity, LinearLayoutManager.HORIZONTAL, false)
+            val productListRcv = findViewById<RecyclerView>(R.id.rv_dialog_fmi_product_list)
+            productListRcv.adapter = storeName?.let { ProductListDialogAdapter(it) }
+            productListRcv.layoutManager = layoutManager
+            productListRcv.setHasFixedSize(true)
+
+            val selectedstoreHashMap =
+                storeHashMap?.get(storeName) as HashMap<String, HashMap<String, Any>>
 
             val market_dist = selectedstoreHashMap.get("distance")?.get(uid) as Double
             val market_address = selectedstoreHashMap.get("address") as String
@@ -692,26 +845,26 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
 
             val tv_marketmapactivity_dialog_minute =
                 dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_minute)
-            tv_marketmapactivity_dialog_minute!!.setText("도보 "+ round((market_dist / 3.5) * 60).toString() + "분")
+            tv_marketmapactivity_dialog_minute!!.setText("도보 " + round((market_dist / 3.5) * 60).toString() + "분")
 
             val tv_marketmapactivity_dialog_distance =
                 dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_distance)
-            tv_marketmapactivity_dialog_distance!!.setText(""+ market_dist + "km")
+            tv_marketmapactivity_dialog_distance!!.setText("" + market_dist + "km")
 
             tv_marketmapactivity_dialog_salepercent
             tv_marketmapactivity_dialog_saleproduct
 
             // 상점의 최대 할인율과 그 품목
-            var salePercentMax= 0.0
-            var salePercentMaxProduct=""
+            var salePercentMax = 0.0
+            var salePercentMaxProduct = ""
             val productList = ArrayList<String>(productHashMap!!.keys)
             for (i in 0 until productList!!.size) {
                 val storeproductHashMap =
                     productHashMap!!.get(productList[i])
 
                 if (storeproductHashMap?.get("storeName") == storeName) {
-                    if (salePercentMax<storeproductHashMap?.get("discountRate") as Double){
-                        salePercentMax=storeproductHashMap?.get("discountRate") as Double
+                    if (salePercentMax < storeproductHashMap?.get("discountRate") as Double) {
+                        salePercentMax = storeproductHashMap?.get("discountRate") as Double
                         salePercentMaxProduct = storeproductHashMap?.get("productName") as String
                     }
                 }
@@ -719,7 +872,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
 
             val tv_marketmapactivity_dialog_salepercent =
                 dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_salepercent)
-            tv_marketmapactivity_dialog_salepercent!!.setText(""+ round(salePercentMax*100) + "%")
+            tv_marketmapactivity_dialog_salepercent!!.setText("" + round(salePercentMax * 100) + "%")
 
             val tv_marketmapactivity_dialog_saleproduct =
                 dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_saleproduct)
@@ -740,4 +893,89 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         }
     }
 
+    inner class ProductListDialogAdapter(storeName: String) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+        init {
+            databaseReference = firebaseDatabase.getReference("products")
+            databaseReference.orderByChild("discountRate").addValueEventListener(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                    productList.clear()
+
+                    for (postSnapshot in dataSnapshot.children) {
+                        if(postSnapshot.child("storeName").toString() == storeName) {
+                            val item = postSnapshot.getValue(Product::class.java)
+
+                            if (item != null) {
+                                productList.add(0, item)
+                            }
+                        }
+                    }
+                    notifyDataSetChanged()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_today_sale, parent, false)
+            return ViewHolder(view)
+        }
+
+        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        }
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            val viewHolder = (holder as ViewHolder).itemView
+
+            viewHolder.tv_product_name?.text = productList[position].productName
+            viewHolder.tv_store_name?.text = productList[position].storeName
+            viewHolder.tv_discount_rate?.text =
+                (productList[position].discountRate?.times(100))?.toInt()
+                    .toString()
+            viewHolder.tv_fixed_price?.text = productList[position].fixedPrice.toString()
+            viewHolder.tv_discounted_price?.text = (productList[position].fixedPrice?.times(
+                productList[position].discountRate!!
+            ))?.toInt().toString()
+
+            // drawable 파일에서 이미지 검색 후 적용
+            val id = resources.getIdentifier(
+                productList[position].imgUrl.toString(),
+                "drawable",
+                packageName
+            )
+            viewHolder.imv_product.setImageResource(id)
+
+            val auth: FirebaseAuth = FirebaseAuth.getInstance()
+            val databaseDistanceReference: DatabaseReference =
+                firebaseDatabase.getReference("stores/${productList[position].storeName}/distance/${auth.uid}")
+
+            databaseDistanceReference.addValueEventListener(object :
+                ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    viewHolder.tv_distance.text = dataSnapshot.value.toString()
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
+
+            viewHolder.tv_fixed_price.apply {
+                paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            }
+            viewHolder.tv_fixed_price_won.apply {
+                paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            }
+
+            // Todo: recyclerview item click listener
+        }
+
+        override fun getItemCount(): Int {
+            return productList.size
+        }
+    }
 }
