@@ -8,8 +8,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:hardwareAccelerated="false"
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -17,6 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FoodVillage"
         android:usesCleartextTraffic="true">
+        <activity android:name=".CurrentAddressActivity2"></activity>
         <activity android:name=".storeInfo.ui.StoreInfoActivity" />
         <activity android:name=".MyMapActivity" />
         <activity android:name=".DBMarketMapActivity" />
@@ -32,14 +33,15 @@
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddressSettingAcitivity"/>
-        <activity android:name=".SignUpActivity"/>
-        <activity android:name=".EcoScoreAcitivity"/>
-        <activity android:name=".CurrentAddreessActivity"/>
-        <activity android:name=".DetailAddressActivity"/>
+        <activity android:name=".AddressSettingAcitivity" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".EcoScoreAcitivity" />
+        <activity android:name=".CurrentAddressActivity" />
+        <activity android:name=".DetailAddressActivity" />
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

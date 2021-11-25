@@ -1,11 +1,9 @@
 package com.example.foodvillage
 
 
-import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.foodvillage.databinding.ActivityAddressSettingBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -17,6 +15,7 @@ class AddressSettingAcitivity : AppCompatActivity(){
     private var mBinding: ActivityAddressSettingBinding? = null
     private val binding get() = mBinding!!
     var addressData:String?=null
+    var moreaddress:String?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,25 +36,20 @@ class AddressSettingAcitivity : AppCompatActivity(){
                 Log.d("유저", "hash.name: " + t_hashMap.get("name"))
 
                 addressData = t_hashMap.get("address") as String
-                binding.tvAddressSettingAddress.text = addressData
+                moreaddress = t_hashMap.get("moreaddress")!! as String
+                binding.tvAddressSettingAddress.text = addressData+" "+moreaddress
             }
-
-
-        binding.imageView4.setOnClickListener {
-            intent= Intent(this, MyMapActivity::class.java)
-            startActivity(intent)
-        }
 
         binding.btnActivityAddressSettingCancel.setOnClickListener{
             this.finish()
         }
 
         // 현재 위치 설정 액티비티로 전환
-        binding.clyActivityAddressSettingCurrentpos.setOnClickListener{
-            val intent= Intent(this, CurrentAddreessActivity::class.java)
-            startActivity(intent)
+        binding.imageView4.setOnClickListener{
+            val intenty= Intent(this, CurrentAddressActivity::class.java)
+            intenty.putExtra("etActivityDetailAddress", moreaddress)
+            startActivity(intenty)
+            this.finish()
         }
-
-
     }
 }
