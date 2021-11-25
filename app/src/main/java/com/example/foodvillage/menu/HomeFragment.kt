@@ -69,7 +69,7 @@ class HomeFragment : Fragment() {
 
         // 주소 설정 페이지로 이동하기
         binding.tvHomeLocation.setOnClickListener{
-            val intent=Intent(context, MyMapActivity::class.java)
+            val intent=Intent(context, AddressSettingAcitivity::class.java)
             startActivity(intent)
         }
         binding.rcvHomeTodayPrice.adapter = TodayPriceAdapter()
