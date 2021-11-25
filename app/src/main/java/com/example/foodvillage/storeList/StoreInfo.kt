@@ -3,11 +3,11 @@ package com.example.foodvillage.storeList
 import java.util.ArrayList
 
 class StoreInfo(
-    val storeImage: Int,
-    val storeName: String,
-    val distance: String,
-    val reviewTotal: String,
-    val prodNumTotal: String,
-    val categories: ArrayList<String>,
-    val salePercentMax: String
+    val storeImg: String? = null,
+    val storeName: String? = null,
+    val distance: String? = null,
+    val reviewTotal: String? = null,
+    val prodNumTotal: String? = null,
+    val categories: ArrayList<String>? = null,
+    val salePercentMax: String? = null
     )
