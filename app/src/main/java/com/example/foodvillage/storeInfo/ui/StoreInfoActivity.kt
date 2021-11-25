@@ -1,8 +1,11 @@
 package com.example.foodvillage.storeInfo.ui
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodvillage.R
 import com.example.foodvillage.databinding.ActivityStoreInfoBinding
@@ -140,12 +143,36 @@ class StoreInfoActivity : AppCompatActivity() {
         binding.svStoreInfoProduct.visibility = View.VISIBLE
         binding.llyStoreInfoStore.visibility = View.INVISIBLE
         binding.llyStoreInfoReview.visibility = View.INVISIBLE
+
+        binding.tvProductInfo.setTextColor(Color.parseColor("#63B22F"))
+        binding.tvStoreInfo.setTextColor(Color.parseColor("#999999"))
+        binding.tvReview.setTextColor(Color.parseColor("#999999"))
+
+        binding.viewProductInfoBar.visibility = View.VISIBLE
+        binding.viewStoreInfoBar.visibility = View.INVISIBLE
+        binding.viewReviewBar.visibility = View.INVISIBLE
     }
 
     private fun storeInfoClickEvent() {
         binding.svStoreInfoProduct.visibility = View.INVISIBLE
         binding.llyStoreInfoStore.visibility = View.VISIBLE
         binding.llyStoreInfoReview.visibility = View.INVISIBLE
+
+        binding.tvProductInfo.setTextColor(Color.parseColor("#999999"))
+        binding.tvStoreInfo.setTextColor(Color.parseColor("#63B22F"))
+        binding.tvReview.setTextColor(Color.parseColor("#999999"))
+
+        binding.viewProductInfoBar.visibility = View.INVISIBLE
+        binding.viewStoreInfoBar.visibility = View.VISIBLE
+        binding.viewReviewBar.visibility = View.INVISIBLE
+
+        val aniSlideOutRight: Animation =
+            AnimationUtils.loadAnimation(applicationContext, R.anim.slide_out_left)
+        val aniSlideOutLeft: Animation =
+            AnimationUtils.loadAnimation(applicationContext, R.anim.slide_out_right)
+
+        binding.viewProductInfoBar.startAnimation(aniSlideOutRight)
+        binding.viewStoreInfoBar.startAnimation(aniSlideOutLeft)
 
         // Todo: 길찾기 버튼 클릭 이벤트
     }
@@ -154,5 +181,21 @@ class StoreInfoActivity : AppCompatActivity() {
         binding.svStoreInfoProduct.visibility = View.INVISIBLE
         binding.llyStoreInfoStore.visibility = View.INVISIBLE
         binding.llyStoreInfoReview.visibility = View.VISIBLE
+
+        binding.tvProductInfo.setTextColor(Color.parseColor("#999999"))
+        binding.tvStoreInfo.setTextColor(Color.parseColor("#999999"))
+        binding.tvReview.setTextColor(Color.parseColor("#63B22F"))
+
+        binding.viewProductInfoBar.visibility = View.INVISIBLE
+        binding.viewStoreInfoBar.visibility = View.INVISIBLE
+        binding.viewReviewBar.visibility = View.VISIBLE
+
+        val aniSlideOutRight: Animation =
+            AnimationUtils.loadAnimation(applicationContext, R.anim.slide_out_left)
+        val aniSlideOutLeft: Animation =
+            AnimationUtils.loadAnimation(applicationContext, R.anim.slide_out_right)
+
+        binding.viewStoreInfoBar.startAnimation(aniSlideOutRight)
+        binding.viewReviewBar.startAnimation(aniSlideOutLeft)
     }
 }
