@@ -102,12 +102,6 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         mBinding = ActivityDbMarketMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-//        val productListRcv = findViewById<RecyclerView>(R.id.rv_dialog_fmi_product_list)
-//        productListRcv.adapter = ProductListDialogAdapter()
-//        productListRcv.layoutManager = layoutManager
-//        productListRcv.setHasFixedSize(true)
-
         // 맵
         // 임포트 잘 해줘야함... mf들어간걸로!
         mapView = MapView(this)
@@ -289,90 +283,6 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
 //            .replace(R.id.main_screen_panel, homeFragment).commit()
 
     }
-
-//    inner class ProductListDialogAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-//
-//        init {
-//            databaseReference = firebaseDatabase.getReference("products")
-//            databaseReference.orderByChild("discountRate").addValueEventListener(object :
-//                ValueEventListener {
-//                override fun onDataChange(dataSnapshot: DataSnapshot) {
-//
-//                    productList.clear()
-//
-//                    for (postSnapshot in dataSnapshot.children) {
-//                        val item = postSnapshot.getValue(Product::class.java)
-//
-//                        if (item != null) {
-//                            productList.add(0, item)
-//                        }
-//                    }
-//                    notifyDataSetChanged()
-//                }
-//
-//                override fun onCancelled(error: DatabaseError) {
-//                }
-//            })
-//        }
-//
-//        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-//            val view = LayoutInflater.from(parent.context)
-//                .inflate(R.layout.item_today_sale, parent, false)
-//            return ViewHolder(view)
-//        }
-//
-//        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-//        }
-//
-//        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-//            val viewHolder = (holder as ViewHolder).itemView
-//
-//            viewHolder.tv_product_name?.text = productList[position].productName
-//            viewHolder.tv_store_name?.text = productList[position].storeName
-//            viewHolder.tv_discount_rate?.text =
-//                (productList[position].discountRate?.times(100))?.toInt()
-//                    .toString()
-//            viewHolder.tv_fixed_price?.text = productList[position].fixedPrice.toString()
-//            viewHolder.tv_discounted_price?.text = (productList[position].fixedPrice?.times(
-//                productList[position].discountRate!!
-//            ))?.toInt().toString()
-//
-//            // drawable 파일에서 이미지 검색 후 적용
-//            val id = resources.getIdentifier(
-//                productList[position].imgUrl.toString(),
-//                "drawable",
-//                packageName
-//            )
-//            viewHolder.imv_product.setImageResource(id)
-//
-//            val auth: FirebaseAuth = FirebaseAuth.getInstance()
-//            val databaseDistanceReference: DatabaseReference =
-//                firebaseDatabase.getReference("stores/${productList[position].storeName}/distance/${auth.uid}")
-//
-//            databaseDistanceReference.addValueEventListener(object :
-//                ValueEventListener {
-//                override fun onDataChange(dataSnapshot: DataSnapshot) {
-//                    viewHolder.tv_distance.text = dataSnapshot.value.toString()
-//                }
-//
-//                override fun onCancelled(error: DatabaseError) {
-//                }
-//            })
-//
-//            viewHolder.tv_fixed_price.apply {
-//                paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-//            }
-//            viewHolder.tv_fixed_price_won.apply {
-//                paintFlags = paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-//            }
-//
-//            // Todo: recyclerview item click listener
-//        }
-//
-//        override fun getItemCount(): Int {
-//            return productList.size
-//        }
-//    }
 
     protected fun updateLocation() {
         Log.d(TAG, "updateLocation()")
@@ -910,7 +820,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                             val item = postSnapshot.getValue(Product::class.java)
 
                             if (item != null) {
-                                productList.add(0, item)
+                                productList.add(0, item) // index: 0 -> 내림차순 정렬
                             }
                         }
                     }

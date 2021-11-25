@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodvillage.DBMarketMapActivity
 import com.example.foodvillage.R
 import com.example.foodvillage.databinding.ActivityStoreListBinding
+import com.example.foodvillage.storeInfo.ui.StoreInfoActivity
 import com.github.channguyen.rsv.RangeSliderView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
@@ -164,6 +166,15 @@ class StoreListActivity : AppCompatActivity() {
                                                 binding.rvStore!!.setHasFixedSize(true)
                                                 mStoreAdapter=StoreAdapter(storeList!!, this.applicationContext)
                                                 binding.rvStore!!.adapter = mStoreAdapter
+
+                                                // 가게 리스트 클릭 이벤트
+                                                mStoreAdapter!!.setItemClickListener(object: StoreAdapter.OnItemClickListener{
+                                                    override fun onClick(v: View, position: Int) {
+                                                        val intent = Intent(this@StoreListActivity, StoreInfoActivity::class.java)
+                                                        intent.putExtra("storeName", storeList[position].storeName)
+                                                        this@StoreListActivity.startActivity(intent)
+                                                    }
+                                                })
 
                                                 binding.btnAll.setOnClickListener{
                                                     binding.btnAll.isSelected
