@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import com.example.foodvillage.EcoScoreAcitivity
-import com.example.foodvillage.MyMapActivity
 import com.example.foodvillage.R
 import com.example.foodvillage.databinding.FragmentMypageBinding
 
@@ -32,13 +31,12 @@ class MyPageFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         // 환경점수 보기 버튼
-        binding.btnFragmentMypageEcoscore.setOnClickListener{
-            val intent= Intent(context, EcoScoreAcitivity::class.java)
+        binding.btnFragmentMypageEcoscore.setOnClickListener {
+            val intent = Intent(context, EcoScoreAcitivity::class.java)
             startActivity(intent)
         }
     }

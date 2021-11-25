@@ -1,7 +1,6 @@
 package com.example.foodvillage
 
 import android.Manifest
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,38 +14,31 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.foodvillage.databinding.ActivityCurrentAddress2Binding
 import com.google.android.gms.location.*
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import net.daum.mf.map.api.MapPoint
-import net.daum.mf.map.api.MapReverseGeoCoder
 import net.daum.mf.map.api.MapView
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.pow
 
-class CurrentAddressActivity2 :AppCompatActivity(), MapView.CurrentLocationEventListener {
+open class CurrentAddressActivity2 : AppCompatActivity(), MapView.CurrentLocationEventListener {
     private var mBinding: ActivityCurrentAddress2Binding? = null
     private val binding get() = mBinding!!
+    private var mapView: MapView? = null
 
+    var curr_lat = 37.5406564
+    var curr_lon = 126.8809048
+    var AddressData: String = ""
+    var marker_distance: Int = 0
 
-    private var mapView: MapView?=null
-
-    var curr_lat=37.5406564
-    var curr_lon=126.8809048
-    var AddressData:String=""
-    var marker_distance:Int = 0
-
-    var marker_dist:Int=0
+    var marker_dist: Int = 0
 
     // 위치 추적을 위한 변수들
     val TAG: String = "로그"
 
-    private var mFusedLocationProviderClient: FusedLocationProviderClient? = null // 현재 위치를 가져오기 위한 변수
+    private var mFusedLocationProviderClient: FusedLocationProviderClient? =
+        null // 현재 위치를 가져오기 위한 변수
     lateinit var mLastLocation: Location // 위치 값을 가지고 있는 객체
-    internal lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
+    private lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
     private val REQUEST_PERMISSION_LOCATION = 10
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,12 +49,12 @@ class CurrentAddressActivity2 :AppCompatActivity(), MapView.CurrentLocationEvent
         mBinding = ActivityCurrentAddress2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.tvActivityCurrentAddressSettingMylocation2.text=intent.getStringExtra("etActivityDetailAddress")
+        binding.tvActivityCurrentAddressSettingMylocation2.text =
+            intent.getStringExtra("etActivityDetailAddress")
 
-
-        binding.btnActivityCurrentAddress2Cancel.setOnClickListener{
+        binding.btnActivityCurrentAddress2Cancel.setOnClickListener {
             //binding.tvMymapactivityMysavedlocation.setText("현재 위치: " + curr_lat + ", " + curr_lon)
-            intent=Intent(this, MainActivity::class.java)
+            intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             this.finish()
         }
@@ -76,7 +68,7 @@ class CurrentAddressActivity2 :AppCompatActivity(), MapView.CurrentLocationEvent
         // 현재 위치
         // LocationRequest() deprecated 되서 아래 방식으로 LocationRequest 객체 생성
         // mLocationRequest = LocationRequest() is deprecated
-        mLocationRequest =  LocationRequest.create().apply {
+        mLocationRequest = LocationRequest.create().apply {
             interval = 1000 // 업데이트 간격 단위(밀리초)
             //fastestInterval = 1000 // 가장 빠른 업데이트 간격 단위(밀리초)
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY // 정확성
@@ -90,17 +82,14 @@ class CurrentAddressActivity2 :AppCompatActivity(), MapView.CurrentLocationEvent
             // 현위치 트래킹 - 이건 주소 설정할 때 해서 최초로 받는거
             mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
             //TrackingModeOnWithMarkerHeadingWithoutMapMoving);
-
         }
-
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        intent=Intent(this, MainActivity::class.java)
+        intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         this.finish()
-
     }
 
     protected fun startLocationUpdates() {
@@ -108,8 +97,15 @@ class CurrentAddressActivity2 :AppCompatActivity(), MapView.CurrentLocationEvent
 
         //FusedLocationProviderClient의 인스턴스를 생성.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             Log.d(TAG, "startLocationUpdates() 두 위치 권한중 하나라도 없는 경우 ")
             return
         }
@@ -127,19 +123,17 @@ class CurrentAddressActivity2 :AppCompatActivity(), MapView.CurrentLocationEvent
             .addOnSuccessListener { location: Location? ->
                 Log.d("위치", "updateCurrent")
                 curr_lat = location!!.latitude
-                curr_lon = location!!.longitude
-                Log.d("위치", "updated: " + curr_lat + ", " + curr_lon)
+                curr_lon = location.longitude
+                Log.d("위치", "updated: $curr_lat, $curr_lon")
 
                 // 내 위치로 중심 이동
-                var mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
+                val mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
                 mapView?.setMapCenterPoint(mapPoint, true)
                 mapView?.setZoomLevel(2, true)
-
 
                 // 다 보이게 레벨 조정
                 //mapView!!.fitMapViewAreaToShowAllPOIItems()
             }
-
     }
 
     // 시스템으로 부터 위치 정보를 콜백으로 받음
@@ -173,7 +167,6 @@ class CurrentAddressActivity2 :AppCompatActivity(), MapView.CurrentLocationEvent
             -> 아니오시 계속 트래킹!
 
          */
-
     }
 
     // 위치 권한이 있는지 확인하는 메서드
@@ -213,7 +206,8 @@ class CurrentAddressActivity2 :AppCompatActivity(), MapView.CurrentLocationEvent
                 startLocationUpdates()
 
                 // 현위치 트래킹
-                mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving);
+                mapView!!.currentLocationTrackingMode =
+                    MapView.CurrentLocationTrackingMode.TrackingModeOnWithMarkerHeadingWithoutMapMoving;
 
             } else {
                 Log.d(TAG, "onRequestPermissionsResult() _ 권한 허용 거부")
@@ -236,17 +230,11 @@ class CurrentAddressActivity2 :AppCompatActivity(), MapView.CurrentLocationEvent
     }
 
     override fun onCurrentLocationDeviceHeadingUpdate(p0: MapView?, p1: Float) {
-
     }
 
     override fun onCurrentLocationUpdateFailed(p0: MapView?) {
-
     }
 
     override fun onCurrentLocationUpdateCancelled(p0: MapView?) {
-
     }
-
-
-
 }

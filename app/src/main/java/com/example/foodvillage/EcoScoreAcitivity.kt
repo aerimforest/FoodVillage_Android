@@ -1,14 +1,6 @@
 package com.example.foodvillage
 
-import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.AbsoluteSizeSpan
-import android.text.style.ForegroundColorSpan
-import android.text.style.RelativeSizeSpan
-import android.text.style.StyleSpan
 import androidx.appcompat.app.AppCompatActivity
 import com.example.foodvillage.databinding.ActivityEcoScoreBinding
 
@@ -26,9 +18,8 @@ class EcoScoreAcitivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // 뒤로가기 버튼
-        binding.btnActivityEcoScoreBack.setOnClickListener{
+        binding.btnActivityEcoScoreBack.setOnClickListener {
             this.finish()
         }
     }
-
 }

@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodvillage.R
 import com.example.foodvillage.schema.Product
-import kotlinx.android.synthetic.main.item_today_sale.view.*
 
 class StoreInfoProductAdapter(
     private val context: Context,
