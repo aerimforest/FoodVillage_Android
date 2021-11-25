@@ -20,6 +20,7 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
 
+        // 상태바 숨기기
         window.setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN)
 
         setContentView(R.layout.activity_splash)

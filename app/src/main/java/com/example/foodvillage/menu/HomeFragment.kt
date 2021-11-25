@@ -88,8 +88,8 @@ class HomeFragment : Fragment() {
 
 
         // 주소 설정 페이지로 이동하기
-        binding.tvHomeLocation.setOnClickListener{
-            val intent=Intent(context, AddressSettingAcitivity::class.java)
+        binding.tvHomeLocation.setOnClickListener {
+            val intent = Intent(context, AddressSettingAcitivity::class.java)
             startActivity(intent)
         }
         binding.rcvHomeTodayPrice.adapter = TodayPriceAdapter()
@@ -296,7 +296,7 @@ class HomeFragment : Fragment() {
 
     private fun autoScrollStart() {
         myHandler.removeMessages(0)
-        myHandler.sendEmptyMessageDelayed(0, 1500)
+        myHandler.sendEmptyMessageDelayed(0, 1500) // 1500마다 핸들러 반복 실행
     }
 
     private fun autoScrollStop() {
@@ -309,12 +309,14 @@ class HomeFragment : Fragment() {
             super.handleMessage(msg)
 
             if (msg.what == 0) {
-                binding.viewPagerHome.setCurrentItem(++currentPosition, true)
+                binding.viewPagerHome.setCurrentItem(currentPosition++, true) // 다음 페이지로 이동
                 autoScrollStart()
+                if (currentPosition == 4) currentPosition = 0 //끝페이지 도달하면 처음으로
             }
         }
     }
 
+    // 다른 페이지 갔다가 돌아오면 다시 스크롤 시작
     override fun onResume() {
         super.onResume()
         autoScrollStart()

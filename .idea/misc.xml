@@ -15,6 +15,7 @@
         <entry key="app/src/main/res/drawable/top_category_btn_design.xml" value="0.10032894736842106" />
         <entry key="app/src/main/res/drawable/tv_category_design.xml" value="0.10427631578947369" />
         <entry key="app/src/main/res/layout/activity_address_setting.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_current_address.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_current_address_setting.xml" value="0.2361111111111111" />
         <entry key="app/src/main/res/layout/activity_current_address_setting_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_db_market_map.xml" value="0.1" />
@@ -37,6 +38,7 @@
         <entry key="app/src/main/res/layout/fragment_mypage.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_storeList.xml" value="0.47560975609756095" />
         <entry key="app/src/main/res/layout/fragment_storelist.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/item_banner.xml" value="0.1" />
         <entry key="app/src/main/res/layout/sample_store_list.xml" value="0.125" />
         <entry key="app/src/main/res/menu/bottom_navigation_main.xml" value="0.25" />
       </map>
