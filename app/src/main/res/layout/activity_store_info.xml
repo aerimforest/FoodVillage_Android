@@ -14,9 +14,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
+            android:id="@+id/imv_store_info_img"
             android:layout_width="match_parent"
             android:layout_height="290dp"
             android:background="@drawable/yerim_mart1"
+            android:scaleType="centerCrop"
             tools:ignore="ContentDescription" />
 
         <!--상단바-->
@@ -71,6 +73,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_store_info_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans_kr_bold"
@@ -81,6 +84,7 @@
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/tv_store_info_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -112,7 +116,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_store_info"
+                android:id="@+id/tv_product_info"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans_kr_bold"
@@ -120,10 +124,10 @@
                 android:text="상품 정보"
                 android:textAlignment="center"
                 android:textColor="@color/main_green"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <View
-                android:id="@+id/view_store_info_bar"
+                android:id="@+id/view_product_info_bar"
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:layout_marginTop="5dp"
@@ -140,18 +144,18 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_product_info"
+                android:id="@+id/tv_store_info"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/noto_sans_kr_bold"
                 android:includeFontPadding="false"
-                android:text="상품 정보"
+                android:text="가게 정보"
                 android:textAlignment="center"
                 android:textColor="@color/gray_text"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <View
-                android:id="@+id/view_product_info_bar"
+                android:id="@+id/view_store_info_bar"
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:layout_marginTop="5dp"
@@ -177,10 +181,10 @@
                 android:text="리뷰"
                 android:textAlignment="center"
                 android:textColor="@color/gray_text"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <View
-                android:id="@+id/tv_review_bar"
+                android:id="@+id/view_review_bar"
                 android:layout_width="match_parent"
                 android:layout_height="5dp"
                 android:layout_marginTop="5dp"
@@ -191,48 +195,418 @@
 
     </LinearLayout>
 
-    <!--카테고리-->
-    <HorizontalScrollView
-        android:id="@+id/hsv_store_info_category"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp"
-        android:scrollbars="none"
-        app:layout_constraintTop_toBottomOf="@+id/lly_store_info_tab">
-
-        <!--HorizontallScrollView에 RecyclerView 넣을 때에는 반드시 RelativeLayout으로 한 번 감싸기-->
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_store_info_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
-
-        </RelativeLayout>
-
-    </HorizontalScrollView>
-
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:scrollbars="none"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginVertical="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hsv_store_info_category">
+        app:layout_constraintTop_toBottomOf="@+id/lly_store_info_tab">
 
-        <!--아이템-->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rcv_store_info_product"
+        <!--상품 정보-->
+        <ScrollView
+            android:id="@+id/sv_store_info_product"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!--카테고리-->
+                <HorizontalScrollView
+                    android:id="@+id/hsv_store_info_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+
+                    <!--HorizontallScrollView에 RecyclerView 넣을 때에는 반드시 RelativeLayout으로 한 번 감싸기-->
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_store_info_category"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                    </RelativeLayout>
+
+                </HorizontalScrollView>
+
+                <!--상품 목록-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:scrollbars="none">
+
+                    <!--아이템-->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rcv_store_info_product"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <!--가게 정보-->
+        <LinearLayout
+            android:id="@+id/lly_store_info_store"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans_kr_bold"
+                android:includeFontPadding="false"
+                android:text="가게 정보"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <!--전화번호-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="전화번호"
+                    android:textColor="@color/gray_text"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_store_info_phone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="02-123-4567"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_store_info_call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="전화걸기"
+                    android:textColor="@color/main_green"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <!--영업시간-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="영업시간"
+                    android:textColor="@color/gray_text"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_store_info_time2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="09:00 - 22:00"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <!--휴무일-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="휴무일"
+                    android:textColor="@color/gray_text"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_store_info_break"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="매주 일요일"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+            <!--주소-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="주소"
+                    android:textColor="@color/gray_text"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_store_info_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="관악구 신림로 84갈 61"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tv_store_info_copy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="주소 복사"
+                    android:textColor="@color/main_green"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="70dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="현재 위치에서 "
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tv_store_info_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="345"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="m 거리입니다."
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_store_info_path"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/background_btn_email_login"
+                android:fontFamily="@font/noto_sans_kr_bold"
+                android:includeFontPadding="false"
+                android:text="길찾기"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <!--리뷰-->
+        <LinearLayout
+            android:id="@+id/lly_store_info_review"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:orientation="vertical"
+            android:visibility="invisible">
 
-    </RelativeLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/check_box_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="포토리뷰"
+                    android:textColor="@color/black"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:src="@drawable/mypage_userprofile" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_store_info_nickname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/noto_sans_kr_bold"
+                        android:includeFontPadding="false"
+                        android:text="아소또"
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/imv_store_info_star_1"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:src="@drawable/star_black" />
+
+                        <ImageView
+                            android:id="@+id/imv_store_info_star_2"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_marginStart="2dp"
+                            android:src="@drawable/star_black" />
+
+                        <ImageView
+                            android:id="@+id/imv_store_info_star_3"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_marginStart="2dp"
+                            android:src="@drawable/star_black" />
+
+                        <ImageView
+                            android:id="@+id/imv_store_info_star_4"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_marginStart="2dp"
+                            android:src="@drawable/star_black" />
+
+                        <ImageView
+                            android:id="@+id/imv_store_info_star_5"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:layout_marginStart="2dp"
+                            android:src="@drawable/star_empty" />
+
+                        <TextView
+                            android:id="@+id/tv_store_info_grade"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:fontFamily="@font/noto_sans_kr_bold"
+                            android:includeFontPadding="false"
+                            android:text="4.0"
+                            android:textColor="@color/black"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/imv_store_info_review_img"
+                        android:layout_width="271dp"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/tomato" />
+
+                    <TextView
+                        android:id="@+id/tv_store_info_review"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/noto_sans_kr_medium"
+                        android:includeFontPadding="false"
+                        android:text="재료가 너무 신선하고 좋네요!\n다음에 또 이용할게요"
+                        android:textColor="@color/black"
+                        android:textSize="10sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
