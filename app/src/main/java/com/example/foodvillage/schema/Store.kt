@@ -11,5 +11,8 @@ data class Store(
     var grade: Double? = null,
     var dibPeople: List<String>? = null,
     var reviewCnt: Int? = null,
-    var productCnt: Int? = null
+    var productCnt: Int? = null,
+    var phoneNumber: String? = null,
+    var time: String? = null,
+    var dayOff: String? = null
 )
