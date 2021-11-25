@@ -64,6 +64,7 @@
         app:layout_constraintTop_toBottomOf="@id/cly_activity_address_setting_detail_top">
 
         <TextView
+            android:id="@+id/tv_detail_address_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="서울특별시 관악구 신림로 71길 18 제이앤제이"
@@ -151,8 +152,7 @@
         android:id="@+id/cly_activity_current_address_detail_decide"
         android:layout_width="296dp"
         android:layout_height="48dp"
-        android:layout_marginTop="350dp"
-        android:layout_marginBottom="38dp"
+        android:layout_marginTop="150dp"
         android:background="@drawable/activity_address_setting_btn_current"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

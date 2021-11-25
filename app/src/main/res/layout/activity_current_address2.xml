@@ -60,29 +60,27 @@
                 android:textSize="10sp" />
 
             <!--            <TextView-->
-<!--                android:id="@+id/tv_activity_current_address_setting_numaddress"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="지번 신림로 71길 18"-->
-<!--                android:textColor="#999999"-->
-<!--                android:textSize="10sp" />-->
+            <!--                android:id="@+id/tv_activity_current_address_setting_numaddress"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:text="지번 신림로 71길 18"-->
+            <!--                android:textColor="#999999"-->
+            <!--                android:textSize="10sp" />-->
         </LinearLayout>
 
         <Button
-            android:id="@+id/btn_activity_current_address_setting"
+            android:id="@+id/btn_activity_current_address2_cancel"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginTop="28dp"
             android:background="@drawable/background_btn_email_login"
-            android:text="위치 설정"
+            android:text="확인"
             android:textColor="@color/white"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
