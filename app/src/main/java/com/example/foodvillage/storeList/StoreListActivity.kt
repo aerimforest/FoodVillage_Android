@@ -78,6 +78,7 @@ class StoreListActivity : AppCompatActivity() {
             mapintent.putExtra("distVal", distVal)
             Log.d("필터 보내기_목록", filteredcategoryIdx.toString())
             startActivity(mapintent)
+            this@StoreListActivity.onDestroy()
         }
 
         DbRefUser.get()
@@ -154,9 +155,9 @@ class StoreListActivity : AppCompatActivity() {
                                                 storeList= storeList.filter{ s-> s.distance.substring(0,3).toDouble() < distVal} as ArrayList<StoreInfo>
                                                 storeList.sortBy{ it.distance}
                                             }
-                                            Log.d("필터", "스토어리스트가 생겼니: "+(storeList!=null).toString()+": "+storeList[0].storeName+", "+storeList[1].storeName)
+                                            //Log.d("필터", "스토어리스트가 생겼니: "+(storeList!=null).toString()+": "+storeList[0].storeName+", "+storeList[1].storeName)
 
-                                            if(storeList!=null) {
+                                            if(storeList!=null && storeList.size != 0) {
                                                 binding.rvStore.layoutManager =
                                                     LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                                                 binding.rvStore!!.setHasFixedSize(true)
@@ -386,6 +387,9 @@ class StoreListActivity : AppCompatActivity() {
         return storeList
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 
 
 
