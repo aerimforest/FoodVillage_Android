@@ -145,6 +145,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_address_setting_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -153,6 +154,7 @@
             android:textSize="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView6"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -200,6 +202,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cly_activity_address_setting_btn_company">
 
         <ImageView
+            android:id="@+id/imageView7"
             android:layout_width="19dp"
             android:layout_height="32dp"
             android:layout_marginStart="3dp"
@@ -223,6 +226,7 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/textView4"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView7"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.137" />
 
@@ -236,6 +240,7 @@
             android:textColor="#000000"
             android:textSize="10dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView7"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.example.foodvillage.AddressSettingAcitivity
 import com.example.foodvillage.MyMapActivity
 import com.example.foodvillage.R
 import com.example.foodvillage.storeList.StoreListActivity
@@ -88,7 +89,7 @@ class HomeFragment : Fragment() {
 
         // 주소 설정 페이지로 이동하기
         binding.tvHomeLocation.setOnClickListener{
-            val intent=Intent(context, MyMapActivity::class.java)
+            val intent=Intent(context, AddressSettingAcitivity::class.java)
             startActivity(intent)
         }
         binding.rcvHomeTodayPrice.adapter = TodayPriceAdapter()

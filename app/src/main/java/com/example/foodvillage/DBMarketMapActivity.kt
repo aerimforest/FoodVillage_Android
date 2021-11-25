@@ -136,6 +136,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
 
             Log.d("필터 보내기_지도", filteredcategoryIdx.toString())
             startActivity(listintent)
+            this@DBMarketMapActivity.onDestroy()
         }
 
         // 유저 정보 위치 디비에서 받아오기
