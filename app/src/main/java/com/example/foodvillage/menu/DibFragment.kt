@@ -313,7 +313,6 @@ class DibFragment : Fragment() {
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val viewHolder = (holder as ViewHolder).itemView
-            Log.d("시방", categoryList[position])
             viewHolder.tv_category_item.text = categoryList[position]
         }
 
