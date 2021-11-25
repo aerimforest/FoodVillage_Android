@@ -9,5 +9,7 @@ data class Store(
     var distance: HashMap<String, Double>? = null,
     var storeImg: String? = null,
     var grade: Double? = null,
-    var dibPeople: List<String>? = null
+    var dibPeople: List<String>? = null,
+    var reviewCnt: Int? = null,
+    var productCnt: Int? = null
 )
