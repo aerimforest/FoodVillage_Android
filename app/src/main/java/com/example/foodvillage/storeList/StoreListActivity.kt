@@ -3,6 +3,7 @@ package com.example.foodvillage.storeList
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -31,7 +32,6 @@ class StoreListActivity : AppCompatActivity() {
     var mStoreAdapter: StoreAdapter? = null
     var distVal = 3.0
 
-
     var mDatabase = FirebaseDatabase.getInstance()
     var uid = FirebaseAuth.getInstance().uid
     var DbRefUser = mDatabase.getReference("users/$uid")
@@ -46,7 +46,6 @@ class StoreListActivity : AppCompatActivity() {
     var productHashMap: HashMap<String, HashMap<String, Any>>? = null
     var categoryStoreList: List<String>? = null
     var storeList = ArrayList<StoreInfo>()
-
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -228,14 +227,18 @@ class StoreListActivity : AppCompatActivity() {
                                                     }
                                                 })
 
+                                                // 전체
                                                 binding.btnAll.setOnClickListener {
                                                     binding.btnAll.isSelected
                                                     filteredcategoryIdx = 0
                                                     storeList =
                                                         categoryFiltering(filteredcategoryIdx)
                                                     mStoreAdapter!!.datasetChanged(storeList)
+                                                    binding.btnAll.setBackgroundResource(R.drawable.background_btn_selected_green)
+                                                    binding.btnAll.setTextColor(Color.WHITE)
                                                 }
 
+                                                // 과일/채소
                                                 binding.btnFruitVegi.setOnClickListener {
                                                     binding.btnFruitVegi.isSelected
                                                     filteredcategoryIdx = 1
@@ -243,7 +246,13 @@ class StoreListActivity : AppCompatActivity() {
                                                         categoryFiltering(filteredcategoryIdx)
                                                     mStoreAdapter!!.datasetChanged(storeList)
 
+                                                    binding.btnAll.setBackgroundResource(R.drawable.background_category_non_selected)
+                                                    binding.btnAll.setTextColor(Color.parseColor("#999999"))
+
+                                                    binding.btnFruitVegi.setBackgroundResource(R.drawable.background_btn_selected_green)
+                                                    binding.btnFruitVegi.setTextColor(Color.WHITE)
                                                 }
+
                                                 binding.btnMeat.setOnClickListener {
                                                     binding.btnMeat.isSelected
                                                     filteredcategoryIdx = 2
@@ -265,12 +274,24 @@ class StoreListActivity : AppCompatActivity() {
                                                         categoryFiltering(filteredcategoryIdx)
                                                     mStoreAdapter!!.datasetChanged(storeList)
                                                 }
+
+                                                // 간식/음료
                                                 binding.btnSnack.setOnClickListener {
                                                     binding.btnSnack.isSelected
                                                     filteredcategoryIdx = 5
                                                     storeList =
                                                         categoryFiltering(filteredcategoryIdx)
                                                     mStoreAdapter!!.datasetChanged(storeList)
+
+                                                    binding.btnFruitVegi.setBackgroundResource(R.drawable.background_category_non_selected)
+                                                    binding.btnFruitVegi.setTextColor(
+                                                        Color.parseColor(
+                                                            "#999999"
+                                                        )
+                                                    )
+
+                                                    binding.btnSnack.setBackgroundResource(R.drawable.background_btn_selected_green)
+                                                    binding.btnSnack.setTextColor(Color.WHITE)
                                                 }
                                                 binding.btnRiceAndNoodle.setOnClickListener {
                                                     binding.btnRiceAndNoodle.isSelected
