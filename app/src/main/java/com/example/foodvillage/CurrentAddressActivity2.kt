@@ -56,8 +56,8 @@ open class CurrentAddressActivity2 : AppCompatActivity(), MapView.CurrentLocatio
 
         binding.btnActivityCurrentAddress2Cancel.setOnClickListener {
             //binding.tvMymapactivityMysavedlocation.setText("현재 위치: " + curr_lat + ", " + curr_lon)
-            intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+//            intent = Intent(this, MainActivity::class.java)
+//            startActivity(intent)
             this.finish()
         }
 
