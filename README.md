@@ -16,7 +16,7 @@
 <br/>
 
 ### 🔗 APK 파일 경로
-- app/debug
+- app/release
 
 <br/>
 
