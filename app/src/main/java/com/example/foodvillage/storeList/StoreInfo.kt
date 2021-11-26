@@ -10,4 +10,4 @@ class StoreInfo(
     val prodNumTotal: String? = null,
     val categories: ArrayList<String>? = null,
     val salePercentMax: String? = null
-    )
+)

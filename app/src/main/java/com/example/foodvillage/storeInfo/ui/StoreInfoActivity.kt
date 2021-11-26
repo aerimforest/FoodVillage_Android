@@ -65,6 +65,8 @@ class StoreInfoActivity : AppCompatActivity() {
         storeName=intent.getStringExtra("storeName")
         //setStoreInfo()
 
+        iconHeartClickEvent(storeName)
+
         DbRefProduct.get()
             .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
             .addOnSuccessListener {
@@ -167,7 +169,8 @@ class StoreInfoActivity : AppCompatActivity() {
                         }
 
 
-            //        if (storeName != null) {
+
+                        //        if (storeName != null) {
             //            iconHeartClickEvent(storeName)
             //        }
 

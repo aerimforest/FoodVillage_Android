@@ -20,9 +20,7 @@ import net.daum.mf.map.api.*
 import net.daum.mf.map.api.MapPoint.GeoCoordinate
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.pow
-import kotlin.math.round
-
+import kotlin.math.*
 
 class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener {
 
@@ -30,23 +28,23 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
     private var mBinding: ActivityMyMapBinding? = null
     private val binding get() = mBinding!!
 
-    private var mapView: MapView?=null
+    private var mapView: MapView? = null
 
-    var curr_lat=37.5406564
-    var curr_lon=126.8809048
-    var AddressData:String=""
-    var marker_distance:Int = 0
+    var curr_lat = 37.5406564
+    var curr_lon = 126.8809048
+    var AddressData: String = ""
+    var marker_distance: Int = 0
 
-    var marker_dist:Int=0
+    var marker_dist: Int = 0
 
     // 위치 추적을 위한 변수들
     val TAG: String = "로그"
 
-    private var mFusedLocationProviderClient: FusedLocationProviderClient? = null // 현재 위치를 가져오기 위한 변수
+    private var mFusedLocationProviderClient: FusedLocationProviderClient? =
+        null // 현재 위치를 가져오기 위한 변수
     lateinit var mLastLocation: Location // 위치 값을 가지고 있는 객체
-    internal lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
+    private lateinit var mLocationRequest: LocationRequest // 위치 정보 요청의 매개변수를 저장하는
     private val REQUEST_PERMISSION_LOCATION = 10
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,15 +55,15 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
         setContentView(binding.root)
 
 
-        binding.btnMymapactivitySavemylocation.setOnClickListener{
-            binding.tvMymapactivityMysavedlocation.setText("현재 위치: " + curr_lat + ", " + curr_lon)
+        binding.btnMymapactivitySavemylocation.setOnClickListener {
+            binding.tvMymapactivityMysavedlocation.text = ("현재 위치: $curr_lat, $curr_lon")
             // 현재 위치 디비에서 받아오기
             val mDatabase = FirebaseDatabase.getInstance()
-            val uid= FirebaseAuth.getInstance().uid
-            val DbRefUsers = mDatabase.getReference("users/" + uid)
+            val uid = FirebaseAuth.getInstance().uid
+            val DbRefUsers = mDatabase.getReference("users/$uid")
 
             // 현재위치 주소값
-            var reverseGeoCoder = MapReverseGeoCoder(
+            val reverseGeoCoder = MapReverseGeoCoder(
                 getApiKeyFromManifest(this),
                 MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon),
                 object : MapReverseGeoCoder.ReverseGeoCodingResultListener {
@@ -74,11 +72,11 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
                         s: String
                     ) {
                         AddressData = s
-                        binding.tvMymapactivityMylocation.setText(AddressData)
+                        binding.tvMymapactivityMylocation.text = AddressData
                     }
 
                     override fun onReverseGeoCoderFailedToFindAddress(mapReverseGeoCoder: MapReverseGeoCoder) {
-                        binding.tvMymapactivityMylocation.setText("address not found")
+                        binding.tvMymapactivityMylocation.text = ("address not found")
                     }
                 },
                 this
@@ -94,26 +92,25 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
             DbRefUsers.child("currentLatitude").setValue(curr_lat)
                 .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
                 .addOnSuccessListener {
-                    Log.d("파베", ""+curr_lat)
+                    Log.d("파베", "" + curr_lat)
                 }
             DbRefUsers.child("currentLongitude").setValue(curr_lon)
                 .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
                 .addOnSuccessListener {
-                    Log.d("파베", ""+curr_lon)
+                    Log.d("파베", "" + curr_lon)
                 }
             DbRefUsers.child("id").setValue(uid)
                 .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
                 .addOnSuccessListener {
                     Log.d("파베", "udpate success")
                 }
-            Log.d("파베", ""+AddressData+", "+curr_lat+", "+curr_lon)
+            Log.d("파베", "" + AddressData + ", " + curr_lat + ", " + curr_lon)
         }
 
-        binding.btnMymapactivityFloating.setOnClickListener{
-            var mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
+        binding.btnMymapactivityFloating.setOnClickListener {
+            val mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
             mapView?.setMapCenterPoint(mapPoint, true)
         }
-
 
         // 맵
         // 임포트 잘 해줘야함... mf들어간걸로!
@@ -124,7 +121,7 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
         // 현재 위치
         // LocationRequest() deprecated 되서 아래 방식으로 LocationRequest 객체 생성
         // mLocationRequest = LocationRequest() is deprecated
-        mLocationRequest =  LocationRequest.create().apply {
+        mLocationRequest = LocationRequest.create().apply {
             interval = 1000 // 업데이트 간격 단위(밀리초)
             //fastestInterval = 1000 // 가장 빠른 업데이트 간격 단위(밀리초)
             priority = LocationRequest.PRIORITY_HIGH_ACCURACY // 정확성
@@ -138,20 +135,19 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
             // 현위치 트래킹 - 이건 주소 설정할 때 해서 최초로 받는거
             mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOnWithHeading);
             //TrackingModeOnWithMarkerHeadingWithoutMapMoving);
-
         }
-
     }
+
     override fun onDestroy() {
         super.onDestroy()
-        mapView!!.setCurrentLocationTrackingMode(MapView.CurrentLocationTrackingMode.TrackingModeOff)
+        mapView!!.currentLocationTrackingMode = MapView.CurrentLocationTrackingMode.TrackingModeOff
         mapView!!.setShowCurrentLocationMarker(false)
 
         // 마트까지의 거리 계산
         val mDatabase = FirebaseDatabase.getInstance()
 
         val uid = FirebaseAuth.getInstance().uid
-        val DbRefUsers = mDatabase.getReference("users/" + uid)
+        val DbRefUsers = mDatabase.getReference("users/$uid")
 
         DbRefUsers.get()
             .addOnFailureListener {
@@ -159,86 +155,104 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
                 Log.d("유저", "못 가져옴")
             }
             .addOnSuccessListener {
-                    var t_hashMap: HashMap<String, Any> = it.value as HashMap<String, Any>
-                    Log.d("유저", "hash.name: " + t_hashMap.get("name"))
+                val t_hashMap: HashMap<String, Any> = it.value as HashMap<String, Any>
+                Log.d("유저", "hash.name: " + t_hashMap.get("name"))
 
-                    curr_lat = t_hashMap.get("currentLatitude") as Double
-                    curr_lon = t_hashMap.get("currentLongitude") as Double
+                curr_lat = t_hashMap.get("currentLatitude") as Double
+                curr_lon = t_hashMap.get("currentLongitude") as Double
 
 
-                    // user 찾으면 현 위치 설정
-                    val DbRefStores = mDatabase.getReference("stores/")
+                // user 찾으면 현 위치 설정
+                val DbRefStores = mDatabase.getReference("stores/")
 
-                    DbRefStores.get()
-                        .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
-                        .addOnSuccessListener {
-                            var t_hashMap: HashMap<String, HashMap<String, Any>> =
-                                it.value as HashMap<String, HashMap<String, Any>>
+                DbRefStores.get()
+                    .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
+                    .addOnSuccessListener {
+                        val t_hashMap: HashMap<String, HashMap<String, Any>> =
+                            it.value as HashMap<String, HashMap<String, Any>>
 
-                            Log.d("파베", "Main: " + t_hashMap.toString())
+                        Log.d("파베", "Main: $t_hashMap")
 
-                            val storeNameList: List<String> = ArrayList<String>(t_hashMap.keys)
-                            for (i in 0 until storeNameList.size) {
-                                val currentLatitude =
-                                    t_hashMap.get(storeNameList[i])?.get("currentLatitude") as Double
-                                val currentLongitude =
-                                    t_hashMap.get(storeNameList[i])?.get("currentLongitude") as Double
-                                val marker_distance =
-                                    getDistance(curr_lat!!,
-                                        curr_lon!!, currentLatitude, currentLongitude)
-
-                                Log.d("파베1", storeNameList[i]+", "+curr_lat+", "+curr_lon+", "+currentLatitude+", "+currentLongitude+", "+marker_distance)
-
-                                // 현재위치 주소값
-                                var reverseGeoCoder = MapReverseGeoCoder(
-                                    getApiKeyFromManifest(this),
-                                    MapPoint.mapPointWithGeoCoord(currentLatitude, currentLongitude),
-                                    object : MapReverseGeoCoder.ReverseGeoCodingResultListener {
-                                        override fun onReverseGeoCoderFoundAddress(
-                                            mapReverseGeoCoder: MapReverseGeoCoder,
-                                            s: String
-                                        ) {
-                                            val AddressData = s
-                                            DbRefStores.child(storeNameList[i]).child("address").setValue(AddressData)
-                                                .addOnFailureListener {
-                                                        e -> Log.d(ContentValues.TAG, e.localizedMessage)
-                                                    Log.d("파베", "주소 왜 저장 안 됨?")
-                                                }
-                                                .addOnSuccessListener {}
-                                        }
-                                        override fun onReverseGeoCoderFailedToFindAddress(mapReverseGeoCoder: MapReverseGeoCoder) {
-
-                                        }
-                                    },
-                                    this
+                        val storeNameList: List<String> = ArrayList<String>(t_hashMap.keys)
+                        for (i in storeNameList.indices) {
+                            val currentLatitude =
+                                t_hashMap.get(storeNameList[i])?.get("currentLatitude") as Double
+                            val currentLongitude =
+                                t_hashMap.get(storeNameList[i])?.get("currentLongitude") as Double
+                            val marker_distance =
+                                getDistance(
+                                    curr_lat,
+                                    curr_lon, currentLatitude, currentLongitude
                                 )
-                                reverseGeoCoder.startFindingAddress()
 
-                                try {
-                                    var updateHashMap=t_hashMap.get(storeNameList[i])?.get("distance") as HashMap<String, Double>
-                                    updateHashMap.put(uid!!, marker_distance!!.toDouble())
+                            Log.d(
+                                "파베1",
+                                storeNameList[i] + ", " + curr_lat + ", " + curr_lon + ", " + currentLatitude + ", " + currentLongitude + ", " + marker_distance
+                            )
 
-                                    DbRefStores.child(storeNameList[i]).child("distance").setValue(updateHashMap)
-                                        .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
-                                        .addOnSuccessListener {}
-                                }
-                                catch (e:NullPointerException) {
-                                    var updateHashMap:HashMap<String, Double> = HashMap()
-                                    updateHashMap.put(uid!!, marker_distance!!.toDouble())
+                            // 현재위치 주소값
+                            val reverseGeoCoder = MapReverseGeoCoder(
+                                getApiKeyFromManifest(this),
+                                MapPoint.mapPointWithGeoCoord(currentLatitude, currentLongitude),
+                                object : MapReverseGeoCoder.ReverseGeoCodingResultListener {
+                                    override fun onReverseGeoCoderFoundAddress(
+                                        mapReverseGeoCoder: MapReverseGeoCoder,
+                                        s: String
+                                    ) {
+                                        val AddressData = s
+                                        DbRefStores.child(storeNameList[i]).child("address")
+                                            .setValue(AddressData)
+                                            .addOnFailureListener { e ->
+                                                Log.d(ContentValues.TAG, e.localizedMessage)
+                                                Log.d("파베", "주소 왜 저장 안 됨?")
+                                            }
+                                            .addOnSuccessListener {}
+                                    }
 
-                                    DbRefStores.child(storeNameList[i]).child("distance").setValue(updateHashMap)
-                                        .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
-                                        .addOnSuccessListener {}
-                                }
+                                    override fun onReverseGeoCoderFailedToFindAddress(
+                                        mapReverseGeoCoder: MapReverseGeoCoder
+                                    ) {
 
+                                    }
+                                },
+                                this
+                            )
+                            reverseGeoCoder.startFindingAddress()
+
+                            try {
+                                val updateHashMap = t_hashMap.get(storeNameList[i])
+                                    ?.get("distance") as HashMap<String, Double>
+                                updateHashMap.put(uid!!, marker_distance!!.toDouble())
+
+                                DbRefStores.child(storeNameList[i]).child("distance")
+                                    .setValue(updateHashMap)
+                                    .addOnFailureListener { e ->
+                                        Log.d(
+                                            ContentValues.TAG,
+                                            e.localizedMessage
+                                        )
+                                    }
+                                    .addOnSuccessListener {}
+                            } catch (e: NullPointerException) {
+                                val updateHashMap: HashMap<String, Double> = HashMap()
+                                updateHashMap.put(uid!!, marker_distance!!.toDouble())
+
+                                DbRefStores.child(storeNameList[i]).child("distance")
+                                    .setValue(updateHashMap)
+                                    .addOnFailureListener { e ->
+                                        Log.d(
+                                            ContentValues.TAG,
+                                            e.localizedMessage
+                                        )
+                                    }
+                                    .addOnSuccessListener {}
                             }
-
-                            //이동시간
-                            // round( (market_dist / 3.5) * 60).toString()
-
                         }
 
-        }
+                        //이동시간
+                        // round( (market_dist / 3.5) * 60).toString()
+                    }
+            }
     }
 
     protected fun startLocationUpdates() {
@@ -246,8 +260,15 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
 
         //FusedLocationProviderClient의 인스턴스를 생성.
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             Log.d(TAG, "startLocationUpdates() 두 위치 권한중 하나라도 없는 경우 ")
             return
         }
@@ -265,17 +286,16 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
             .addOnSuccessListener { location: Location? ->
                 Log.d("위치", "updateCurrent")
                 curr_lat = location!!.latitude
-                curr_lon = location!!.longitude
-                Log.d("위치", "updated: " + curr_lat + ", " + curr_lon)
+                curr_lon = location.longitude
+                Log.d("위치", "updated: $curr_lat, $curr_lon")
 
                 // 내 위치로 중심 이동
-                var mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
+                val mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon)
                 mapView?.setMapCenterPoint(mapPoint, true)
                 mapView?.setZoomLevel(2, true)
 
-
                 // 현재위치 주소값
-                var reverseGeoCoder = MapReverseGeoCoder(
+                val reverseGeoCoder = MapReverseGeoCoder(
                     getApiKeyFromManifest(this),
                     MapPoint.mapPointWithGeoCoord(curr_lat, curr_lon),
                     object : MapReverseGeoCoder.ReverseGeoCodingResultListener {
@@ -284,11 +304,11 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
                             s: String
                         ) {
                             AddressData = s
-                            binding.tvMymapactivityMylocation.setText(AddressData)
+                            binding.tvMymapactivityMylocation.text = AddressData
                         }
 
                         override fun onReverseGeoCoderFailedToFindAddress(mapReverseGeoCoder: MapReverseGeoCoder) {
-                            binding.tvMymapactivityMylocation.setText("address not found")
+                            binding.tvMymapactivityMylocation.text = ("address not found")
                         }
                     },
                     this
@@ -296,11 +316,9 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
 
                 reverseGeoCoder.startFindingAddress()
 
-
                 // 다 보이게 레벨 조정
                 //mapView!!.fitMapViewAreaToShowAllPOIItems()
             }
-
     }
 
     // 시스템으로 부터 위치 정보를 콜백으로 받음
@@ -334,7 +352,6 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
             -> 아니오시 계속 트래킹!
 
          */
-
     }
 
     // 위치 권한이 있는지 확인하는 메서드
@@ -380,10 +397,10 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
 //                btnStartupdate.isEnabled = false
 //                btnStopUpdates.isEnabled = true
 
-
             } else {
                 Log.d(TAG, "onRequestPermissionsResult() _ 권한 허용 거부")
-                Toast.makeText(this@MyMapActivity, "권한이 없어 해당 기능을 실행할 수 없습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MyMapActivity, "권한이 없어 해당 기능을 실행할 수 없습니다.", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
@@ -402,17 +419,13 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
     }
 
     override fun onCurrentLocationDeviceHeadingUpdate(p0: MapView?, p1: Float) {
-
     }
 
     override fun onCurrentLocationUpdateFailed(p0: MapView?) {
-
     }
 
     override fun onCurrentLocationUpdateCancelled(p0: MapView?) {
-
     }
-
 
     private fun getApiKeyFromManifest(context: Context): String? {
         var apiKey: String? = null
@@ -433,19 +446,20 @@ class MyMapActivity : AppCompatActivity(), MapView.CurrentLocationEventListener 
         }
         return apiKey
     }
+
     fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
         val R = 6372.8 * 1000
 
         val dLat = Math.toRadians(lat2 - lat1)
         val dLon = Math.toRadians(lon2 - lon1)
-        val a = Math.sin(dLat / 2).pow(2.0) + Math.sin(dLon / 2).pow(2.0) * Math.cos(
+        val a = sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(
             Math.toRadians(
                 lat1
             )
-        ) * Math.cos(
+        ) * cos(
             Math.toRadians(lat2)
         )
-        val c = 2 * Math.asin(Math.sqrt(a))
-        return Math.round(R * c).toDouble() / 1000
+        val c = 2 * asin(sqrt(a))
+        return (R * c).roundToLong().toDouble() / 1000
     }
 }
