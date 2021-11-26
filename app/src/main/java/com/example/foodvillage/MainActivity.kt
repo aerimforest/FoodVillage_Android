@@ -162,25 +162,65 @@ class MainActivity : AppCompatActivity() {
 //        // 마트 생성
 //        var storeName="소연마트1"
 //        var DbRefStore = mmDatabase.getReference("stores/"+storeName)
-//        var store= Store(storeName, 37.478, 126.956, "서울시 김구 예림동 123" , listOf("고기/계란", "수산/건어물" ))
+//        var store= Store()
+//        store.storeName=storeName
+//        store.currentLatitude=37.4961
+//        store.currentLongitude=127.028
+//        store.address="서울특별시 서초구 서초동 강남대로 373"
+//        store.categoryNames= listOf("고기/계란", "수산물/건어물")
+//        store.storeImg="nayeon_mart1"
+//        store.grade=3.7
+//        store.phoneNumber="02-111-2222"
+//        store.time="09:00-22:00"
+//        store.dayOff="매주 월요일"
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 //
 //        storeName="소연마트2"
 //        DbRefStore = mmDatabase.getReference("stores/"+storeName)
-//        store= Store(storeName, 37.475, 126.953, "서울시 김구 예림동 123" , listOf("과일/채소","간식/음료", "고기/계란", "밥/면/소스/캔"))
+//        store= Store()
+//        store.storeName=storeName
+//        store.currentLatitude=37.497
+//        store.currentLongitude=127.029
+//        store.address="서울특별시 서초구 서초동 강남대로 373"
+//        store.categoryNames= listOf("과일/채소","간식/음료", "고기/계란", "밥/면/소스/캔")
+//        store.storeImg="nayeon_mart1"
+//        store.grade=3.7
+//        store.phoneNumber="02-111-2222"
+//        store.time="12:00-22:00"
+//        store.dayOff="매주 월요일"
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 //
 //        storeName="소연마트3"
 //        DbRefStore = mmDatabase.getReference("stores/"+storeName)
-//        store= Store(storeName, 37.481, 126.952, "서울시 김구 예림동 123" , listOf("반찬/간편식", "건강/다이어트", "밥/면/소스/캔"))
+//        store= Store()
+//        store.storeName=storeName
+//        store.currentLatitude=37.495
+//        store.currentLongitude=127.03
+//        store.address="서울특별시 서초구 서초동 강남대로 373"
+//        store.categoryNames= listOf("반찬/간편식", "건강/다이어트", "밥/면/소스/캔")
+//        store.storeImg="nayeon_mart1"
+//        store.grade=3.7
+//        store.phoneNumber="02-111-2222"
+//        store.time="09:00-24:00"
+//        store.dayOff="매주 화요일, 수요일"
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 //
 //        storeName="소연 정육점"
 //        DbRefStore = mmDatabase.getReference("stores/"+storeName)
-//        store= Store(storeName, 37.476, 126.951, "서울시 김구 예림동 123" , listOf("고기/계란"))
+//        store= Store()
+//        store.storeName=storeName
+//        store.currentLatitude=37.494
+//        store.currentLongitude=127.026
+//        store.address="서울특별시 서초구 서초동 강남대로 373"
+//        store.categoryNames=listOf("고기/계란")
+//        store.storeImg="nayeon_mart1"
+//        store.grade=3.7
+//        store.phoneNumber="02-111-2222"
+//        store.time="09:00-18:00"
+//        store.dayOff="매주 수요일"
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 //
@@ -380,9 +420,8 @@ class MainActivity : AppCompatActivity() {
 //            i++
 //        }
 
-//        // store 생성
-//
-//        storeName="예림마트1"
+
+//        var storeName="예림마트1"
 //        var productName="타이어보다 싸다 고등어"
 //        var DbRefProduct = mDatabase.getReference("products/"+storeName+"/"+productName)
 //        var product=Product()
@@ -390,11 +429,11 @@ class MainActivity : AppCompatActivity() {
 //        product.storeName=storeName
 //        product.fixedPrice=100000
 //        product.discountRate=0.3
-//        product.productImg=null
+//        product.imgUrl="fish"
 //        product.categoryNum=3
 //        DbRefProduct.setValue(product)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
-//
+
 //        storeName="예림마트1"
 //        productName="타이어보다 싸다 자몽에이드"
 //        DbRefProduct = mDatabase.getReference("products/"+storeName+"/"+productName)
@@ -403,11 +442,11 @@ class MainActivity : AppCompatActivity() {
 //        product.storeName=storeName
 //        product.fixedPrice=70000
 //        product.discountRate=0.3
-//        product.productImg=null
+//        product.imgUrl=null
 //        product.categoryNum=5
 //        DbRefProduct.setValue(product)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
-//
+
 //        storeName="예림마트2"
 //        productName="예림마트1보다 싸다 자몽에이드"
 //        DbRefProduct = mDatabase.getReference("products/"+storeName+"/"+productName)
@@ -416,7 +455,7 @@ class MainActivity : AppCompatActivity() {
 //        product.storeName=storeName
 //        product.fixedPrice=50000
 //        product.discountRate=0.3
-//        product.productImg=null
+//        product.imgUrl=null
 //        product.categoryNum=5
 //        DbRefProduct.setValue(product)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }

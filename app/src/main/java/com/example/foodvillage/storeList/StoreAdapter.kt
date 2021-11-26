@@ -2,6 +2,7 @@ package com.example.foodvillage.storeList
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.graphics.Paint
 import android.util.Log
 import android.view.LayoutInflater
@@ -88,7 +89,8 @@ class StoreAdapter(var storeList: ArrayList<StoreInfo>, private val mContext:Con
         holder.itemView.setOnClickListener(View.OnClickListener {
             val intent = Intent(mContext, StoreInfoActivity::class.java)
             intent.putExtra("storeName", storeList[position].storeName)
-            mContext?.startActivity(intent)
+            mContext?.startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK))
+
         })
     }
 
