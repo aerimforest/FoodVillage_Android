@@ -139,7 +139,7 @@ open class CurrentAddressActivity : AppCompatActivity(), MapView.CurrentLocation
                             val marker_distance =
                                 getDistance(
                                     curr_lat,
-                                    curr_lon, currentLatitude, currentLongitude
+                                    curr_lon, currentLatitude, currentLongitude.toDouble()
                                 )
 
                             Log.d(
@@ -150,7 +150,7 @@ open class CurrentAddressActivity : AppCompatActivity(), MapView.CurrentLocation
                             // 현재위치 주소값
                             val reverseGeoCoder = MapReverseGeoCoder(
                                 getApiKeyFromManifest(this),
-                                MapPoint.mapPointWithGeoCoord(currentLatitude, currentLongitude),
+                                MapPoint.mapPointWithGeoCoord(currentLatitude, currentLongitude.toDouble()),
                                 object : MapReverseGeoCoder.ReverseGeoCodingResultListener {
                                     override fun onReverseGeoCoderFoundAddress(
                                         mapReverseGeoCoder: MapReverseGeoCoder,

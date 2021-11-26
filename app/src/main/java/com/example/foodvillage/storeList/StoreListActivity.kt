@@ -385,6 +385,8 @@ class StoreListActivity : AppCompatActivity() {
         Log.d("상점명 리스트_filtered", categoryStoreList.toString())
         storeList = ArrayList<StoreInfo>()
 
+
+
         for (i in 0 until (categoryStoreList?.size!!)) {
             // 상점명
             val storeName = categoryStoreList!![i]
@@ -435,6 +437,7 @@ class StoreListActivity : AppCompatActivity() {
                 )
             )
         }
+
         storeList = storeList.filter { s ->
             s.distance?.substring(0, 3)?.toDouble()!! < 3.0
         } as ArrayList<StoreInfo>
