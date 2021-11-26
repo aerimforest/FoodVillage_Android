@@ -46,6 +46,7 @@
             app:layout_constraintStart_toEndOf="@+id/textView2"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,7 +60,7 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="320dp"
+            android:layout_width="296dp"
             android:layout_height="36dp"
             android:src="@drawable/activity_address_setting_search_rectangle"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -75,8 +76,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cly_activity_address_setting_currentpos"
@@ -113,29 +114,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:fontFamily="@font/noto_sans_kr_bold"
             android:text="현재 위치로 설정"
             android:textColor="#FFFFFF"
-            android:textStyle="bold"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView5"
             app:layout_constraintTop_toTopOf="@+id/imageView4" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cly_activity_address_setting_btn_home"
-        android:layout_width="230dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginHorizontal="70dp"
         android:layout_marginTop="72dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cly_activity_address_setting_currentpos">
 
         <ImageView
             android:id="@+id/imageView6"
-            android:layout_width="17dp"
-            android:layout_height="32dp"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
@@ -149,28 +151,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
+            android:fontFamily="@font/noto_sans_kr_medium"
             android:text="서울 관악구 신림로 71길 18 101호"
             android:textColor="#000000"
-            android:textSize="10dp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView6"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cly_activity_address_setting_btn_company"
-        android:layout_width="230dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginHorizontal="70dp"
         android:layout_marginTop="38dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cly_activity_address_setting_btn_home">
 
         <ImageView
-            android:layout_width="19dp"
-            android:layout_height="32dp"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
@@ -183,28 +187,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
+            android:fontFamily="@font/noto_sans_kr_medium"
             android:text=""
             android:textColor="#000000"
-            android:textSize="12dp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cly_activity_address_setting_btn_etc"
-        android:layout_width="230dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginHorizontal="70dp"
         android:layout_marginTop="38dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cly_activity_address_setting_btn_company">
 
         <ImageView
             android:id="@+id/imageView7"
-            android:layout_width="19dp"
-            android:layout_height="32dp"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="4dp"
@@ -213,34 +219,41 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView5"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="기숙사"
-            android:textColor="#000000"
-            android:textSize="8dp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/textView4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.102"
-            app:layout_constraintStart_toEndOf="@+id/imageView7"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="서울 관악구 신림로 71길 18 101"
-            android:textColor="#000000"
-            android:textSize="10dp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.615" />
+            app:layout_constraintStart_toEndOf="@+id/imageView7"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/noto_sans_kr_medium"
+                android:includeFontPadding="false"
+                android:text="기숙사"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/textView4"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:fontFamily="@font/noto_sans_kr_medium"
+                android:includeFontPadding="false"
+                android:text="서울 관악구 신림로 71길 18 101"
+                android:textColor="#000000"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
