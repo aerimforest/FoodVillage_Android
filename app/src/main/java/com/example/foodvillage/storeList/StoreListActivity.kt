@@ -3,6 +3,7 @@ package com.example.foodvillage.storeList
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -18,6 +19,7 @@ import com.github.channguyen.rsv.RangeSliderView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.item_category.view.*
 import java.lang.Double.max
 import java.util.ArrayList
 import kotlin.math.round
@@ -30,7 +32,6 @@ class StoreListActivity : AppCompatActivity() {
     var categoryIdx = 0
     var mStoreAdapter: StoreAdapter? = null
     var distVal = 3.0
-
 
     var mDatabase = FirebaseDatabase.getInstance()
     var uid = FirebaseAuth.getInstance().uid
@@ -46,7 +47,6 @@ class StoreListActivity : AppCompatActivity() {
     var productHashMap: HashMap<String, HashMap<String, Any>>? = null
     var categoryStoreList: List<String>? = null
     var storeList = ArrayList<StoreInfo>()
-
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,7 +95,7 @@ class StoreListActivity : AppCompatActivity() {
                 categoryHashMap = it.value as ArrayList<HashMap<String, Any>>
                 Log.d("필터", "안쪽에서 카테고리: $categoryIdx")
                 categoryStoreList =
-                    categoryHashMap!![categoryIdx]?.get("storeNames") as List<String>
+                    categoryHashMap!![categoryIdx].get("storeNames") as List<String>
 
                 DbRefStore.get()
                     .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
@@ -228,14 +228,18 @@ class StoreListActivity : AppCompatActivity() {
                                                     }
                                                 })
 
+                                                // 전체
                                                 binding.btnAll.setOnClickListener {
                                                     binding.btnAll.isSelected
                                                     filteredcategoryIdx = 0
                                                     storeList =
                                                         categoryFiltering(filteredcategoryIdx)
                                                     mStoreAdapter!!.datasetChanged(storeList)
+                                                    binding.btnAll.setBackgroundResource(R.drawable.background_btn_selected_green)
+                                                    binding.btnAll.setTextColor(Color.WHITE)
                                                 }
 
+                                                // 과일/채소
                                                 binding.btnFruitVegi.setOnClickListener {
                                                     binding.btnFruitVegi.isSelected
                                                     filteredcategoryIdx = 1
@@ -243,7 +247,13 @@ class StoreListActivity : AppCompatActivity() {
                                                         categoryFiltering(filteredcategoryIdx)
                                                     mStoreAdapter!!.datasetChanged(storeList)
 
+                                                    binding.btnAll.setBackgroundResource(R.drawable.background_category_non_selected)
+                                                    binding.btnAll.setTextColor(Color.BLACK)
+
+                                                    binding.btnFruitVegi.setBackgroundResource(R.drawable.background_btn_selected_green)
+                                                    binding.btnFruitVegi.setTextColor(Color.WHITE)
                                                 }
+
                                                 binding.btnMeat.setOnClickListener {
                                                     binding.btnMeat.isSelected
                                                     filteredcategoryIdx = 2
@@ -265,13 +275,22 @@ class StoreListActivity : AppCompatActivity() {
                                                         categoryFiltering(filteredcategoryIdx)
                                                     mStoreAdapter!!.datasetChanged(storeList)
                                                 }
+
+                                                // 간식/음료
                                                 binding.btnSnack.setOnClickListener {
                                                     binding.btnSnack.isSelected
                                                     filteredcategoryIdx = 5
                                                     storeList =
                                                         categoryFiltering(filteredcategoryIdx)
                                                     mStoreAdapter!!.datasetChanged(storeList)
+
+                                                    binding.btnFruitVegi.setBackgroundResource(R.drawable.background_category_non_selected)
+                                                    binding.btnFruitVegi.setTextColor(Color.BLACK)
+
+                                                    binding.btnSnack.setBackgroundResource(R.drawable.background_btn_selected_green)
+                                                    binding.btnSnack.setTextColor(Color.WHITE)
                                                 }
+
                                                 binding.btnRiceAndNoodle.setOnClickListener {
                                                     binding.btnRiceAndNoodle.isSelected
                                                     filteredcategoryIdx = 6

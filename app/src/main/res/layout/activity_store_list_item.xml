@@ -126,20 +126,47 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_sale" />
 
-        <TextView
-            android:id="@+id/tv_category"
+        <!--        <TextView-->
+        <!--            android:id="@+id/tv_category"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginStart="16dp"-->
+        <!--            android:layout_marginTop="5dp"-->
+        <!--            android:background="@drawable/tv_category_design"-->
+        <!--            android:gravity="center"-->
+        <!--            android:text="과일/채소"-->
+        <!--            android:textColor="@color/white"-->
+        <!--            android:textSize="9sp"-->
+        <!--            app:layout_constraintStart_toEndOf="@+id/iv_storeImage"-->
+        <!--            app:layout_constraintTop_toBottomOf="@+id/tv_distance" />-->
+
+        <!--카테고리-->
+        <HorizontalScrollView
+            android:id="@+id/hsv_store_list_item_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/tv_category_design"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:text="과일/채소"
-            android:textSize="9sp"
-            android:textColor="@color/white"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="7dp"
+            android:scrollbars="none"
             app:layout_constraintStart_toEndOf="@+id/iv_storeImage"
-            app:layout_constraintTop_toBottomOf="@+id/tv_distance" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_distance">
 
+            <!--HorizontallScrollView에 RecyclerView 넣을 때에는 반드시 RelativeLayout으로 한 번 감싸기-->
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_store_list_item_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+            </RelativeLayout>
+
+        </HorizontalScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

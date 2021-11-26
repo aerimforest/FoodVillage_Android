@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="223dp"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="20dp"
     android:background="@drawable/background_map_card_view"
     android:orientation="vertical">
 
@@ -13,7 +14,9 @@
         android:layout_gravity="start"
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/noto_sans_kr_bold"
         android:gravity="center"
+        android:includeFontPadding="false"
         android:text="소연이네 야채"
         android:textColor="#000000"
         android:textSize="18sp"
@@ -27,11 +30,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/noto_sans_kr_medium"
         android:gravity="center"
+        android:includeFontPadding="false"
         android:text="도보 3분"
-        android:textColor="#000000"
-        android:textSize="10sp"
+        android:textColor="@color/black"
+        android:textSize="11sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_marketmapactivity_dialog_title" />
 
@@ -41,11 +46,13 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/noto_sans_kr_medium"
         android:gravity="center"
+        android:includeFontPadding="false"
         android:text="100m"
-        android:textColor="#000000"
-        android:textSize="10sp"
+        android:textColor="@color/black"
+        android:textSize="11sp"
         app:layout_constraintStart_toEndOf="@+id/tv_marketmapactivity_dialog_minute"
         app:layout_constraintTop_toBottomOf="@+id/tv_marketmapactivity_dialog_title" />
 
@@ -55,9 +62,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
         android:layout_marginEnd="6dp"
+        android:fontFamily="@font/noto_sans_kr_medium"
+        android:includeFontPadding="false"
         android:text="최대 할인율"
         android:textColor="#000000"
-        android:textSize="8sp"
+        android:textSize="11sp"
         app:layout_constraintEnd_toStartOf="@+id/tv_marketmapactivity_dialog_salepercent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -67,6 +76,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
+        android:fontFamily="@font/noto_sans_kr_bold"
+        android:includeFontPadding="false"
         android:text="15%"
         android:textColor="#FF0202"
         android:textSize="24sp"
@@ -80,10 +91,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
         android:layout_marginEnd="4dp"
+        android:fontFamily="@font/noto_sans_kr_bold"
+        android:includeFontPadding="false"
         android:text="최대 할인 상품"
         android:textColor="#000000"
-        android:textSize="10sp"
-        android:textStyle="bold"
+        android:textSize="11sp"
         app:layout_constraintEnd_toStartOf="@+id/tv_marketmapactivity_dialog_salepercent"
         app:layout_constraintTop_toBottomOf="@+id/tv_marketmapactivity_dialog_sale" />
 
@@ -92,36 +104,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:fontFamily="@font/noto_sans_kr_medium"
+        android:includeFontPadding="false"
         android:text="고등어"
         android:textColor="#000000"
-        android:textSize="10sp"
+        android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.289"
         app:layout_constraintStart_toEndOf="@+id/tv_marketmapactivity_dialog_saleproducttext"
         app:layout_constraintTop_toBottomOf="@+id/tv_marketmapactivity_dialog_salepercent" />
 
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="15dp"
-        android:scrollbars="none"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_marketmapactivity_dialog_saleproduct">
+    <!--    <HorizontalScrollView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_marginStart="16dp"-->
+    <!--        android:layout_marginTop="15dp"-->
+    <!--        android:scrollbars="none"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/tv_marketmapactivity_dialog_saleproduct">-->
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+    <!--        <RelativeLayout-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="match_parent">-->
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_dialog_fmi_product_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    <!--            <androidx.recyclerview.widget.RecyclerView-->
+    <!--                android:id="@+id/rv_dialog_fmi_product_list"-->
+    <!--                android:layout_width="match_parent"-->
+    <!--                android:layout_height="match_parent"-->
+    <!--                android:orientation="horizontal"-->
+    <!--                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />-->
 
-        </RelativeLayout>
+    <!--        </RelativeLayout>-->
 
-    </HorizontalScrollView>
+    <!--    </HorizontalScrollView>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
