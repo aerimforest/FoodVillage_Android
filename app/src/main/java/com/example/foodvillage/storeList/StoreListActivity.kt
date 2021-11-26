@@ -19,6 +19,7 @@ import com.github.channguyen.rsv.RangeSliderView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.item_category.view.*
 import java.lang.Double.max
 import java.util.ArrayList
 import kotlin.math.round
@@ -94,7 +95,7 @@ class StoreListActivity : AppCompatActivity() {
                 categoryHashMap = it.value as ArrayList<HashMap<String, Any>>
                 Log.d("필터", "안쪽에서 카테고리: $categoryIdx")
                 categoryStoreList =
-                    categoryHashMap!![categoryIdx]?.get("storeNames") as List<String>
+                    categoryHashMap!![categoryIdx].get("storeNames") as List<String>
 
                 DbRefStore.get()
                     .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
@@ -289,6 +290,7 @@ class StoreListActivity : AppCompatActivity() {
                                                     binding.btnSnack.setBackgroundResource(R.drawable.background_btn_selected_green)
                                                     binding.btnSnack.setTextColor(Color.WHITE)
                                                 }
+
                                                 binding.btnRiceAndNoodle.setOnClickListener {
                                                     binding.btnRiceAndNoodle.isSelected
                                                     filteredcategoryIdx = 6
