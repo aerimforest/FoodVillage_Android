@@ -247,7 +247,7 @@ class StoreListActivity : AppCompatActivity() {
                                                     mStoreAdapter!!.datasetChanged(storeList)
 
                                                     binding.btnAll.setBackgroundResource(R.drawable.background_category_non_selected)
-                                                    binding.btnAll.setTextColor(Color.parseColor("#999999"))
+                                                    binding.btnAll.setTextColor(Color.BLACK)
 
                                                     binding.btnFruitVegi.setBackgroundResource(R.drawable.background_btn_selected_green)
                                                     binding.btnFruitVegi.setTextColor(Color.WHITE)
@@ -284,11 +284,7 @@ class StoreListActivity : AppCompatActivity() {
                                                     mStoreAdapter!!.datasetChanged(storeList)
 
                                                     binding.btnFruitVegi.setBackgroundResource(R.drawable.background_category_non_selected)
-                                                    binding.btnFruitVegi.setTextColor(
-                                                        Color.parseColor(
-                                                            "#999999"
-                                                        )
-                                                    )
+                                                    binding.btnFruitVegi.setTextColor(Color.BLACK)
 
                                                     binding.btnSnack.setBackgroundResource(R.drawable.background_btn_selected_green)
                                                     binding.btnSnack.setTextColor(Color.WHITE)
