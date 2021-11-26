@@ -218,7 +218,7 @@ class HomeFragment : Fragment() {
                 (todayPriceList[position].discountRate?.times(100))?.toInt()
                     .toString()
             viewHolder.tv_fixed_price?.text = todayPriceList[position].fixedPrice.toString()
-            viewHolder.tv_discounted_price?.text = (todayPriceList[position].fixedPrice?.times(
+            viewHolder.tv_discounted_price?.text = (todayPriceList[position].fixedPrice?.times(1-
                 todayPriceList[position].discountRate!!
             ))?.toInt().toString()
 

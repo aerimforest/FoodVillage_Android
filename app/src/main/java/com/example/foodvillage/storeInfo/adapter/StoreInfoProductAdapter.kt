@@ -38,7 +38,7 @@ class StoreInfoProductAdapter(
             fixedPrice?.text = list.fixedPrice.toString()
             discountRate?.text = list.discountRate?.times(100)?.toInt().toString()
             discountedPrice?.text =
-                (list.fixedPrice?.times(list.discountRate!!))?.toInt().toString()
+                (list.fixedPrice?.times(1-list.discountRate!!))?.toInt().toString()
         }
     }
 
