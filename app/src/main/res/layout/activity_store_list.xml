@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,11 +10,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/lly_home_bar"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:background="@drawable/background_home_location"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingHorizontal="15dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,249 +25,263 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints">
 
-            <Button
-                android:id="@+id/btn_home_alarm"
-                android:layout_width="15dp"
-                android:layout_height="17dp"
-                android:background="@drawable/top_alarm"
-                android:backgroundTint="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/tv_home_location"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_home_location"
-                android:layout_width="wrap_content"
+            <!--상단바-->
+            <LinearLayout
+                android:id="@+id/lly_store_info_bar"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:gravity="center_horizontal|top"
-                android:text="신림로 71길 18"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btn_search"
-                app:layout_constraintStart_toEndOf="@+id/btn_home_alarm"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingHorizontal="25dp"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <Button
-                android:id="@+id/btn_search"
-                android:layout_width="17dp"
-                android:layout_height="10dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/top_more"
-                android:backgroundTint="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/btn_map"
-                app:layout_constraintStart_toEndOf="@+id/tv_home_location"
-                app:layout_constraintTop_toTopOf="parent" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical">
 
-            <Button
-                android:id="@+id/btn_map"
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:layout_marginStart="16dp"
-                android:background="@drawable/top_map"
-                android:backgroundTint="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/btn_search"
-                app:layout_constraintTop_toTopOf="parent" />
+                    <ImageView
+                        android:id="@+id/btn_home_alarm"
+                        android:layout_width="16dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:src="@drawable/icon_alarm_black" />
+
+                    <TextView
+                        android:id="@+id/tv_home_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:fontFamily="@font/noto_sans_kr_bold"
+                        android:includeFontPadding="false"
+                        android:text="신림로 71길 18"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/btn_search"
+                        android:layout_width="15dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/btn_map"
+                        android:src="@drawable/icon_magnifier" />
+
+                    <ImageView
+                        android:id="@+id/btn_map"
+                        android:layout_width="16dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="15dp"
+                        android:src="@drawable/icon_map_black" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <HorizontalScrollView
-        android:id="@+id/hsv_category"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cly_home_bar"
-        tools:ignore="MissingConstraints">
-
-        <LinearLayout
+        <!--카테고리-->
+        <HorizontalScrollView
+            android:id="@+id/hsv_category"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="30dp"
+            android:scrollbars="none"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cly_home_bar"
+            tools:ignore="MissingConstraints">
 
-            <Button
-                android:id="@+id/btn_all"
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_all"
+                    android:layout_width="70dp"
+                    android:layout_height="28dp"
+                    android:background="@drawable/background_category_selected"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="전체"
+                    android:textColor="@color/white"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/btn_fruit_vegi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/top_category_btn_design"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="과일/채소"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/btn_meat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/top_category_btn_design"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="고기/계란"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/btn_seafood"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/top_category_btn_design"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="수산/건어물"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/btn_side_dish"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/top_category_btn_design"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="반찬/간편식"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/btn_snack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/top_category_btn_design"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="간식/음료"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/btn_rice_and_noodle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/top_category_btn_design"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="밥/면/소스/캔"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/btn_healthy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/top_category_btn_design"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="건강/다이어트"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+                <Button
+                    android:id="@+id/btn_life"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/top_category_btn_design"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="생활용품"
+                    android:textColor="@color/black"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/hsv_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="25dp"
+            app:layout_constraintTop_toBottomOf="@+id/hsv_category"
+            tools:ignore="MissingConstraints">
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@drawable/top_category_btn_design"
-                android:text="모든 가게"
-                android:textColor="@color/white"
-                android:textSize="13sp" />
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn_fruit_vegi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/top_category_btn_design"
-                android:text="과일/채소"
-                android:textColor="@color/white"
-                android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/btn_priority"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="23dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:text="가까운 순"
+                    android:textColor="@color/black"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/btn_meat"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/top_category_btn_design"
-                android:text="고기/계란"
-                android:textColor="@color/white"
-                android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/btn_filter_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="23dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="3km 이내"
+                    android:textColor="@color/black"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@+id/btn_priority"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/btn_seafood"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/top_category_btn_design"
-                android:text="수산/건어물"
-                android:textColor="@color/white"
-                android:textSize="13sp" />
+                <TextView
+                    android:id="@+id/btn_filter_parking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="23dp"
+                    android:fontFamily="@font/noto_sans_kr_medium"
+                    android:includeFontPadding="false"
+                    android:text="주차 가능"
+                    android:textColor="@color/black"
+                    android:textSize="11sp"
+                    app:layout_constraintStart_toEndOf="@+id/btn_filter_distance"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/btn_side_dish"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/top_category_btn_design"
-                android:text="반찬/간편식"
-                android:textColor="@color/white"
-                android:textSize="13sp" />
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_snack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/top_category_btn_design"
-                android:text="간식/음료"
-                android:textColor="@color/white"
-                android:textSize="13sp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Button
-                android:id="@+id/btn_rice_and_noodle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/top_category_btn_design"
-                android:text="밥/면/소스/캔"
-                android:textColor="@color/white"
-                android:textSize="13sp" />
-
-            <Button
-                android:id="@+id/btn_healthy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/top_category_btn_design"
-                android:text="건강/다이어트"
-                android:textColor="@color/white"
-                android:textSize="13sp" />
-
-            <Button
-                android:id="@+id/btn_life"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
-                android:background="@drawable/top_category_btn_design"
-                android:text="생활용품"
-                android:textColor="@color/white"
-                android:textSize="13sp" />
-        </LinearLayout>
-    </HorizontalScrollView>
-
-    <Button
-        android:id="@+id/btn_category_more"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/category_more"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/hsv_category"
-        app:layout_constraintTop_toBottomOf="@+id/cly_home_bar" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/hsv_filter"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/hsv_category"
-
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="-48dp">
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn_priority"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_weight="1"
-                android:background="#00ff0000"
-                android:text="가까운 순"
-                android:textSize="10sp"
-                android:textColor="@color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/btn_filter_distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_weight="1"
-                android:background="#00ff0000"
-                android:text="3km 이내"
-                android:textSize="10sp"
-                android:textColor="@color/white"
-                app:layout_constraintStart_toEndOf="@+id/btn_priority"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/btn_filter_parking"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_weight="1"
-                android:background="#00ff0000"
-                android:text="주차 가능"
-                android:textSize="10sp"
-                android:textColor="@color/white"
-                app:layout_constraintStart_toEndOf="@+id/btn_filter_distance"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_store"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lly_home_bar" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
