@@ -500,47 +500,151 @@ class MainActivity : AppCompatActivity() {
 //                .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 //            i++
 //        }
+/*
+        var storeName="예림마트1"
+        var productName="죽빵"
+        var DbRefProduct = mDatabase.getReference("products/"+"222saddsagsdghafheffh")
+        var product=Product()
+        product.productName=productName
+        product.storeName=storeName
+        product.fixedPrice=10000
+        product.discountRate=0.3
+        product.imgUrl="product_bread"
+        product.categoryNum=3
+        DbRefProduct.setValue(product)
+            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+
+        storeName="예림마트1"
+        productName="그릴드 치킨"
+        DbRefProduct = mDatabase.getReference("products/"+"fgdddddddddddddfgdfgdfgfdg")
+        product=Product()
+        product.productName=productName
+        product.storeName=storeName
+        product.fixedPrice=7000
+        product.discountRate=0.3
+        product.imgUrl="product_grilled_chicken"
+        product.categoryNum=5
+        DbRefProduct.setValue(product)
+            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+
+        storeName="예림마트1"
+        productName="맛있는 김치"
+        DbRefProduct = mDatabase.getReference("products/"+"444444444tgdfsgdsfd")
+        product=Product()
+        product.productName=productName
+        product.storeName=storeName
+        product.fixedPrice=50000
+        product.discountRate=0.3
+        product.imgUrl="product_kimchi"
+        product.categoryNum=5
+        DbRefProduct.setValue(product)
+            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+
+        storeName="예림마트1"
+        productName="맛있는 김치"
+        DbRefProduct = mDatabase.getReference("products/"+"ggggggggggggggggggggg")
+        product=Product()
+        product.productName=productName
+        product.storeName=storeName
+        product.fixedPrice=50000
+        product.discountRate=0.4
+        product.imgUrl="product_kimchi"
+        product.categoryNum=5
+        DbRefProduct.setValue(product)
+            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 
 
-//        var storeName="예림마트1"
-//        var productName="타이어보다 싸다 고등어"
-//        var DbRefProduct = mDatabase.getReference("products/"+storeName+"/"+productName)
-//        var product=Product()
-//        product.productName=productName
-//        product.storeName=storeName
-//        product.fixedPrice=100000
-//        product.discountRate=0.3
-//        product.imgUrl="fish"
-//        product.categoryNum=3
-//        DbRefProduct.setValue(product)
-//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+        storeName="소연마트2"
+        productName="냄새 좋은 두리안"
+        DbRefProduct = mDatabase.getReference("products/"+"qqqqqqqqqqqqqqqqqqqqqqqq")
+        product=Product()
+        product.productName=productName
+        product.storeName=storeName
+        product.fixedPrice=50000
+        product.discountRate=0.9
+        product.imgUrl="product_durian"
+        product.categoryNum=5
+        DbRefProduct.setValue(product)
+            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 
-//        storeName="예림마트1"
-//        productName="타이어보다 싸다 자몽에이드"
-//        DbRefProduct = mDatabase.getReference("products/"+storeName+"/"+productName)
-//        product=Product()
-//        product.productName=productName
-//        product.storeName=storeName
-//        product.fixedPrice=70000
-//        product.discountRate=0.3
-//        product.imgUrl=null
-//        product.categoryNum=5
-//        DbRefProduct.setValue(product)
-//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+        storeName="소연마트2"
+        productName="달콤한 파파야"
+        DbRefProduct = mDatabase.getReference("products/"+"eeeeeeeeeeeeeeeeeeeeeeee")
+        product=Product()
+        product.productName=productName
+        product.storeName=storeName
+        product.fixedPrice=500000
+        product.discountRate=0.3
+        product.imgUrl="product_papaya"
+        product.categoryNum=5
+        DbRefProduct.setValue(product)
+            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 
-//        storeName="예림마트2"
-//        productName="예림마트1보다 싸다 자몽에이드"
-//        DbRefProduct = mDatabase.getReference("products/"+storeName+"/"+productName)
-//        product=Product()
-//        product.productName=productName
-//        product.storeName=storeName
-//        product.fixedPrice=50000
-//        product.discountRate=0.3
-//        product.imgUrl=null
-//        product.categoryNum=5
-//        DbRefProduct.setValue(product)
-//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+        storeName="소연마트1"
+        productName="예림마트보다 싸다 김치"
+        DbRefProduct = mDatabase.getReference("products/"+"ryyyyyyyyyyyyyyyyrrrrrrr")
+        product=Product()
+        product.productName=productName
+        product.storeName=storeName
+        product.fixedPrice=40000
+        product.discountRate=0.3
+        product.imgUrl="product_kimchi"
+        product.categoryNum=5
+        DbRefProduct.setValue(product)
+            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 
+        storeName="나연마트1"
+        productName="아프지망고"
+        DbRefProduct = mDatabase.getReference("products/"+"wetsgdfgfdgsdfgdfgd")
+        product=Product()
+        product.productName=productName
+        product.storeName=storeName
+        product.fixedPrice=40000
+        product.discountRate=0.3
+        product.imgUrl="product_mango"
+        product.categoryNum=5
+        DbRefProduct.setValue(product)
+            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+
+        storeName="나연마트1"
+        productName="안 본 지 오렌지"
+        DbRefProduct = mDatabase.getReference("products/"+"dfgsfgsfgsdfgsdfgsdfg")
+        product=Product()
+        product.productName=productName
+        product.storeName=storeName
+        product.fixedPrice=40000
+        product.discountRate=0.3
+        product.imgUrl="product_orange"
+        product.categoryNum=5
+        DbRefProduct.setValue(product)
+            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+
+        storeName="나연마트1"
+        productName="아임 파인 애플! 앤 유?"
+        DbRefProduct = mDatabase.getReference("products/"+"fdgdhfafhdgjjgjsgfjdfg")
+        product=Product()
+        product.productName=productName
+        product.storeName=storeName
+        product.fixedPrice=40000
+        product.discountRate=0.3
+        product.imgUrl="product_pineapple"
+        product.categoryNum=5
+        DbRefProduct.setValue(product)
+            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+
+        storeName="나연마트1"
+        productName="스트로베리베리"
+        DbRefProduct = mDatabase.getReference("products/"+"eesgdksgnkdjsfngjdf")
+        product=Product()
+        product.productName=productName
+        product.storeName=storeName
+        product.fixedPrice=40000
+        product.discountRate=0.3
+        product.imgUrl="product_strawberries"
+        product.categoryNum=5
+        DbRefProduct.setValue(product)
+            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+*/
 //        // 유저 정보 빼기
 //
 //        val mDatabase = FirebaseDatabase.getInstance()

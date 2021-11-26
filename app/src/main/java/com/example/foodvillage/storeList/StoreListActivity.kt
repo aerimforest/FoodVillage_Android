@@ -183,7 +183,7 @@ class StoreListActivity : AppCompatActivity() {
                                                         reviewTotal.toString(),
                                                         prodNumTotal.toString(),
                                                         categories,
-                                                        (round(salePercentMax * 100)).toString() + "%"
+                                                        (round(salePercentMax * 100)).toString().split(".")[0] + "%"
                                                     )
                                                 )
 
@@ -452,9 +452,10 @@ class StoreListActivity : AppCompatActivity() {
                     reviewTotal.toString(),
                     prodNumTotal.toString(),
                     categories,
-                    (round(salePercentMax * 100)).toString() + "%"
+                    (round(salePercentMax * 100)).toString().split(".")[0] + "%"
                 )
             )
+
         }
 
         storeList = storeList.filter { s ->
