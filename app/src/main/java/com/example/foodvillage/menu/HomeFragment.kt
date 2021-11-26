@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.foodvillage.AddressSettingAcitivity
+import com.example.foodvillage.DBMarketMapActivity
 import com.example.foodvillage.R
 import com.example.foodvillage.storeList.StoreListActivity
 import com.example.foodvillage.ViewPagerAdapter
@@ -51,8 +52,8 @@ class HomeFragment : Fragment() {
     var uid = FirebaseAuth.getInstance().uid
     var DbRefUser = firebaseDatabase.getReference("users/" + uid)
 
-    var AddressData:String?=null
-    var userName:String?=null
+    var AddressData: String? = null
+    var userName: String? = null
 
 
     override fun onCreateView(
@@ -82,9 +83,14 @@ class HomeFragment : Fragment() {
                 AddressData = t_hashMap.get("address") as String
                 userName = t_hashMap.get("name")!! as String
 
-                binding.tvHomeLocation.text=AddressData
+                binding.tvHomeLocation.text = AddressData
             }
 
+        // 배너 클릭
+        binding.llyHomeBanner.setOnClickListener {
+            val intent = Intent(context, DBMarketMapActivity::class.java)
+            startActivity(intent)
+        }
 
         // 주소 설정 페이지로 이동하기
         binding.tvHomeLocation.setOnClickListener {
@@ -369,10 +375,8 @@ class HomeFragment : Fragment() {
 
     private fun getBannerItemList(): ArrayList<Int> {
         return arrayListOf(
-            R.drawable.banner,
-            R.drawable.delete_light,
-            R.drawable.delete_jeju,
-            R.drawable.delete_flower
+            R.drawable.banner_map,
+            R.drawable.banner_my_page
         )
     }
 

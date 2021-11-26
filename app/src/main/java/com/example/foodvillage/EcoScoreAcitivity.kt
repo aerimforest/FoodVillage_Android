@@ -2,6 +2,7 @@ package com.example.foodvillage
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.foodvillage.databinding.ActivityEcoScoreBinding
 
 class EcoScoreAcitivity : AppCompatActivity() {
@@ -12,6 +13,12 @@ class EcoScoreAcitivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+
+        // status bar 색상 변경
+        val window = this.window
+        window.statusBarColor = ContextCompat.getColor(this, R.color.sky)
+        // statue bar 아이콘 색상 변경
+        window.decorView.systemUiVisibility = 0
 
         // 바인딩
         mBinding = ActivityEcoScoreBinding.inflate(layoutInflater)
