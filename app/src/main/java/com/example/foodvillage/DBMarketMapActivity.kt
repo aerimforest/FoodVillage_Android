@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.foodvillage.databinding.ActivityDbMarketMapBinding
 import com.example.foodvillage.schema.Product
 import com.example.foodvillage.schema.Store
+import com.example.foodvillage.storeInfo.ui.StoreInfoActivity
 import com.example.foodvillage.storeList.StoreListActivity
 import com.github.channguyen.rsv.RangeSliderView
 import com.google.android.gms.location.*
@@ -87,6 +88,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
     var storeList = ArrayList<Store>()
     var categoryHashMap: ArrayList<HashMap<String, Any>>? = null
 
+    var mymarker = MapPOIItem()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,13 +123,12 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 distVal = intent.getDoubleExtra("distVal", 3.0)
                 Log.d("필터 적용_목록", distVal.toString())
             } else {
-                Toast.makeText(this, "전달된 이름이 없습니다", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "전달된 이름이 없습니다", Toast.LENGTH_SHORT).show()
                 Log.d("필터 적용_목록_노전달", distVal.toString())
                 distVal = 3.0
-
             }
         } else {
-            Toast.makeText(this, "전달된 이름이 없습니다", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "전달된 이름이 없습니다", Toast.LENGTH_SHORT).show()
             categoryIdx = 0
             Log.d("필터 적용_지도_노전달", categoryIdx.toString())
         }
@@ -152,8 +153,8 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 AddressData = t_hashMap.get("address") as String
                 userName = t_hashMap.get("name")!! as String
 
+
                 // 저장된 위치 마커 찍기
-                val mymarker = MapPOIItem()
                 mymarker.itemName = "저장된 내 위치"   // 마커 이름
                 mymarker.mapPoint = MapPoint.mapPointWithGeoCoord(curr_lat!!, curr_lon!!)
                 mymarker.markerType = MapPOIItem.MarkerType.BluePin
@@ -169,6 +170,7 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                 mapView?.setZoomLevel(2, true)
 
                 Log.d("유저", "위, 경도: $curr_lat, $curr_lon")
+
             }
 
         DbRefCategory.get()
@@ -733,14 +735,6 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             val storeName = poiItem?.itemName
             Log.d("다이얼로그", storeName!!)
 
-            // 상품 목록 HorizontalScrollView
-            val layoutManager =
-                LinearLayoutManager(this@DBMarketMapActivity, LinearLayoutManager.HORIZONTAL, false)
-            val productListRcv = findViewById<RecyclerView>(R.id.rv_dialog_fmi_product_list)
-            productListRcv.adapter = ProductListDialogAdapter(storeName)
-            productListRcv.layoutManager = layoutManager
-            productListRcv.setHasFixedSize(true)
-
             val selectedstoreHashMap =
                 storeHashMap?.get(storeName) as HashMap<String, HashMap<String, Any>>
 
@@ -750,7 +744,6 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             val tv_marketmapactivity_dialog_title =
                 dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_title)
             tv_marketmapactivity_dialog_title!!.text = "${poiItem?.itemName}"
-
             val tv_marketmapactivity_dialog_minute =
                 dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_minute)
             tv_marketmapactivity_dialog_minute!!.text =
@@ -789,6 +782,13 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
             tv_marketmapactivity_dialog_saleproduct!!.text = salePercentMaxProduct
 
             // 더 필요한 거 있으면 StoreListActivity 참고 바람!
+
+            dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_title)!!.setOnClickListener {
+                val intenty = Intent(this@DBMarketMapActivity, StoreInfoActivity::class.java)
+                intenty.putExtra("storeName", storeName)
+                Log.d("지도에서 가게로", storeName)
+                startActivity(intenty)
+            }
 
             dialog.show()
         }
