@@ -1,5 +1,7 @@
 package com.example.foodvillage.storeInfo.ui
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Color
@@ -10,6 +12,7 @@ import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.foodvillage.R
 import com.example.foodvillage.databinding.ActivityStoreInfoBinding
@@ -43,18 +46,21 @@ class StoreInfoActivity : AppCompatActivity() {
     var uid = FirebaseAuth.getInstance().uid
 
 
+
     private val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
     private var databaseReference: DatabaseReference = firebaseDatabase.reference
     val DbRefProduct: DatabaseReference = firebaseDatabase.getReference("products/")
     val DbRefStore = firebaseDatabase.getReference("stores/")
     val DbRefCategory=firebaseDatabase.getReference("categories/")
+    var DbRefUser = firebaseDatabase.getReference("users/$uid")
+
+
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     var productHashMap: HashMap<String, HashMap<String, Any>>?=null
     var storeHashMap: HashMap<String, HashMap<String, Any>>?=null
     var categoryHashMap: java.util.ArrayList<HashMap<String, Any>>?=null
     //val storeName = intent.getStringExtra("storeName")
     var storeName:String?=null// = "나연마트1"
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +72,16 @@ class StoreInfoActivity : AppCompatActivity() {
         //setStoreInfo()
 
         iconHeartClickEvent(storeName!!)
+
+        binding.tvStoreInfoCopy.setOnClickListener {
+             //클립보드 사용 코드
+            var clipboardManager:ClipboardManager =
+                getSystemService(CLIPBOARD_SERVICE) as ClipboardManager;
+            var clipData:ClipData = ClipData.newPlainText("address",binding.tvStoreInfoLocation.text); //클립보드에 ID라는 이름표로 id 값을 복사하여 저장
+            clipboardManager.setPrimaryClip(clipData);
+
+            Toast.makeText(this, "주소가 클립보드에 복사되었습니다.", Toast.LENGTH_SHORT).show()
+        }
 
         DbRefProduct.get()
             .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
@@ -115,6 +131,26 @@ class StoreInfoActivity : AppCompatActivity() {
                         binding.tvStoreInfoBreak.text = storeInfos?.get("dayOff") as String?
                         binding.tvStoreInfoLocation.text = storeInfos?.get("address") as String?
 
+                        binding.btnStoreInfoPath.setOnClickListener{
+                            DbRefUser.get()
+                                .addOnFailureListener { e -> Log.d(ContentValues.TAG, e.localizedMessage) }
+                                .addOnSuccessListener {
+                                    val t_hashMap: HashMap<String, Any> =
+                                        it.value as HashMap<String, Any>
+                                    val curr_lat = t_hashMap.get("currentLatitude") as Double
+                                    val curr_lon = t_hashMap.get("currentLongitude") as Double
+                                    val currentLatitude =
+                                        storeInfos?.get("currentLatitude") as Double?
+                                    val currentLongitude =
+                                        storeInfos?.get("currentLongitude") as Double?
+
+                                    var intent = Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse("kakaomap://route?sp=" + curr_lat + "," + curr_lon + "&ep=" + currentLatitude + "," + currentLongitude + "&by=FOOT")
+                                    )
+                                    startActivity(intent)
+                                }
+                        }
                         // 거리
                         val databaseDistanceReference: DatabaseReference =
                             firebaseDatabase.getReference("stores/$storeName/distance/${auth.uid}")
@@ -167,8 +203,6 @@ class StoreInfoActivity : AppCompatActivity() {
                             }
 
                         }
-
-
 
                         //        if (storeName != null) {
             //            iconHeartClickEvent(storeName)
