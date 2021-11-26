@@ -16,6 +16,7 @@ import com.example.foodvillage.R
 import com.example.foodvillage.databinding.FragmentDibBinding
 import com.example.foodvillage.schema.Product
 import com.example.foodvillage.schema.Store
+import com.example.foodvillage.schema.StoreCategory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_dib.*
@@ -28,6 +29,7 @@ import kotlinx.android.synthetic.main.item_dib_product_list.view.tv_fixed_price
 import kotlinx.android.synthetic.main.item_dib_product_list.view.tv_product_name
 import kotlinx.android.synthetic.main.item_dib_product_list.view.tv_store_name
 import kotlinx.android.synthetic.main.item_dib_store_list.view.*
+import kotlin.properties.Delegates
 
 class DibFragment : Fragment() {
 
@@ -179,6 +181,9 @@ class DibFragment : Fragment() {
     }
 
     inner class DibStoreAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        internal var collection: List<Store> by Delegates.observable(emptyList()) { _, _, _ ->
+            notifyDataSetChanged()
+        }
 
         init {
             databaseStoreReference = firebaseDatabase.getReference("stores")
@@ -200,17 +205,16 @@ class DibFragment : Fragment() {
                             categoryListString.substring(1, categoryListString.length - 1)
 
                         val arr = uidList.split(", ")
-                        arr2 = categoryListString.split(", ")
+                        arr2 = ArrayList<String>(categoryListString.split(", "))
 
-
+                        categoryList.clear()
                         for (i in arr) {
                             if (i == auth.uid) {
                                 if (item != null) {
-                                    val catList=item.categoryNames
-                                    for (i in catList!!){
-                                        categoryList.add(0, i)
-                                    }
+                                    val catList = arr2
+                                    categoryList = catList as ArrayList<String>
                                     storeList.add(0, item)
+                                    //notifyDataSetChanged()
                                 }
                             }
                         }
@@ -238,16 +242,24 @@ class DibFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val viewHolder = (holder as ViewHolder).itemView
 
-            // 카테고리 어댑터
-            val layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            viewHolder.rv_dib_store_category?.adapter = CategoryListAdapter()
-            viewHolder.rv_dib_store_category?.layoutManager = layoutManager
-            viewHolder.rv_dib_store_category?.setHasFixedSize(true)
-
             viewHolder.tv_dib_store_name.text = storeList[position].storeName
             viewHolder.tv_review_num.text = (storeList[position].reviewCnt.toString() + "개")
             viewHolder.tv_product_num.text = (storeList[position].productCnt.toString() + "개")
+
+            val recyclerRecyclerAdapter = CategoryListAdapter()
+            val recyclerviewRecyclerviewItemList =
+                arrayListOf<StoreCategory>()
+
+            for (i in storeList[position].categoryNames!!) {
+                val recyclerviewRecyclerViewItem = StoreCategory(i)
+                recyclerviewRecyclerviewItemList.add(recyclerviewRecyclerViewItem)
+            }
+
+            recyclerRecyclerAdapter.collection = recyclerviewRecyclerviewItemList
+            viewHolder.rv_dib_store_category.layoutManager =
+                LinearLayoutManager(viewHolder.context, LinearLayoutManager.HORIZONTAL, true)
+            viewHolder.rv_dib_store_category.scrollToPosition(recyclerRecyclerAdapter.itemCount - 1)
+            viewHolder.rv_dib_store_category.adapter = recyclerRecyclerAdapter
 
             // 거리
             val databaseDistanceReference: DatabaseReference =
@@ -269,7 +281,7 @@ class DibFragment : Fragment() {
 
                         for (postSnapshot in dataSnapshot.children) {
                             if (postSnapshot.child("storeName").value == storeList[position].storeName) {
-                                viewHolder.tv_sale_percetage.text =
+                                viewHolder.tv_sale_percentage.text =
                                     (postSnapshot.child("discountRate").value.toString() + "%")
                             }
                         }
@@ -296,8 +308,10 @@ class DibFragment : Fragment() {
         }
     }
 
-    inner class CategoryListAdapter :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    inner class CategoryListAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        var collection: List<StoreCategory> by Delegates.observable(emptyList()) { _, _, _ ->
+            notifyDataSetChanged()
+        }
 
         init {
         }
@@ -313,11 +327,11 @@ class DibFragment : Fragment() {
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val viewHolder = (holder as ViewHolder).itemView
-            viewHolder.tv_category_item.text = categoryList[position]
+            viewHolder.tv_category_item.text = collection[position].categoryName
         }
 
         override fun getItemCount(): Int {
-            return categoryList.size
+            return collection.size
         }
     }
 
