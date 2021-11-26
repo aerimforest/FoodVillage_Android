@@ -18,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.foodvillage.databinding.ActivityDbMarketMapBinding
@@ -96,6 +97,12 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
         // 바인딩
         mBinding = ActivityDbMarketMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // status bar 색상 변경
+        val window = this.window
+        window.statusBarColor = ContextCompat.getColor(this, R.color.main_green)
+        // statue bar 아이콘 색상 변경
+        window.decorView.systemUiVisibility = 0
 
         // 맵
         // 임포트 잘 해줘야함... mf들어간걸로!
@@ -784,12 +791,13 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
 
             // 더 필요한 거 있으면 StoreListActivity 참고 바람!
 
-            dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_title)!!.setOnClickListener {
-                val intenty = Intent(this@DBMarketMapActivity, StoreInfoActivity::class.java)
-                intenty.putExtra("storeName", storeName)
-                Log.d("지도에서 가게로", storeName)
-                startActivity(intenty)
-            }
+            dialog.findViewById<TextView>(R.id.tv_marketmapactivity_dialog_title)!!
+                .setOnClickListener {
+                    val intenty = Intent(this@DBMarketMapActivity, StoreInfoActivity::class.java)
+                    intenty.putExtra("storeName", storeName)
+                    Log.d("지도에서 가게로", storeName)
+                    startActivity(intenty)
+                }
 
             dialog.show()
         }
