@@ -121,6 +121,47 @@ class HomeFragment : Fragment() {
 
         binding.llyHomeAll.setOnClickListener {
             val intent = Intent(context, StoreListActivity::class.java)
+            intent.putExtra("filteredcategoryIdx", 0)
+            startActivity(intent)
+        }
+        binding.llyHomeFruit1.setOnClickListener {
+            val intent = Intent(context, StoreListActivity::class.java)
+            intent.putExtra("filteredcategoryIdx", 1)
+            startActivity(intent)
+        }
+        binding.llyHomeMeat2.setOnClickListener {
+            val intent = Intent(context, StoreListActivity::class.java)
+            intent.putExtra("filteredcategoryIdx", 2)
+            startActivity(intent)
+        }
+        binding.llyHomeFish3.setOnClickListener {
+            val intent = Intent(context, StoreListActivity::class.java)
+            intent.putExtra("filteredcategoryIdx", 3)
+            startActivity(intent)
+        }
+        binding.llyHomeSide4.setOnClickListener {
+            val intent = Intent(context, StoreListActivity::class.java)
+            intent.putExtra("filteredcategoryIdx", 4)
+            startActivity(intent)
+        }
+        binding.llyHomeDessert5.setOnClickListener {
+            val intent = Intent(context, StoreListActivity::class.java)
+            intent.putExtra("filteredcategoryIdx", 5)
+            startActivity(intent)
+        }
+        binding.llyHomeRice6.setOnClickListener {
+            val intent = Intent(context, StoreListActivity::class.java)
+            intent.putExtra("filteredcategoryIdx", 6)
+            startActivity(intent)
+        }
+        binding.llyHomeHealth7.setOnClickListener {
+            val intent = Intent(context, StoreListActivity::class.java)
+            intent.putExtra("filteredcategoryIdx", 7)
+            startActivity(intent)
+        }
+        binding.llySupplies8.setOnClickListener {
+            val intent = Intent(context, StoreListActivity::class.java)
+            intent.putExtra("filteredcategoryIdx", 8)
             startActivity(intent)
         }
 
