@@ -102,9 +102,9 @@ class MainActivity : AppCompatActivity() {
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 
 //        // 마트 생성
-//        var storeName="예림마트1"
+//        var storeName="24시 홈마트"
 //        var DbRefStore = mDatabase.getReference("stores/"+storeName)
-//        var store= Store(storeName, 37.556, 126.950, "서울시 김구 예림동 123" , listOf("고기/계란", "수산/건어물" ))
+//        var store= Store(storeName, 37.534025, 126.994824, "서울 용산구 보광로 127 유영빌딩 지하1층" , listOf("과일/채소","고기/계란","생활용품"))
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 //
@@ -158,24 +158,107 @@ class MainActivity : AppCompatActivity() {
 //
 
 
-//
 //        val mmDatabase = FirebaseDatabase.getInstance()
 //        // 마트 생성
-//        var storeName="예림마트1"
+//        var storeName="24시 홈마트"
 //        var DbRefStore = mmDatabase.getReference("stores/"+storeName)
 //        var store= Store()
 //        store.storeName=storeName
-//        store.currentLatitude=37.4961
-//        store.currentLongitude=127.028
-//        store.address="서울특별시 서초구 서초동 강남대로 373"
-//        store.categoryNames= listOf("고기/계란", "수산물/건어물")
-//        store.storeImg="nayeon_mart1"
-//        store.grade=3.7
-//        store.phoneNumber="02-111-2222"
-//        store.time="09:00-22:00"
-//        store.dayOff="매주 월요일"
+//        store.currentLatitude=37.534025
+//        store.currentLongitude=126.994824
+//        store.address="서울 용산구 보광로 127 유영빌딩 지하1층"
+//        store.categoryNames= listOf("과일/채소", "고기/계란", "생활용품")
+//        store.storeImg="home_mart"
+//        store.grade=3.9
+//        store.reviewCnt = 10
+//        store.productCnt = 5
+//        store.phoneNumber="02-123-6432"
+//        store.time="00:00 - 24:00"
+//        store.dayOff="연중무휴"
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+
+//        val mmDatabase = FirebaseDatabase.getInstance()
+//        // 마트 생성
+//        var storeName="GS더프레시 종로평창점"
+//        var DbRefStore = mmDatabase.getReference("stores/"+storeName)
+//        var store= Store()
+//        store.storeName=storeName
+//        store.currentLatitude=37.606757
+//        store.currentLongitude=126.968939
+//        store.address="서울 종로구 평창동 158-1"
+//        store.categoryNames= listOf("수산/건어물","밥/면/소스/캔")
+//        store.storeImg="gs_mart"
+//        store.grade= 4.15
+//        store.reviewCnt = 11
+//        store.productCnt = 13
+//        store.phoneNumber="02-231-9123"
+//        store.time="10:00-22:30"
+//        store.dayOff="수요일"
+//        DbRefStore.setValue(store)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+
+
+//        val mmDatabase = FirebaseDatabase.getInstance()
+//        // 마트 생성
+//        var storeName="농협하나로마트 사직지점"
+//        var DbRefStore = mmDatabase.getReference("stores/"+storeName)
+//        var store= Store()
+//        store.storeName=storeName
+//        store.currentLatitude=37.574364
+//        store.currentLongitude=126.968858
+//        store.address="서울 종로구 사직동 9"
+//        store.categoryNames= listOf("간식/음","고기/계")
+//        store.storeImg="hanaro_mart"
+//        store.grade= 4.1
+//        store.reviewCnt = 15
+//        store.productCnt = 5
+//        store.phoneNumber="02-812-3812"
+//        store.time="09:00 - 22:00"
+//        store.dayOff="연중무휴"
+//        DbRefStore.setValue(store)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+//
+//        val mmDatabase = FirebaseDatabase.getInstance()
+//        // 마트 생성
+//        var storeName="롯데슈퍼 잠원점"
+//        var DbRefStore = mmDatabase.getReference("stores/"+storeName)
+//        var store= Store()
+//        store.storeName=storeName
+//        store.currentLatitude=37.508589
+//        store.currentLongitude=127.012004
+//        store.address="서울 서초구 신반포로 257 신반포 11차 상가"
+//        store.categoryNames= listOf("수산/건어물", "생활용품", "과일/채소")
+//        store.storeImg="lotte_super"
+//        store.grade= 3.5
+//        store.reviewCnt = 41
+//        store.productCnt = 11
+//        store.phoneNumber="02-121-3213"
+//        store.time="09:00 - 22:00"
+//        store.dayOff="셋째주 수요일"
+//        DbRefStore.setValue(store)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+
+//        val mmDatabase = FirebaseDatabase.getInstance()
+//        // 마트 생성
+//        var storeName="월드마트 남현점"
+//        var DbRefStore = mmDatabase.getReference("stores/"+storeName)
+//        var store= Store()
+//        store.storeName=storeName
+//        store.currentLatitude=37.47501
+//        store.currentLongitude=126.976717
+//        store.address="서울 관악구 남현4길 1"
+//        store.categoryNames= listOf("반찬/간편식", "과일/채소")
+//        store.storeImg="world_mart"
+//        store.grade= 4.1
+//        store.reviewCnt = 19
+//        store.productCnt = 7
+//        store.phoneNumber="02-121-3213"
+//        store.time="00:00 - 24:00"
+//        store.dayOff="연중무휴"
+//        DbRefStore.setValue(store)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+
 //
 //        storeName="예림마트2"
 //        DbRefStore = mmDatabase.getReference("stores/"+storeName)
@@ -500,20 +583,50 @@ class MainActivity : AppCompatActivity() {
 //                .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 //            i++
 //        }
-/*
-        var storeName="예림마트1"
-        var productName="죽빵"
-        var DbRefProduct = mDatabase.getReference("products/"+"222saddsagsdghafheffh")
+
+//        var storeName="예림마트1"
+//        var productName="식빵"
+//        var DbRefProduct = mDatabase.getReference("products/"+"222saddsagsdghafheffh")
+//        var product=Product()
+//        product.productName=productName
+//        product.storeName=storeName
+//        product.discountRate=0.3
+//        product.fixedPrice=10000
+//        product.dibPeople=listOf("vRDBsjXEP8Ph18NQ0DpMgcg5Bnd2")
+//        product.imgUrl="product_bread"
+//        product.categoryNum=5
+//        DbRefProduct.setValue(product)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+
+//        var storeName="예림마트1"
+//        var productName="맛있는 김치"
+//        var DbRefProduct = mDatabase.getReference("products/"+"444444444tgdfsgdsfd")
+//        var product=Product()
+//        product.productName=productName
+//        product.storeName=storeName
+//        product.discountRate=0.3
+//        product.fixedPrice=12000
+//        product.dibPeople=listOf("OnkBTywPZCNP7mBksXrbWl7VjUl1", "LsKrfBzrAPdksRyRU366ntjottX2")
+//        product.imgUrl="product_kimchi"
+//        product.categoryNum=4
+//        DbRefProduct.setValue(product)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+//
+        var storeName="GS더프레시 종로평창점"
+        var productName="정말 맛있는 로제파스타 소스"
+        var DbRefProduct = mDatabase.getReference("products/"+"rosepastasauce")
         var product=Product()
         product.productName=productName
         product.storeName=storeName
-        product.fixedPrice=10000
-        product.discountRate=0.3
-        product.imgUrl="product_bread"
-        product.categoryNum=3
+        product.discountRate=0.4
+        product.fixedPrice=5000
+        product.dibPeople=listOf("OnkBTywPZCNP7mBksXrbWl7VjUl1", "LsKrfBzrAPdksRyRU366ntjottX2")
+        product.imgUrl="product_pasta"
+        product.categoryNum=6
         DbRefProduct.setValue(product)
             .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 
+        /*
         storeName="예림마트1"
         productName="그릴드 치킨"
         DbRefProduct = mDatabase.getReference("products/"+"fgdddddddddddddfgdfgdfgfdg")
