@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../../../layout/custom_preview.xml" value="0.12447916666666667" />
         <entry key="app/src/main/res/drawable/acitivity_current_address_setting_bottom_design.xml" value="0.10358306188925082" />
         <entry key="app/src/main/res/drawable/activity_current_address_setting_detail_curpos_btn.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/activity_login_btn_design.xml" value="0.10032894736842106" />
@@ -19,6 +20,7 @@
         <entry key="app/src/main/res/layout/activity_current_address_setting.xml" value="0.2361111111111111" />
         <entry key="app/src/main/res/layout/activity_current_address_setting_detail.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_db_market_map.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_detail_address.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_eco_score.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
@@ -39,6 +41,9 @@
         <entry key="app/src/main/res/layout/fragment_storeList.xml" value="0.47560975609756095" />
         <entry key="app/src/main/res/layout/fragment_storelist.xml" value="0.165" />
         <entry key="app/src/main/res/layout/item_banner.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_category.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_dib_store_list.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/item_store_info_category.xml" value="0.1" />
         <entry key="app/src/main/res/layout/sample_store_list.xml" value="0.125" />
         <entry key="app/src/main/res/menu/bottom_navigation_main.xml" value="0.25" />
       </map>
