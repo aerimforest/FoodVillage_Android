@@ -155,12 +155,13 @@ class MainActivity : AppCompatActivity() {
 //        store= Store(storeName, 37.5533, 126.9477, "서울시 김구 예림동 123" , listOf("반찬/간편식"))
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
-
 //
+
+
 //
 //        val mmDatabase = FirebaseDatabase.getInstance()
 //        // 마트 생성
-//        var storeName="소연마트1"
+//        var storeName="예림마트1"
 //        var DbRefStore = mmDatabase.getReference("stores/"+storeName)
 //        var store= Store()
 //        store.storeName=storeName
@@ -176,7 +177,7 @@ class MainActivity : AppCompatActivity() {
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 //
-//        storeName="소연마트2"
+//        storeName="예림마트2"
 //        DbRefStore = mmDatabase.getReference("stores/"+storeName)
 //        store= Store()
 //        store.storeName=storeName
@@ -192,6 +193,86 @@ class MainActivity : AppCompatActivity() {
 //        DbRefStore.setValue(store)
 //            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
 //
+//        storeName="예림마트3"
+//        DbRefStore = mmDatabase.getReference("stores/"+storeName)
+//        store= Store()
+//        store.storeName=storeName
+//        store.currentLatitude=37.497
+//        store.currentLongitude=127.029
+//        store.address="서울특별시 서초구 서초동 강남대로 373"
+//        store.categoryNames= listOf("과일/채소","간식/음료", "고기/계란", "밥/면/소스/캔")
+//        store.storeImg="nayeon_mart1"
+//        store.grade=3.7
+//        store.phoneNumber="02-111-2222"
+//        store.time="12:00-22:00"
+//        store.dayOff="매주 월요일"
+//        DbRefStore.setValue(store)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+//
+//        storeName="나연마트1"
+//        DbRefStore = mmDatabase.getReference("stores/"+storeName)
+//        store= Store()
+//        store.storeName=storeName
+//        store.currentLatitude=37.495
+//        store.currentLongitude=127.028
+//        store.address="서울특별시 서초구 서초동 강남대로 373"
+//        store.categoryNames= listOf("생활용품", "고기/계란")
+//        store.storeImg="nayeon_mart1"
+//        store.grade=3.7
+//        store.phoneNumber="02-111-2222"
+//        store.time="11:00-18:00"
+//        store.dayOff="연중무휴"
+//        DbRefStore.setValue(store)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+//
+//        storeName="나연마트2"
+//        DbRefStore = mmDatabase.getReference("stores/"+storeName)
+//        store= Store()
+//        store.storeName=storeName
+//        store.currentLatitude=37.450
+//        store.currentLongitude=127.030
+//        store.address="서울특별시 서초구 서초동 강남대로 373"
+//        store.categoryNames= listOf("건강/다이어트", "생활용품")
+//        store.storeImg="nayeon_mart1"
+//        store.grade=3.9
+//        store.phoneNumber="02-111-2222"
+//        store.time="10:00-22:00"
+//        store.dayOff="매주 월요일"
+//        DbRefStore.setValue(store)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+//
+//        storeName="유진마트1"
+//        DbRefStore = mmDatabase.getReference("stores/"+storeName)
+//        store= Store()
+//        store.storeName=storeName
+//        store.currentLatitude=37.490
+//        store.currentLongitude=127.025
+//        store.address="서울특별시 서초구 서초동 강남대로 373"
+//        store.categoryNames= listOf("과일/채소","간식/음료", "밥/면/소스/캔")
+//        store.storeImg="nayeon_mart1"
+//        store.grade=4.3
+//        store.phoneNumber="02-111-2222"
+//        store.time="12:00-20:00"
+//        store.dayOff="연중무휴"
+//        DbRefStore.setValue(store)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+//
+//        storeName="유진마트2"
+//        DbRefStore = mmDatabase.getReference("stores/"+storeName)
+//        store= Store()
+//        store.storeName=storeName
+//        store.currentLatitude=37.452
+//        store.currentLongitude=127.035
+//        store.address="서울특별시 서초구 서초동 강남대로 373"
+//        store.categoryNames= listOf("간식/음료", "밥/면/소스/캔")
+//        store.storeImg="nayeon_mart1"
+//        store.grade=3.7
+//        store.phoneNumber="02-111-2222"
+//        store.time="09:00-20:00"
+//        store.dayOff="매주 수요일"
+//        DbRefStore.setValue(store)
+//            .addOnFailureListener { e -> Log.d(TAG, e.localizedMessage) }
+
 //        storeName="소연마트3"
 //        DbRefStore = mmDatabase.getReference("stores/"+storeName)
 //        store= Store()

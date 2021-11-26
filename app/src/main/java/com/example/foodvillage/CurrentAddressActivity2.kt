@@ -49,6 +49,8 @@ open class CurrentAddressActivity2 : AppCompatActivity(), MapView.CurrentLocatio
         mBinding = ActivityCurrentAddress2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.tvActivityCurrentAddressSettingMylocation.text=intent.getStringExtra("AddressData")
+
         binding.tvActivityCurrentAddressSettingMylocation2.text =
             intent.getStringExtra("etActivityDetailAddress")
 

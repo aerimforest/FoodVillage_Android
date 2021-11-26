@@ -89,7 +89,9 @@ class DetailAddressActivity : AppCompatActivity() {
             val intent = Intent(this, CurrentAddressActivity2::class.java)
             Log.d("상세주소", etActivityDetailAddress!!)
 
+
             intent.putExtra("etActivityDetailAddress", etActivityDetailAddress)
+            intent.putExtra("AddressData", AddressData)
             startActivity(intent)
             this.finish()
         }
