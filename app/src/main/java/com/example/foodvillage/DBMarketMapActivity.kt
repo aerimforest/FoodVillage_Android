@@ -232,9 +232,10 @@ class DBMarketMapActivity : AppCompatActivity(), MapView.CurrentLocationEventLis
                                                     filteredstorehash?.get("storeName") as String?
                                                 StoreIndi.storeImg =
                                                     filteredstorehash?.get("storeImg") as String?
-                                                if (StoreIndi.distance?.get(uid)!! <= distVal) {
-                                                    storeList.add(StoreIndi)
-                                                }
+//                                                if (StoreIndi.distance?.get(uid)!! <= distVal) {
+//                                                    storeList.add(StoreIndi)
+//                                                }
+                                                storeList.add(StoreIndi)
                                             }
 
                                             markersShow(storeList)

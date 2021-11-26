@@ -305,24 +305,31 @@ class HomeFragment : Fragment() {
                     ((((distance.toDouble() / 1000) / 3.5) * 60 * 10).roundToInt() / 10).toString()
             }
 
-            databaseReference.orderByChild("discountRate")
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+//            databaseReference.orderByChild("discountRate")
+//                .addValueEventListener(object : ValueEventListener {
+//                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+//
+//                        for (postSnapshot in dataSnapshot.children) {
+//                            if (postSnapshot.child("storeName").value == todayStoreList[position].storeName) {
+//                                viewHolder.tv_max_discount_rate.text =
+//                                    postSnapshot.child("discountRate").value.toString()
+//                                viewHolder.tv_discount_product.text =
+//                                    postSnapshot.child("productName").value.toString()
+//                            }
+//                        }
+//                        notifyDataSetChanged()
+//                    }
+//
+//                    override fun onCancelled(error: DatabaseError) {
+//                    }
+//                })
 
-                        for (postSnapshot in dataSnapshot.children) {
-                            if (postSnapshot.child("storeName").value == todayStoreList[position].storeName) {
-                                viewHolder.tv_max_discount_rate.text =
-                                    postSnapshot.child("discountRate").value.toString()
-                                viewHolder.tv_discount_product.text =
-                                    postSnapshot.child("productName").value.toString()
-                            }
-                        }
-                        notifyDataSetChanged()
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                    }
-                })
+            databaseReference.orderByChild("discountRate").get().addOnSuccessListener {
+                if(it.child("storeName").value == todayStoreList[position].storeName) {
+                    viewHolder.tv_max_discount_rate.text = it.child("discountRate").value.toString()
+                    viewHolder.tv_discount_product.text = it.child("productName").value.toString()
+                }
+            }
 
             // drawable 파일에서 이미지 검색 후 적용
             val id = context!!.resources.getIdentifier(

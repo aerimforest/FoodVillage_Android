@@ -10,7 +10,7 @@
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="false"
-        android:icon="@mipmap/icon_food_village_foreground"
+        android:icon="@mipmap/icon_food_village"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:roundIcon="@mipmap/icon_food_village_round"
