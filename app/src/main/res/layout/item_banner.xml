@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/imv_item_banner"
         android:layout_width="match_parent"
-        android:layout_height="144dp"
+        android:layout_height="160dp"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
