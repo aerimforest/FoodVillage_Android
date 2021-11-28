@@ -1,7 +1,13 @@
 # 푸드빌리지(FoodVillage)
 ![issue badge](https://img.shields.io/badge/platform-Android-brightgreen)
 
-<img width="70" alt="앱아이콘" src="https://user-images.githubusercontent.com/52696359/143584504-86b7ace2-3824-4368-87d3-9b18fc47469b.png">  
+<img width="100" alt="앱아이콘" src="https://user-images.githubusercontent.com/52696359/143649389-4fb99468-d98e-4467-9a97-9681d7153218.png">  
+
+<br/>
+
+### 🎖&nbsp;&nbsp;Awards
+- &nbsp;&nbsp;KUSITMS 23기 학술제 최우수상
+<br/>
 
 ### 🛠&nbsp;&nbsp;Development Environment / Language
 - Android Studio
@@ -16,7 +22,7 @@
 <br/>
 
 ### 🔗 APK 파일 경로
-- app/release
+- [app/release/app-*-release.apk](https://github.com/KUSITMS-Official/24th_DemoDay_FoodVillage_8/tree/master/app/release)(버전에 맞게 다운받아주세요.)
 
 <br/>
 
@@ -25,4 +31,6 @@
   Unauthorized theft, distribution and use of images, logos and text used in this project is prohibited.  
 <br/>
 
-<img width="400" alt="앱아이콘" src="https://user-images.githubusercontent.com/52696359/143640048-30896948-c34f-4fae-84c2-3fe992271d39.png">  
+<p align="center">
+<img width=60% alt="앱아이콘" src="https://user-images.githubusercontent.com/52696359/143640048-30896948-c34f-4fae-84c2-3fe992271d39.png">  
+</p>
